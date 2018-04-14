@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="16a5aa8c-16c0-42bf-875d-f8b2c561b473" name="Default" comment="">
+<<<<<<< HEAD
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/login.html" afterPath="$PROJECT_DIR$/view/login.html" />
+=======
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/registerController.php" afterPath="$PROJECT_DIR$/controller/registerController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/DAO.php" afterPath="$PROJECT_DIR$/model/DAO.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/User.php" afterPath="$PROJECT_DIR$/model/User.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/buttons.html" afterPath="$PROJECT_DIR$/view/buttons.html" />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -35,8 +42,13 @@
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="loginController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controller/loginController.php">
+=======
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.php">
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
               <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
@@ -65,6 +77,59 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="registerController.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/controller/registerController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="515">
+              <caret line="80" column="88" lean-forward="false" selection-start-line="80" selection-start-column="88" selection-end-line="80" selection-end-column="88" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/User.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2856">
+              <caret line="141" column="22" lean-forward="false" selection-start-line="141" selection-start-column="22" selection-end-line="141" selection-end-column="22" />
+              <folding>
+                <marker date="1523715463264" expanded="true" signature="2199:2263" ph="SELECT COUNT... users" />
+                <marker date="1523715463264" expanded="true" signature="2490:2627" ph="INSERT INTO users... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DAO.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/DAO.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/view/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="29" column="43" lean-forward="false" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="buttons.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/view/buttons.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3001">
+              <caret line="276" column="25" lean-forward="true" selection-start-line="276" selection-start-column="25" selection-end-line="276" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -85,12 +150,18 @@
         <option value="$PROJECT_DIR$/bs-siminta-admin/register.html" />
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/view/assets/js/validations.js" />
-        <option value="$PROJECT_DIR$/controller/registerController.php" />
         <option value="$PROJECT_DIR$/view/assets/plugins/validations.js" />
         <option value="$PROJECT_DIR$/view/register.html" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/view/login.html" />
         <option value="$PROJECT_DIR$/view/assets/js/loginValidation.js" />
         <option value="$PROJECT_DIR$/controller/loginController.php" />
+=======
+        <option value="$PROJECT_DIR$/view/buttons.html" />
+        <option value="$PROJECT_DIR$/model/DAO.php" />
+        <option value="$PROJECT_DIR$/model/User.php" />
+        <option value="$PROJECT_DIR$/controller/registerController.php" />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
       </list>
     </option>
   </component>
@@ -101,9 +172,15 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+<<<<<<< HEAD
   <component name="ProjectFrameBounds">
     <option name="x" value="461" />
     <option name="y" value="23" />
+=======
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="169" />
+    <option name="y" value="-21" />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
     <option name="width" value="1380" />
     <option name="height" value="969" />
   </component>
@@ -124,6 +201,7 @@
     <panes>
       <pane id="ProjectPane">
         <subPane>
+<<<<<<< HEAD
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="FinanceTracker" />
@@ -166,6 +244,43 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+=======
+          <expand>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="controller" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="model" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="view" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="view" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="assets" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="FinanceTracker" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FinanceTracker" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="view" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="assets" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="user-image" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+          </expand>
+          <select />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -272,18 +387,32 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523709264405</updated>
+<<<<<<< HEAD
       <workItem from="1523709265887" duration="3309000" />
       <workItem from="1523712867670" duration="3052000" />
+=======
+      <workItem from="1523709265887" duration="6217000" />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="6361000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="461" y="23" width="1380" height="969" extended-state="0" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17937219" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+=======
+    <option name="totallyTimeSpent" value="6217000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17708333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -393,6 +522,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/view/assets/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -402,6 +532,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/view/register.html">
+=======
+    <entry file="file://$PROJECT_DIR$/view/login.html">
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="49" column="60" lean-forward="false" selection-start-line="49" selection-start-column="60" selection-end-line="49" selection-end-column="60" />
@@ -409,6 +542,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/view/assets/js/validations.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="900">
@@ -418,6 +552,29 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/view/login.html">
+=======
+    <entry file="file://$PROJECT_DIR$/view/assets/plugins/jquery-1.10.2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view/assets/plugins/bootstrap/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2646">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view/assets/js/validations.js">
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="33" column="51" lean-forward="false" selection-start-line="33" selection-start-column="51" selection-end-line="33" selection-end-column="51" />
@@ -433,10 +590,57 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/controller/loginController.php">
+=======
+    <entry file="file://$PROJECT_DIR$/view/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="29" column="43" lean-forward="false" selection-start-line="29" selection-start-column="43" selection-end-line="29" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view/buttons.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3001">
+          <caret line="276" column="25" lean-forward="true" selection-start-line="276" selection-start-column="25" selection-end-line="276" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+>>>>>>> a939d392a213d1639017d4d60dd7d6929b2acc77
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/DAO.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2856">
+          <caret line="141" column="22" lean-forward="false" selection-start-line="141" selection-start-column="22" selection-end-line="141" selection-end-column="22" />
+          <folding>
+            <marker date="1523715463264" expanded="true" signature="2199:2263" ph="SELECT COUNT... users" />
+            <marker date="1523715463264" expanded="true" signature="2490:2627" ph="INSERT INTO users... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller/registerController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="80" column="88" lean-forward="false" selection-start-line="80" selection-start-column="88" selection-end-line="80" selection-end-column="88" />
           <folding />
         </state>
       </provider>

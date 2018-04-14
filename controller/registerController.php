@@ -1,5 +1,11 @@
 <?php
 
+function __autoload($class) {
+
+    $class = "..\\model\\" . $class;
+    require_once str_replace("\\", "/", $class) .".php";
+}
+
 
 if (isset($_POST["reg"])) {
     $name = trim(htmlentities($_POST["name"]));
@@ -53,12 +59,15 @@ if (isset($_POST["reg"])) {
         if (isset($_FILES["avatar"]["tmp_name"])) { //ZASHTO ISSET, A NE IS_UPLOADED FILE?
             if ($_FILES["avatar"]["size"] > 2097152) {
                 $file_data = false;
-                // echo "Ne"; PROVERKA
+                $url="/view/user-image/default.png";
             } else {
                 $file_data = true;
-                // echo "da";  PROVERKA
+                if(file_exists($_FILES["avatar"]["tmp_name"]))
+                move_uploaded_file($_FILES["avatar"]["tmp_name"],"../view/user-img/$name.png");
+                $url="/view/user-img/$name.png";
             }
         }
+
         if ($file_data) {
             if ($password === $repeatPassword) {
                 if (validatePassword($password)) {
@@ -67,6 +76,13 @@ if (isset($_POST["reg"])) {
                             if (validateEmail($email)) {
                                 if (validateAge($age)) {
                                     if ($age > 0 && $age < 120) {
+
+                                    $user=new User();
+                                    $user->First($name,$family_name,$age,sha1($password),$email,$url);
+                                    $user->registerUser($user);
+
+
+
 
                                     } else {
                                         echo "Age incorrect";
