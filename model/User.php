@@ -134,21 +134,25 @@ class User extends DAO
     }
 
 
-    function registerUser(User $user){
-        $statement=$this->pdo->prepare("SELECT COUNT(*) as count FROM users WHERE email=? AND password=?");
+    function registerUser(User $user)
+    {
+        $statement = $this->pdo->prepare("SELECT COUNT(*) as count FROM users WHERE email=? AND password=?");
         $statement->execute([$user->getEmail(),
-                            $user->getPassword()]);
-        $row=$statement->fetch(PDO::FETCH_ASSOC);
-        if($row["count"]==0){
-            $register=$this->pdo->prepare("INSERT INTO users(name,family_name,password,email,image_url,age) VALUES
+            $user->getPassword()]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($row["count"] == 0) {
+            $register = $this->pdo->prepare("INSERT INTO users(name,family_name,password,email,image_url,age) VALUES
                                                     (?,?,?,?,?,?)");
             $register->execute([$user->getName(),
-                                $user->getFamily(),
-                                $user->getPassword(),
-                                $user->getEmail(),
-                                $user->getAvatar(),
-                                $user->getAge()]);
+                $user->getFamily(),
+                $user->getPassword(),
+                $user->getEmail(),
+                $user->getAvatar(),
+                $user->getAge()]);
+            return true;
 
+        } else {
+            return false;
         }
     }
 

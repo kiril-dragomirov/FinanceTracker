@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="16a5aa8c-16c0-42bf-875d-f8b2c561b473" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/registerController.php" afterPath="$PROJECT_DIR$/controller/registerController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/DAO.php" afterPath="$PROJECT_DIR$/model/DAO.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/User.php" afterPath="$PROJECT_DIR$/model/User.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/view/buttons.html" afterPath="$PROJECT_DIR$/view/buttons.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -46,24 +44,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="registerController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="registerController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controller/registerController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="80" column="88" lean-forward="false" selection-start-line="80" selection-start-column="88" selection-end-line="80" selection-end-column="88" />
+            <state relative-caret-position="2153">
+              <caret line="128" column="49" lean-forward="false" selection-start-line="128" selection-start-column="49" selection-end-line="128" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="User.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="User.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/model/User.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2856">
-              <caret line="141" column="22" lean-forward="false" selection-start-line="141" selection-start-column="22" selection-end-line="141" selection-end-column="22" />
+            <state relative-caret-position="683">
+              <caret line="157" column="0" lean-forward="true" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
               <folding>
-                <marker date="1523715463264" expanded="true" signature="2199:2263" ph="SELECT COUNT... users" />
-                <marker date="1523715463264" expanded="true" signature="2490:2627" ph="INSERT INTO users... " />
+                <marker date="1523716323164" expanded="true" signature="2206:2270" ph="SELECT COUNT... users" />
+                <marker date="1523716323164" expanded="true" signature="2489:2626" ph="INSERT INTO users... " />
               </folding>
             </state>
           </provider>
@@ -237,12 +235,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1523709264405</updated>
-      <workItem from="1523709265887" duration="6217000" />
+      <workItem from="1523709265887" duration="8217000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6217000" />
+    <option name="totallyTimeSpent" value="8217000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -434,22 +432,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/User.php">
+    <entry file="file://$PROJECT_DIR$/controller/registerController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2856">
-          <caret line="141" column="22" lean-forward="false" selection-start-line="141" selection-start-column="22" selection-end-line="141" selection-end-column="22" />
-          <folding>
-            <marker date="1523715463264" expanded="true" signature="2199:2263" ph="SELECT COUNT... users" />
-            <marker date="1523715463264" expanded="true" signature="2490:2627" ph="INSERT INTO users... " />
-          </folding>
+        <state relative-caret-position="2153">
+          <caret line="128" column="49" lean-forward="false" selection-start-line="128" selection-start-column="49" selection-end-line="128" selection-end-column="49" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controller/registerController.php">
+    <entry file="file://$PROJECT_DIR$/model/User.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="80" column="88" lean-forward="false" selection-start-line="80" selection-start-column="88" selection-end-line="80" selection-end-column="88" />
-          <folding />
+        <state relative-caret-position="683">
+          <caret line="157" column="0" lean-forward="true" selection-start-line="157" selection-start-column="0" selection-end-line="157" selection-end-column="0" />
+          <folding>
+            <marker date="1523716323164" expanded="true" signature="2206:2270" ph="SELECT COUNT... users" />
+            <marker date="1523716323164" expanded="true" signature="2489:2626" ph="INSERT INTO users... " />
+          </folding>
         </state>
       </provider>
     </entry>
