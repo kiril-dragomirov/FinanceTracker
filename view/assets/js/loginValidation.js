@@ -8,8 +8,12 @@ function sendEmailAndPass() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if(xhr.status === 200 && xhr.readyState === 4){
-            document.getElementById("errors").style.color = "red";
-            document.getElementById("errors").innerHTML = this.responseText;
+            if(this.responseText == "incorrect data") {
+                document.getElementById("errors").style.color = "red";
+                document.getElementById("errors").innerHTML = this.responseText;
+            }else{
+                location.href="index.html";
+            }
         }
     }
     xhr.send("email="+ email + "&password=" + pass);

@@ -152,5 +152,14 @@ class User extends DAO
         }
     }
 
+    function checkUser($email, $password){
+        $statement = $this->pdo->prepare("SELECT id, name, family_name, email, image_url, age FROM users 
+                                                    WHERE email=? AND password=? ");
+        $statement->execute([$email,$password]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+
+    }
+
 
 }
