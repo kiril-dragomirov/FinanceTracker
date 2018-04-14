@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Tracker</title>
+    <!-- Core CSS - Include with every page -->
+    <link href="assets/plugins/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="assets/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/main-style.css" rel="stylesheet" />
+
+
+</head>
+
+<body class="body-Login-back">
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4 text-center logo-margin ">
+            <img src="assets/img/logo.png" alt=""/>
+        </div>
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sign Up</h3>
+                </div>
+                <div class="panel-body">
+                    <!--<form role="form">-->
+                        <fieldset>
+
+                            <form method="post" action="../controller/registerController.php" onsubmit="return RegisterValidation(this)" name="MyRegister" enctype="multipart/form-data">
+                                <div class="form-group">
+                                First Name  <input type="text" name="name" id="name" maxlength="20" class="form-control" autofocus><br>
+                                <div id="usernameErr" style="visibility: hidden"></div>
+                                </div>
+                                <div class="form-group">
+                                Family Name  <input type="text" name="family" id="family" maxlength="20" class="form-control"><br>
+                                <div id="familynameErr" style="visibility: hidden"></div>
+                                </div>
+                                <div class="form-group">
+                                Password  <input type="password" name="password" id="password" maxlength="20" class="form-control"><br>
+                                <div id="passwordErr" style="visibility: hidden"></div>
+                                </div>
+                                <div class="form-group">
+                                Repeat Password <input type="password" name="repeatPassword" id="repeatPassowrd" maxlength="20" class="form-control"><br>
+                                    <div id="rePasswordErr"></div>
+                                </div>
+                                <div class="form-group">
+                                Age <input type="number" name="age" id="age" maxlength="3" min="18" max="110" class="form-control"><br>
+                                <div id="ageErr" style="visibility: hidden"></div>
+                                </div>
+                                <div class="form-group">
+                                Email  <input type="email" name="email" id="email" maxlength="40" class="form-control"><br>
+                                <div id="emailErr" style="visibility: hidden"></div>
+                                </div>
+                                <div class="form-group">
+                                Avatar  <input type="file" name="avatar" id="avatar" ><br>
+                                <div id="avatarErr" style="visibility: hidden"></div>
+                                </div>
+
+                                <input type="submit" name="reg" id="reg" class="btn btn-lg btn-success btn-block">
+                            </form>
+                            <div id="errorHolder"></div>
+
+                        </fieldset>
+                    <!--</form>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Core Scripts - Include with every page -->
+<script src="assets/js/validations.js"></script>
+<script src="assets/plugins/jquery-1.10.2.js"></script>
+<script src="assets/plugins/bootstrap/bootstrap.min.js"></script>
+<script src="assets/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+</body>
+
+</html>
