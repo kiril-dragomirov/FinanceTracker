@@ -6,9 +6,13 @@
  * Time: 17:41
  */
 
-class User extends DAO
+class User extends DAO implements \JsonSerializable
 {
-
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
+    protected $id;
     protected $name;
     protected $family;
     protected $age;
@@ -24,11 +28,13 @@ class User extends DAO
      * @param $password
      * @param $email
      * @param $avatar
+     * @param $id
      */
 
 
-    public function First($name, $family, $age, $password, $email, $avatar)
+    public function First($name, $family, $age, $password, $email, $avatar, $id=0)
     {
+        $this->id=$id;
         $this->name = $name;
         $this->family = $family;
         $this->age = $age;
@@ -154,6 +160,28 @@ class User extends DAO
         } else {
             return false;
         }
+    }
+
+    function checkUser($email, $password){
+        $statement = $this->pdo->prepare("SELECT id, name, family_name,password, email, image_url, age FROM users 
+                                                    WHERE email=? AND password=? ");
+        $statement->execute([$email,$password]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+
+    }
+
+    function getUserInfoForEit($id){
+        $statement = $this->pdo->prepare("SELECT id, name, family_name,password, email, image_url, age FROM users 
+                                                   WHERE id=? ");
+        $statement->execute([$id]);
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    function editUser($name,$family,$password,$email,$image_url,$age,$id){
+        $statement=$this->pdo->prepare("UPDATE users SET name=?,family_name=?,password=?,email=?,image_url=?,age=? WHERE id=? ");
+        $statement->execute([$name,$family,$password,$email,$image_url,$age,$id]);
     }
 
 

@@ -8,8 +8,8 @@ function __autoload($class) {
 
 
 if (isset($_POST["reg"])) {
-    $name = trim(htmlentities($_POST["name"]));
-    $family_name = trim(htmlentities($_POST["family"]));
+    $name = ucfirst(trim(htmlentities($_POST["name"])));
+    $family_name = ucfirst(trim(htmlentities($_POST["family"])));
     $password = trim(htmlentities(($_POST["password"])));
     $repeatPassword = trim(htmlentities(($_POST["repeatPassword"])));
     $email = trim(htmlentities($_POST["email"]));
@@ -62,12 +62,7 @@ if (isset($_POST["reg"])) {
                 $url="/view/user-image/default.png";
             } else {
                 $file_data = true;
-                if(file_exists($_FILES["avatar"]["tmp_name"])) {
-                    move_uploaded_file($_FILES["avatar"]["tmp_name"], "../view/user-img/$name.png");
-                    $url = "/view/user-img/$name.png";
-                } else{
-                    $url="/view/user-image/default.png";
-                }
+
             }
         }
 
@@ -79,7 +74,14 @@ if (isset($_POST["reg"])) {
                             if (validateEmail($email)) {
                                 if (validateAge($age)) {
                                     if ($age > 0 && $age < 120) {
+                                        if(file_exists($_FILES["avatar"]["tmp_name"])) {
+                                            if(move_uploaded_file($_FILES["avatar"]["tmp_name"], "../view/assets/user-image/$name.png")){
+                                                $url = "/view/user-image/$name.png";
+                                            }
 
+                                        } else{
+                                            $url="/view/user-image/default.png";
+                                        }
                                     $user=new User();
                                     $user->First($name,$family_name,$age,sha1($password),$email,$url);
                                     if($user->registerUser($user)){
