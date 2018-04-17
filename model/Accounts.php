@@ -131,6 +131,18 @@ FROM
         $row=$statement->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
+
+    function getAccNamesAndAccIds($user_id){
+        $result=[];
+        $statement=$this->pdo->prepare("SELECT name, id FROM accounts WHERE user_id=?");
+        $statement->execute([$user_id]);
+        while($row=$statement->fetch(PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+
+    }
+
     /**
      * @return mixed
      */

@@ -31,3 +31,8 @@ if(isset($_GET["expense"])){
     $accounts= new Accounts();
     echo json_encode($accounts->getMinIncomeFromAllAccounts($_SESSION["user"]["id"]));
 }
+
+if(isset($_GET["accName"])){
+    $accounts=new Accounts();
+    echo json_encode($accounts->getAccNamesAndAccIds($_SESSION["user"]["id"]));
+}

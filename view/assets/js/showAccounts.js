@@ -1,6 +1,8 @@
 
 showAccounts();
 function showAccounts(){
+    // document.getElementById("show").innerHTML="";
+    document.getElementById("show").style.display="block";
     var request= new XMLHttpRequest();
     request.open("get","../controller/accountsController.php?get=acc");
     request.onreadystatechange=function(){
@@ -15,6 +17,10 @@ function showAccounts(){
                div1.setAttribute("class","col-lg-3");
                var div2=document.createElement("div");
                 div2.setAttribute("class","alert alert-warning text-center");
+                div2.setAttribute("id",response[item]["id"]);
+                div2.onclick=function(){
+                    showTransferSection(this.id);
+                }
                 var i=document.createElement("i");
                 i.setAttribute("class","fa  fa-pencil fa-3x");
                 div2.appendChild(i);
@@ -47,6 +53,9 @@ function showAccounts(){
                 i1.innerHTML="Create new account!";
                 div4.appendChild(i1);
                 div3.appendChild(div4);
+                div3.onclick=function() {
+                    showNewAccountSection();
+                }
                 document.getElementById("row1").appendChild(div3);
 
             }
@@ -54,4 +63,7 @@ function showAccounts(){
         }
     };
     request.send();
+    showTotal();
+    showBiggestIncomeInAccount();
+    showBiggestExpenseInAccount();
 }

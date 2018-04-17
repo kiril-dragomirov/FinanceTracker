@@ -1,4 +1,4 @@
-showTotal();
+
 function showTotal(){
     var request= new XMLHttpRequest();
     request.open("get","../controller/accountsController.php?give=total");
@@ -37,7 +37,7 @@ function showTotal(){
     request.send();
 }
 
-showBiggestIncomeInAccount();
+
 
 function showBiggestIncomeInAccount(){
     var request=new XMLHttpRequest();
@@ -68,7 +68,7 @@ function showBiggestIncomeInAccount(){
     }
     request.send();
 }
-showBiggestExpenseInAccount();
+
 
 function showBiggestExpenseInAccount(){
     var request=new XMLHttpRequest();
