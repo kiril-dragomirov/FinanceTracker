@@ -21,3 +21,13 @@ if(isset($_GET["give"])){
     $accounts=new Accounts();
     echo json_encode($accounts->getTotal($_SESSION["user"]["id"]));
 }
+
+if(isset($_GET["income"])){
+    $accounts= new Accounts();
+    echo json_encode($accounts->getMaxIncomeFromAllAccounts($_SESSION["user"]["id"]));
+}
+
+if(isset($_GET["expense"])){
+    $accounts= new Accounts();
+    echo json_encode($accounts->getMinIncomeFromAllAccounts($_SESSION["user"]["id"]));
+}

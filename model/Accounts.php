@@ -29,20 +29,21 @@ class Accounts extends User
                                               income, expense
                                                     FROM
                                                   (SELECT 
-                                                        SUM(amount) AS income
+                                                        account_id as income_acc_id,SUM(amount) AS income
                                                      FROM
                                                         transactions AS i
                                                        WHERE
                                                          i.type_id = 1) AS t
                                                       JOIN
                                                            (SELECT 
-                                                                    SUM(amount) AS expense
+                                                                    account_id as expense_acc_id,SUM(amount) AS expense
                                                                 FROM
                                                                     transactions AS e
                                                                 WHERE
                                                                     e.type_id = 2) AS e
                                                                     JOIN
                                                                 accounts AS a
+                                                                ON (a.id=expense_acc_id) AND a.id=income_acc_id
                                                             WHERE
                                                                 a.user_id = ?
                                                             GROUP BY user_id");
@@ -84,6 +85,52 @@ FROM
         return $result;
     }
 
+
+    public function getMaxIncomeFromAllAccounts($id){
+        $statement=$this->pdo->prepare("SELECT 
+                                                MAX(income) as income, a.name,acc_id
+                                                FROM
+                                                    (SELECT 
+                                                        account_id AS acc_id, MAX(amount) AS income
+                                                    FROM
+                                                        transactions AS t
+                                                    WHERE
+                                                        type_id = 1
+                                                    GROUP BY account_id) AS e
+                                                        RIGHT JOIN
+                                                    accounts AS a ON (a.id = acc_id)
+                                                WHERE
+                                                    a.user_id = ?
+                                                GROUP BY a.name
+                                                ORDER BY income DESC
+                                                LIMIT 1");
+        $statement->execute([$id]);
+        $row=$statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public function getMinIncomeFromAllAccounts($id){
+                                        $statement=$this->pdo->prepare("SELECT 
+                                         MAX(expense) AS expense, a.name, acc_id
+                                         FROM
+                                         (SELECT 
+                                            account_id AS acc_id, MAX(amount) AS expense
+                                          FROM
+                                             transactions AS t
+                                          WHERE
+                                            type_id = 2
+                                          GROUP BY account_id) AS e
+                                           RIGHT JOIN
+                                             accounts AS a ON (a.id = acc_id)
+                                           WHERE
+                                             a.user_id = ?
+                                           GROUP BY a.name
+                                           ORDER BY expense DESC
+                                            LIMIT 1");
+        $statement->execute([$id]);
+        $row=$statement->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
     /**
      * @return mixed
      */
