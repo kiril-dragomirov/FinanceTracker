@@ -20,8 +20,8 @@ function showTransferSection(id) {
     var mainDiv = document.createElement("div");
     var selectAcc = document.createElement("select");
     selectAcc.setAttribute("class", "form-control");
-    var pSelectAcc=document.createElement("p");
-    pSelectAcc.innerHTML="Selected Account";
+    var pSelectAcc = document.createElement("p");
+    pSelectAcc.innerHTML = "Selected Account";
     mainDiv.appendChild(pSelectAcc);
     //AJAX to catch all accounts names + their ids;
     var request = new XMLHttpRequest();
@@ -56,16 +56,16 @@ function showTransferSection(id) {
     accTrans.appendChild(mainDiv);
 
     //Amount input
-    var mainDiv5=document.createElement("div");
-    var pAmount=document.createElement("p");
-    pAmount.innerHTML="Amount";
+    var mainDiv5 = document.createElement("div");
+    var pAmount = document.createElement("p");
+    pAmount.innerHTML = "Amount";
     mainDiv5.appendChild(pAmount);
-    var amountInput=document.createElement("input");
-    amountInput.id="amountInput";
-    amountInput.type="number";
-    amountInput.setAttribute("class","form-control");
-    amountInput.setAttribute("maxlength","10");
-    amountInput.setAttribute("min",0);
+    var amountInput = document.createElement("input");
+    amountInput.id = "amountInput";
+    amountInput.type = "number";
+    amountInput.setAttribute("class", "form-control");
+    amountInput.setAttribute("maxlength", "10");
+    amountInput.setAttribute("min", 0);
     mainDiv5.appendChild(amountInput);
     accTrans.appendChild(mainDiv5);
 
@@ -74,8 +74,8 @@ function showTransferSection(id) {
     var mainDiv2 = document.createElement("div");
     var selectType = document.createElement("select");
     selectType.setAttribute("class", "form-control");
-    var pTypeTransaction=document.createElement("p");
-    pTypeTransaction.innerHTML="Select Type of transaction";
+    var pTypeTransaction = document.createElement("p");
+    pTypeTransaction.innerHTML = "Select Type of transaction";
     mainDiv2.appendChild(pTypeTransaction);
     var requestType = new XMLHttpRequest();
     requestType.open("get", "../controller/AccountsController.php?transType=get");
@@ -111,8 +111,8 @@ function showTransferSection(id) {
     var mainDiv3 = document.createElement("div");
     var selectCategory = document.createElement("select");
     selectCategory.setAttribute("class", "form-control");
-    var pCategory=document.createElement("div");
-    pCategory.innerHTML="Category:";
+    var pCategory = document.createElement("div");
+    pCategory.innerHTML = "Category:";
     mainDiv3.appendChild(pCategory);
     var requestCategory = new XMLHttpRequest();
     requestCategory.open("get", "../controller/accountsController.php?giveCategory=get");
@@ -128,10 +128,10 @@ function showTransferSection(id) {
                     var optionCategory = document.createElement("option");
 
                     optionCategory.setAttribute("value", responseCategory[i]["id"]);
-                   // optionCategory.setAttribute("background-image:url",responseCategory[i]["img_url"]);
-                    var imgCat=document.createElement("IMG");
-                    imgCat.setAttribute("src",responseCategory[i]["img_url"]);
-                    optionCategory.innerHTML+=imgCat;
+                    // optionCategory.setAttribute("background-image:url",responseCategory[i]["img_url"]);
+                    var imgCat = document.createElement("IMG");
+                    imgCat.setAttribute("src", responseCategory[i]["img_url"]);
+                    optionCategory.innerHTML += imgCat;
                     optionCategory.innerHTML += responseCategory[i]["name"];
                     selectCategory.appendChild(optionCategory);
                 }
@@ -143,72 +143,82 @@ function showTransferSection(id) {
     mainDiv3.appendChild(selectCategory);
     accTrans.appendChild(mainDiv3);
 
-    var mainDiv44=document.createElement("div");
+    var mainDiv44 = document.createElement("div");
     accTrans.appendChild(mainDiv44);
 
+    //var icon_id = "";
     var category_id = "";
     selectCategory.onchange = function () {
-        if(this.value==12){
-           category_id=this.value; // Later should check if category id=12!
-            var mainDiv4=document.createElement("div");
-            mainDiv4.id="4";
-             var nameNewCat= document.createElement("input");
-             var paragraphNameCategory=document.createElement("p");
-             paragraphNameCategory.innerHTML="New category name";
-             mainDiv4.appendChild(paragraphNameCategory);
-             nameNewCat.setAttribute("class","form-control");
-             nameNewCat.setAttribute("maxlength","20");
-             mainDiv4.appendChild(nameNewCat);
+        if (this.value == 12) {
+            category_id = this.value; // Later should check if category id=12!
+            var mainDiv4 = document.createElement("div");
+            mainDiv4.id = "4";
+            var nameNewCat = document.createElement("input");
+            var paragraphNameCategory = document.createElement("p");
+            paragraphNameCategory.innerHTML = "New category name";
+            mainDiv4.appendChild(paragraphNameCategory);
+            nameNewCat.setAttribute("class", "form-control");
+            nameNewCat.setAttribute("maxlength", "20");
+            nameNewCat.id = "newCategoryName";
+            mainDiv4.appendChild(nameNewCat);
 
-             var selectIcon=document.createElement("select");
-             selectIcon.setAttribute("class","form-control");
-             var pIcon=document.createElement("p");
-             pIcon.innerHTML="Select Icon";
-             mainDiv4.appendChild(pIcon);
+            var selectIcon = document.createElement("select");
+            selectIcon.setAttribute("class", "form-control");
+            selectIcon.setAttribute("id", "iconList");
+            var pIcon = document.createElement("p");
+            pIcon.innerHTML = "Select Icon";
+            mainDiv4.appendChild(pIcon);
 
-             var requestIcon = new XMLHttpRequest();
-             requestIcon.open("get","../controller/AccountsController.php?getIconList=get");
-             requestIcon.onreadystatechange=function(){
-                 if(requestIcon.status===200 && requestIcon.readyState===4){
-                     var responseIcon=JSON.parse(this.responseText);
-                     var optionIcon=document.createElement("option");
-                     optionIcon.setAttribute("value","");
-                     optionIcon.innerHTML="";
-                     selectIcon.appendChild(optionIcon);
-                     for(var e in responseIcon){
-                         var optionIcon=document.createElement("option");
-                         optionIcon.setAttribute("value",responseIcon[e]["id"]);
-                         var img=document.createElement("IMG");
-                         img.setAttribute("src",responseIcon[e]["img_id"]);
-                         optionIcon.innerHTML+=img;
-                         selectIcon.appendChild(optionIcon);
-                     }
-                 }
+            var requestIcon = new XMLHttpRequest();
+            requestIcon.open("get", "../controller/AccountsController.php?getIconList=get");
+            requestIcon.onreadystatechange = function () {
+                if (requestIcon.status === 200 && requestIcon.readyState === 4) {
+                    var responseIcon = JSON.parse(this.responseText);
+                   // console.log(responseIcon); Test
+                    var optionIcon = document.createElement("option");
+                    optionIcon.setAttribute("value", "");
+                    optionIcon.innerHTML = "";
+                    selectIcon.appendChild(optionIcon);
+                    for (var e in responseIcon) {
+                        var optionIcon = document.createElement("option");
+                        optionIcon.setAttribute("value", responseIcon[e]["id"]);
+                       //  var img = document.createElement("img");
+                       //  img.setAttribute("src", responseIcon[e]["img_url"]);
+                        optionIcon.style.backgroundImage ="url("+ responseIcon[e]["img_url"]+")";
+                       //  mainDiv4.appendChild(img); //Test
+                        selectIcon.appendChild(optionIcon);
+                    }
+                }
 
-             }
-             requestIcon.send();
-
-
-             mainDiv4.appendChild(selectIcon);
-             var icon_id;
-            selectIcon.onchange=function(){
-                icon_id=this.value;
-               // console.log(icon_id); Testing;
             }
+            requestIcon.send();
+
+            var icon_id="";
+            selectIcon.onchange = function () {
+                icon_id = this.value;
+                console.log(icon_id); //Testing;
+            }
+            mainDiv4.appendChild(selectIcon);
+
 
 
             mainDiv44.appendChild(mainDiv4);
 
 
-        }else {
+        } else {
             //updating id with the selected cat id!
-            if(typeof(document.getElementById("4"))!="undefined" && document.getElementById("4")!=null) {
+            if (typeof(document.getElementById("4")) != "undefined" && document.getElementById("4") != null) {
                 var removeDiv = document.getElementById("4");
                 mainDiv44.removeChild(removeDiv);
             }
 
             //Setting Category id! ; IMPORTANT for later!
             category_id = this.value;
+            // var icon_id="";
+            // selectIcon.onchange = function () {
+            //     icon_id = this.value;
+            //     //console.log(icon_id); //Testing;
+            // }
 
         }
         console.log(category_id);
@@ -216,31 +226,73 @@ function showTransferSection(id) {
 
     accTrans.appendChild(mainDiv44);
 
+    //Regex amount
+    var amountRegex = /\s[0-1]{1}[0-9]{0,3}/;
+    var nameTransactionRegex = /^[a-zA-Z ]+$/;
 
-    var buttonInsertTransacation=document.createElement("button");
-    buttonInsertTransacation.innerHTML="Insert Transaction into Account";
-    buttonInsertTransacation.setAttribute("class","btn btn-success");
-        // Ajax input into DB.
-    // buttonInsertTransacation.onclick=function(){
-    //     if(id!="" && id!=null){
-    //         var amount=document.getElementById("amountInput").value;
-    //         if(amount!="" && amount!=null && amount>0){
-    //
-    //         }
-    //     }
-    // }
 
-        accTrans.appendChild(buttonInsertTransacation);
-     var mainDivErr=document.createElement("div");
+    var buttonInsertTransacation = document.createElement("button");
+    buttonInsertTransacation.innerHTML = "Insert Transaction into Account";
+    buttonInsertTransacation.setAttribute("class", "btn btn-success");
+    //  Ajax input into DB.
+    buttonInsertTransacation.onclick = function () {
+        var err = false;
 
-     accTrans.appendChild(mainDivErr);
+        if (id == "" || id == null) {
+            console.log("idAcc");
+            err = true;
+        }
+
+        var amount = document.getElementById("amountInput").value.trim();
+        if (amount == "" || amount == null || amount < 0) {
+            err = true;
+            console.log("AmountAcc");
+        }
+         else if (amountRegex.test(amount)) {
+            err = true;
+            console.log("AmountAccRegex");
+        }
+
+        if (type_id.trim() == "" || type_id == null) {
+            err = true;
+            console.log("typeId");
+        }
+
+        if (category_id.trim() == "" || category_id.trim() == null) {
+
+            console.log("category");
+            err=true;
+        }
+        if (category_id == 12) {
+            var nameNewCatInput = document.getElementById("newCategoryName").value.trim();
+            if (nameNewCatInput == "" || nameNewCatInput == null) {
+                err = true;
+                console.log("newCatName");
+            }else if(!nameTransactionRegex.test(nameNewCatInput)){
+                err = true;
+                console.log("RegexName");
+            }
+            var icon_list=document.getElementById("iconList").value;
+            if (icon_list == "" || icon_list == null) {
+                err = true;
+                console.log(icon_list);
+            }
+        }
+
+        if (err===true) {
+            mainDivErr.innerHTML = "Please fill all the fields and select lists!";
+        } else {
+            mainDivErr.innerHTML = "";
+        }
+    }
+
+    accTrans.appendChild(buttonInsertTransacation);
+    var mainDivErr = document.createElement("div");
+
+    accTrans.appendChild(mainDivErr);
 
 
 }
-
-
-
-
 
 
 // !!!!!!!!!--------!!!!!!!! Must have validaions if Any value of the drop down is empty string /""/ and if
