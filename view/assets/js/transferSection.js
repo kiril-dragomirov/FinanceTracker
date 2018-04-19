@@ -25,7 +25,7 @@ function showTransferSection(id) {
     mainDiv.appendChild(pSelectAcc);
     //AJAX to catch all accounts names + their ids;
     var request = new XMLHttpRequest();
-    request.open("get", "../controller/accountsController.php?accName=get");
+    request.open("get", "../index.php?target=accounts&action=accName&accName=get");
     request.onreadystatechange = function () {
         if (request.status === 200 && request.readyState === 4) {
             var response = JSON.parse(this.responseText);
@@ -78,7 +78,7 @@ function showTransferSection(id) {
     pTypeTransaction.innerHTML = "Select Type of transaction";
     mainDiv2.appendChild(pTypeTransaction);
     var requestType = new XMLHttpRequest();
-    requestType.open("get", "../controller/AccountsController.php?transType=get");
+    requestType.open("get", "../index.php?target=accounts&action=transType&transType=get");
     requestType.onreadystatechange = function () {
         if (requestType.status === 200 && requestType.readyState === 4) {
             var responseType = JSON.parse(this.responseText);
@@ -115,7 +115,7 @@ function showTransferSection(id) {
     pCategory.innerHTML = "Category:";
     mainDiv3.appendChild(pCategory);
     var requestCategory = new XMLHttpRequest();
-    requestCategory.open("get", "../controller/accountsController.php?giveCategory=get");
+    requestCategory.open("get", "../index.php?target=accounts&action=giveCategory&giveCategory=get");
     requestCategory.onreadystatechange = function () {
         if (requestCategory.status === 200 && requestCategory.readyState === 4) {
             var responseCategory = JSON.parse(this.responseText);
@@ -149,6 +149,7 @@ function showTransferSection(id) {
     //var icon_id = "";
     var category_id = "";
     selectCategory.onchange = function () {
+
         if (this.value == 12) {
             category_id = this.value; // Later should check if category id=12!
             var mainDiv4 = document.createElement("div");
@@ -170,11 +171,11 @@ function showTransferSection(id) {
             mainDiv4.appendChild(pIcon);
 
             var requestIcon = new XMLHttpRequest();
-            requestIcon.open("get", "../controller/AccountsController.php?getIconList=get");
+            requestIcon.open("get", "../index.php?target=accounts&action=getIconList&getIconList=get");
             requestIcon.onreadystatechange = function () {
                 if (requestIcon.status === 200 && requestIcon.readyState === 4) {
                     var responseIcon = JSON.parse(this.responseText);
-                   // console.log(responseIcon); Test
+                    // console.log(responseIcon); Test
                     var optionIcon = document.createElement("option");
                     optionIcon.setAttribute("value", "");
                     optionIcon.innerHTML = "";
@@ -182,10 +183,10 @@ function showTransferSection(id) {
                     for (var e in responseIcon) {
                         var optionIcon = document.createElement("option");
                         optionIcon.setAttribute("value", responseIcon[e]["id"]);
-                       //  var img = document.createElement("img");
-                       //  img.setAttribute("src", responseIcon[e]["img_url"]);
-                        optionIcon.style.backgroundImage ="url("+ responseIcon[e]["img_url"]+")";
-                       //  mainDiv4.appendChild(img); //Test
+                        //  var img = document.createElement("img");
+                        //  img.setAttribute("src", responseIcon[e]["img_url"]);
+                        optionIcon.style.backgroundImage = "url(" + responseIcon[e]["img_url"] + ")";
+                        //  mainDiv4.appendChild(img); //Test
                         selectIcon.appendChild(optionIcon);
                     }
                 }
@@ -193,13 +194,12 @@ function showTransferSection(id) {
             }
             requestIcon.send();
 
-            var icon_id="";
+            var icon_id = "";
             selectIcon.onchange = function () {
                 icon_id = this.value;
                 console.log(icon_id); //Testing;
             }
             mainDiv4.appendChild(selectIcon);
-
 
 
             mainDiv44.appendChild(mainDiv4);
@@ -248,7 +248,7 @@ function showTransferSection(id) {
             err = true;
             console.log("AmountAcc");
         }
-         else if (amountRegex.test(amount)) {
+        else if (amountRegex.test(amount)) {
             err = true;
             console.log("AmountAccRegex");
         }
@@ -261,29 +261,71 @@ function showTransferSection(id) {
         if (category_id.trim() == "" || category_id.trim() == null) {
 
             console.log("category");
-            err=true;
+            err = true;
         }
         if (category_id == 12) {
             var nameNewCatInput = document.getElementById("newCategoryName").value.trim();
             if (nameNewCatInput == "" || nameNewCatInput == null) {
                 err = true;
                 console.log("newCatName");
-            }else if(!nameTransactionRegex.test(nameNewCatInput)){
+            } else if (!nameTransactionRegex.test(nameNewCatInput)) {
                 err = true;
                 console.log("RegexName");
             }
-            var icon_list=document.getElementById("iconList").value;
+            var icon_list = document.getElementById("iconList").value;
             if (icon_list == "" || icon_list == null) {
                 err = true;
                 console.log(icon_list);
             }
         }
 
-        if (err===true) {
+        if (err === true) {
             mainDivErr.innerHTML = "Please fill all the fields and select lists!";
         } else {
             mainDivErr.innerHTML = "";
         }
+
+        if (err === false) {
+            if (category_id != 12) {
+                var requestInsertTransaction = new XMLHttpRequest();
+                requestInsertTransaction.open("post", "../index.php?target=transactions&action=insertTransaction");
+                requestInsertTransaction.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                requestInsertTransaction.onreadystatechange = function () {
+                    if (requestInsertTransaction.readyState === 4 && requestInsertTransaction.status === 200) {
+                        console.log(this.responseText); //Testing Purpose
+                        if (this.responseText == "correct!") {
+                            accTrans.innerHTML = "";
+                            accTrans.style.display = "none";
+                            showAccounts();
+                        }
+                    }
+                }
+                requestInsertTransaction.send("accId=" + id + "&amount=" + amount + "&categoryId=" + category_id
+                    + "&typeId=" + type_id);
+            }
+            else if (category_id == 12) {
+                var requestInsertTransactionAndCategory = new XMLHttpRequest();
+                requestInsertTransactionAndCategory.open("post", "../index.php?target=transactions&action=insertTransactionAndCategory");
+                requestInsertTransactionAndCategory.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                requestInsertTransactionAndCategory.onreadystatechange = function () {
+                    if (requestInsertTransactionAndCategory.readyState === 4 &&
+                        requestInsertTransactionAndCategory.status === 200) {
+                        console.log(this.responseText); //Testing Purpose
+                        if (this.responseText == "correct") {
+                            accTrans.innerHTML = "";
+                            accTrans.style.display = "none";
+                            showAccounts();
+                        }else{
+                            accTrans.innerHTML="";
+                            showTransferSection(id);
+                        }
+                    }
+                }
+                requestInsertTransactionAndCategory.send("accId=" + id + "&amount=" + amount + "&categoryName=" +
+                    nameNewCatInput+"&iconId="+ icon_list + "&typeId=" + type_id);
+            }
+        }
+
     }
 
     accTrans.appendChild(buttonInsertTransacation);

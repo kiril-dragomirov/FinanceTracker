@@ -84,7 +84,7 @@ function showNewAccountSection(){
                 var accName = document.getElementById("name").value.trim();
                 var accAmount = document.getElementById("amount").value.trim();
                 var request = new XMLHttpRequest();
-                request.open("post","../controller/accountsController.php");
+                request.open("post","../index.php?target=accounts&action=insertAccount");
                 request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 request.onreadystatechange=function(){
                     if(request.status===200 && request.readyState===4){

@@ -6,7 +6,9 @@
  * Time: 17:41
  */
 
-class User extends DAO implements \JsonSerializable
+namespace Model;
+
+class User implements \JsonSerializable
 {
     public function jsonSerialize()
     {
@@ -137,51 +139,6 @@ class User extends DAO implements \JsonSerializable
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-    }
-
-
-    function registerUser(User $user)
-    {
-        $statement = $this->pdo->prepare("SELECT COUNT(*) as count FROM users WHERE email=? AND password=?");
-        $statement->execute([$user->getEmail(),
-            $user->getPassword()]);
-        $row = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($row["count"] == 0) {
-            $register = $this->pdo->prepare("INSERT INTO users(name,family_name,password,email,image_url,age) VALUES
-                                                    (?,?,?,?,?,?)");
-            $register->execute([$user->getName(),
-                $user->getFamily(),
-                $user->getPassword(),
-                $user->getEmail(),
-                $user->getAvatar(),
-                $user->getAge()]);
-            return true;
-
-        } else {
-            return false;
-        }
-    }
-
-    function checkUser($email, $password){
-        $statement = $this->pdo->prepare("SELECT id, name, family_name,password, email, image_url, age FROM users 
-                                                    WHERE email=? AND password=? ");
-        $statement->execute([$email,$password]);
-        $row = $statement->fetch(PDO::FETCH_ASSOC);
-        return $row;
-
-    }
-
-    function getUserInfoForEit($id){
-        $statement = $this->pdo->prepare("SELECT id, name, family_name,password, email, image_url, age FROM users 
-                                                   WHERE id=? ");
-        $statement->execute([$id]);
-        $row = $statement->fetch(PDO::FETCH_ASSOC);
-        return $row;
-    }
-
-    function editUser($name,$family,$password,$email,$image_url,$age,$id){
-        $statement=$this->pdo->prepare("UPDATE users SET name=?,family_name=?,password=?,email=?,image_url=?,age=? WHERE id=? ");
-        $statement->execute([$name,$family,$password,$email,$image_url,$age,$id]);
     }
 
 

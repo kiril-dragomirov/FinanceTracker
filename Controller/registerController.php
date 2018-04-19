@@ -1,10 +1,5 @@
 <?php
 
-function __autoload($class) {
-
-    $class = "..\\model\\" . $class;
-    require_once str_replace("\\", "/", $class) .".php";
-}
 
 
 if (isset($_POST["reg"])) {

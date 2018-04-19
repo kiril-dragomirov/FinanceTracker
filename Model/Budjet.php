@@ -6,6 +6,8 @@
  * Time: 13:30
  */
 
+namespace Model;
+
 class Budjet extends  Transactions
 {
 

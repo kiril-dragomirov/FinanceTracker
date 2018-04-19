@@ -4,7 +4,7 @@ function showAccounts(){
     // document.getElementById("show").innerHTML="";
     document.getElementById("show").style.display="block";
     var request= new XMLHttpRequest();
-    request.open("get","../controller/accountsController.php?get=acc");
+    request.open("get","../index.php?target=accounts&action=showAcc&get=acc");
     request.onreadystatechange=function(){
         if(request.status===200 && request.readyState===4){
             var response=JSON.parse(this.responseText);

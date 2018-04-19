@@ -4,7 +4,7 @@ session_start();
 function __autoload($class)
 {
 
-    $class = "..\\model\\" . $class;
+    $class = "..\\Model\\" . $class;
     require_once str_replace("\\", "/", $class) . ".php";
 }
 

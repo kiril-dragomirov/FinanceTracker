@@ -1,7 +1,7 @@
 
 function showTotal(){
     var request= new XMLHttpRequest();
-    request.open("get","../controller/accountsController.php?give=total");
+    request.open("get","../index.php?target=accounts&action=giveTotal&give=total");
     request.onreadystatechange=function(){
         if(request.readyState===4 && request.status===200){
             var response=JSON.parse(this.responseText);
@@ -41,7 +41,7 @@ function showTotal(){
 
 function showBiggestIncomeInAccount(){
     var request=new XMLHttpRequest();
-    request.open("get","../controller/accountsController.php?income=give");
+    request.open("get","../index.php?target=accounts&action=ShowBiggestIncome&income=give");
     request.onreadystatechange=function(){
         if(request.status===200 && request.readyState===4){
             console.log("SHow biggest income"+this.responseText);
@@ -72,7 +72,7 @@ function showBiggestIncomeInAccount(){
 
 function showBiggestExpenseInAccount(){
     var request=new XMLHttpRequest();
-    request.open("get","../controller/accountsController.php?expense=give");
+    request.open("get","../index.php?target=accounts&action=showBiggestExpenseInAccount&expense=give");
     request.onreadystatechange=function(){
         if(request.readyState===4 && request.status===200){
             console.log("SHOW biggest expense" +this.responseText);

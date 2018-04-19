@@ -2,7 +2,7 @@ getUserEditInfo();
 
 function getUserEditInfo(){
     var request=new XMLHttpRequest();
-    request.open("get","../controller/editController.php?get=UserInfo");
+    request.open("get","../Controller/editController.php?get=UserInfo");
     request.onreadystatechange=function(){
         if(request.readyState===4 && request.status===200){
             var response=JSON.parse(this.responseText);
@@ -158,7 +158,7 @@ function Validation(form){
     // }
     // function getPass() {
     //     var request = new XMLHttpRequest();
-    //     request.open("get", "../controller/editController.php?get=UserInfo");
+    //     request.open("get", "../Controller/editController.php?get=UserInfo");
     //     request.onreadystatechange = function () {
     //         if (request.readyState === 4 && request.status === 200) {
     //             var response = JSON.parse(this.responseText);
