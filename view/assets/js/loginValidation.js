@@ -4,7 +4,7 @@ function sendEmailAndPass() {
     var email = document.getElementById("email").value;
     var pass = document.getElementById("pass").value;
     var xhr = new XMLHttpRequest();
-    xhr.open("post", "../controller/loginController.php");
+    xhr.open("post", "../index.php?target=user&action=login");
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function () {
         if(xhr.status === 200 && xhr.readyState === 4){
@@ -12,9 +12,9 @@ function sendEmailAndPass() {
                 document.getElementById("errors").style.color = "red";
                 document.getElementById("errors").innerHTML = this.responseText;
             }else{
-                location.href="index.html";
-                // document.getElementById("errors").style.color = "red";
-                // document.getElementById("errors").innerHTML = this.responseText;
+                // location.href="index.html";
+                document.getElementById("errors").style.color = "red";
+                document.getElementById("errors").innerHTML = this.responseText;
             }
         }
     }

@@ -2,25 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: User
- * Date: 16.4.2018 г.
- * Time: 0:01
+ * Date: 4/19/2018
+ * Time: 6:00 PM
  */
 
-class Accounts extends User
+namespace Model\Dao;
+
+use Model\Accounts;
+
+class AccountsDAO extends DAO
 {
-
-
-    protected $acc_name;
-    protected $expenses;
-    protected $incomes;
-
-    public function Acc($name, $expense, $income)
-    {
-        $this->expenses = $expense;
-        $this->incomes = $income;
-        $this->acc_name = $name;
-
-    }
 
     public function getTotal($id)
     {
@@ -57,26 +48,26 @@ class Accounts extends User
     {
         $result = [];
         $statement = $this->pdo->prepare("SELECT 
-    a.id, a.name, a.user_id, income, expense
-FROM
-    accounts AS a
-        LEFT JOIN
-    (SELECT 
-        account_id AS acc_id, SUM(amount) AS income
-    FROM
-        transactions AS i
-    WHERE
-        type_id = 1
-    GROUP BY account_id) AS t ON a.id = acc_id
-        LEFT JOIN
-    (SELECT 
-        account_id AS expense_acc_id, SUM(amount) AS expense
-    FROM
-        transactions AS e
-    WHERE
-        type_id = 2
-    GROUP BY account_id) AS te ON a.id = expense_acc_id
-    HAVING a.user_id=?");
+                                            a.id, a.name, a.user_id, income, expense
+                                        FROM
+                                            accounts AS a
+                                                LEFT JOIN
+                                            (SELECT 
+                                                account_id AS acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            WHERE
+                                                type_id = 1
+                                            GROUP BY account_id) AS t ON a.id = acc_id
+                                                LEFT JOIN
+                                            (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                            WHERE
+                                                type_id = 2
+                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+                                            HAVING a.user_id=?");
         $statement->execute([$id]);
         while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $row;
@@ -109,7 +100,7 @@ FROM
     }
 
     public function getMinIncomeFromAllAccounts($id){
-                                        $statement=$this->pdo->prepare("SELECT 
+        $statement=$this->pdo->prepare("SELECT 
                                          MAX(expense) AS expense, a.name, acc_id
                                          FROM
                                          (SELECT 
@@ -176,10 +167,10 @@ FROM
         $result=[];
         $statement=$this->pdo->prepare("SELECT id,name FROM type_transactions");
         $statement->execute();
-       while($row=$statement->fetch(PDO::FETCH_ASSOC)){
-           $result[]=$row;
-       }
-       return $result;
+        while($row=$statement->fetch(PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
     }
 
     function getCategoryList($id){
@@ -203,38 +194,6 @@ FROM
             $result[]=$row;
         }
         return $result;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAccName()
-    {
-        return $this->acc_name;
-    }
-
-    /**
-     * @param mixed $acc_name
-     */
-    public function setAccName($acc_name)
-    {
-        $this->acc_name = $acc_name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    /**
-     * @param mixed $user_id
-     */
-    public function setUserId($user_id)
-    {
-        $this->user_id = $user_id;
     }
 
 

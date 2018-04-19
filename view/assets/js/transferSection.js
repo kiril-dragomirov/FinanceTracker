@@ -25,7 +25,7 @@ function showTransferSection(id) {
     mainDiv.appendChild(pSelectAcc);
     //AJAX to catch all accounts names + their ids;
     var request = new XMLHttpRequest();
-    request.open("get", "../controller/accountsController.php?accName=get");
+    request.open("get", "../Controller/accountsController.php?accName=get");
     request.onreadystatechange = function () {
         if (request.status === 200 && request.readyState === 4) {
             var response = JSON.parse(this.responseText);
@@ -78,7 +78,7 @@ function showTransferSection(id) {
     pTypeTransaction.innerHTML="Select Type of transaction";
     mainDiv2.appendChild(pTypeTransaction);
     var requestType = new XMLHttpRequest();
-    requestType.open("get", "../controller/AccountsController.php?transType=get");
+    requestType.open("get", "../Controller/AccountsController.php?transType=get");
     requestType.onreadystatechange = function () {
         if (requestType.status === 200 && requestType.readyState === 4) {
             var responseType = JSON.parse(this.responseText);
@@ -115,7 +115,7 @@ function showTransferSection(id) {
     pCategory.innerHTML="Category:";
     mainDiv3.appendChild(pCategory);
     var requestCategory = new XMLHttpRequest();
-    requestCategory.open("get", "../controller/accountsController.php?giveCategory=get");
+    requestCategory.open("get", "../Controller/accountsController.php?giveCategory=get");
     requestCategory.onreadystatechange = function () {
         if (requestCategory.status === 200 && requestCategory.readyState === 4) {
             var responseCategory = JSON.parse(this.responseText);
@@ -167,7 +167,7 @@ function showTransferSection(id) {
              mainDiv4.appendChild(pIcon);
 
              var requestIcon = new XMLHttpRequest();
-             requestIcon.open("get","../controller/AccountsController.php?getIconList=get");
+             requestIcon.open("get","../Controller/AccountsController.php?getIconList=get");
              requestIcon.onreadystatechange=function(){
                  if(requestIcon.status===200 && requestIcon.readyState===4){
                      var responseIcon=JSON.parse(this.responseText);

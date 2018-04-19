@@ -6,6 +6,8 @@
  * Time: 19:01
  */
 
+namespace Model;
+
 class Transactions extends Accounts
 {
 
