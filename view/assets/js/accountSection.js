@@ -15,6 +15,7 @@ function showNewAccountSection(){
         showButton.setAttribute("class","panel panel-primary text-center no-boder panel-body blue");
         showButton.onclick=function(){
             showAccounts();
+            divTrans.innerHTML="";
             divTrans.style.display="none";
         }
         divTrans.appendChild(showButton);
@@ -25,7 +26,7 @@ function showNewAccountSection(){
         var name=document.createElement("input");
         name.setAttribute("id","name");
         name.setAttribute("type","text");
-        name.setAttribute("name","nameAcc");
+        name.setAttribute("name","name");
         name.setAttribute("maxlength","20");
         // name.setAttribute("class", "col-lg-3");
         div.appendChild(name);
@@ -41,12 +42,72 @@ function showNewAccountSection(){
             amount.setAttribute("min","0");
 
          div.appendChild(amount);
-
+         // div.appendChild("<br><br>");
+            var divButtonHold=document.createElement("div");
+            //STYLE THIS DIV!;
+            divButtonHold.setAttribute("class", ".col-md-3 .col-md-offset-3");
          var insertAccButton=document.createElement("button");
          insertAccButton.innerHTML="Add account";
          insertAccButton.setAttribute("class","btn btn-primary");
          //onclick function to add acc to DB + Validations
-         div.appendChild(insertAccButton);
+            var divErrHold=document.createElement("div");
+            var divErr=document.createElement("div");
+            divErr.setAttribute("class","alert alert-danger col-md-4");
+            divErr.style.visibility="hidden";
+            insertAccButton.onclick=function(){
+            var err=false;
+            divErr.innerHTML="";
+            if(document.getElementById("name").value.trim()===""){
+                divErr.style.visibility="visible";
+                divErr.innerHTML+="Please enter account name!";
+                err=true;
+            }else{
+                divErr.style.visibility="hidden";
+                divErr.innerHTML="";
+            }
+
+            if(document.getElementById("amount").value.trim()===""){
+                divErr.style.visibility="visible";
+                divErr.innerHTML+="Please enter amount!";
+                err=true;
+            }else if(document.getElementById("amount").value.trim()<0){
+                divErr.innerHTML="";
+                divErr.style.visibility="visible";
+                divErr.innerHTML+="Please enter amount bigger than 0!";
+                err=true;
+            }else{
+                divErr.style.visibility="hidden";
+                divErr.innerHTML="";
+            }
+
+            if(err===false){
+                var accName = document.getElementById("name").value.trim();
+                var accAmount = document.getElementById("amount").value.trim();
+                var request = new XMLHttpRequest();
+                request.open("post","../controller/accountsController.php");
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.onreadystatechange=function(){
+                    if(request.status===200 && request.readyState===4){
+                        console.log(this.responseText);
+                        if(this.responseText==="correct"){
+                            showAccounts();
+                            divTrans.innerHTML="";
+                            divTrans.style.display="none";
+                        }else if(this.responseText==="incorrect"){
+                            name.innerHTML="";
+                            amount.innerHTML="";
+                        }
+                    }
+                };
+
+                request.send("name="+ accName +"&amount="+ accAmount);
+            }
+        }
+
+            divErrHold.appendChild(divErr);
+            div.appendChild(divErrHold);
+            divButtonHold.appendChild(insertAccButton);
+            div.appendChild(divButtonHold);
 
         divTrans.appendChild(div);
 

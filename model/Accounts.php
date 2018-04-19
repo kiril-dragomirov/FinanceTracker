@@ -11,16 +11,15 @@ class Accounts extends User
 
 
     protected $acc_name;
-    protected $user_id;
     protected $expenses;
     protected $incomes;
 
-    public function Acc($name, $expense, $income, $user_id = 0)
+    public function Acc($name, $expense, $income)
     {
         $this->expenses = $expense;
         $this->incomes = $income;
         $this->acc_name = $name;
-        $this->user_id = $user_id;
+
     }
 
     public function getTotal($id)
@@ -141,6 +140,69 @@ FROM
         }
         return $result;
 
+    }
+
+    function checkIfAccountExistsAndInsert($name,$amount,$id)
+    {
+        $numberAcc = $this->pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
+        $numberAcc->execute([$id]);
+        $result = $numberAcc->fetch(PDO::FETCH_ASSOC);
+        if ($result["count"] <= 4) {
+            $statement = $this->pdo->prepare("SELECT count(*) as count FROM accounts WHERE name=? AND user_id=?");
+            $statement->execute([$name, $id]);
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            if ($row["count"] == 0) {
+                try {
+                    $trans = $this->pdo->beginTransaction();
+                    $insert = $this->pdo->prepare("INSERT INTO accounts(user_id,name) VALUES (?,?)");
+                    $insert->execute([$id, $name]);
+                    //Using ---LAST_INSERT_ID()--- we get last inserted ID in DB!;
+                    $insertTrans = $this->pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
+                                                           VALUES (LAST_INSERT_ID(),?,1,now(),1)");
+                    $insertTrans->execute([$amount]);
+                    $trans = $this->pdo->commit();
+                    return true;
+                } catch (PDOException $e) {
+                    $trans = $this->pdo->rollBack();
+                    return false;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
+    function getTransactionType(){
+        $result=[];
+        $statement=$this->pdo->prepare("SELECT id,name FROM type_transactions");
+        $statement->execute();
+       while($row=$statement->fetch(PDO::FETCH_ASSOC)){
+           $result[]=$row;
+       }
+       return $result;
+    }
+
+    function getCategoryList($id){
+        $result=[];
+        $statement=$this->pdo->prepare("SELECT c.id,c.name,i.img_url FROM categories as c
+                                                JOIN icons as i
+                                                ON (i.id=c.image_id)
+                                                WHERE c.user_id=0 OR c.user_id=?");
+        $statement->execute([$id]);
+        while($row=$statement->fetch(PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    function getIconList(){
+        $result=[];
+        $statement=$this->pdo->prepare("SELECT id,img_url FROM icons");
+        $statement->execute();
+        while($row=$statement->fetch(PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
     }
 
     /**

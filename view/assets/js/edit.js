@@ -156,19 +156,19 @@ function Validation(form){
     //         errors=false;
     //     }
     // }
-    function getPass() {
-        var request = new XMLHttpRequest();
-        request.open("get", "../controller/editController.php?get=UserInfo");
-        request.onreadystatechange = function () {
-            if (request.readyState === 4 && request.status === 200) {
-                var response = JSON.parse(this.responseText);
-                var pass = response["password"];
-                return pass;
-                    console.log(pass);
-            }
-        };
-        request.send();
-    }
+    // function getPass() {
+    //     var request = new XMLHttpRequest();
+    //     request.open("get", "../controller/editController.php?get=UserInfo");
+    //     request.onreadystatechange = function () {
+    //         if (request.readyState === 4 && request.status === 200) {
+    //             var response = JSON.parse(this.responseText);
+    //             var pass = response["password"];
+    //             return pass;
+    //                 console.log(pass);
+    //         }
+    //     };
+    //     request.send();
+    // }
 
 
     return errors;

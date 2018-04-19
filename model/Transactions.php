@@ -8,15 +8,14 @@
 
 class Transactions extends Accounts
 {
-    protected $acc_id;
+
     protected $amount;
     protected $category_id;
     protected $date_trans;
     protected $type_id;
 
-    public function Transaction($acc_id,$amount,$category_id,$date_trans,$type_id)
+    public function Transaction($amount,$category_id,$date_trans,$type_id)
     {
-        $this->acc_id=$acc_id;
         $this->amount=$amount;
         $this->category=$category_id;
         $this->date_trans=$date_trans;
