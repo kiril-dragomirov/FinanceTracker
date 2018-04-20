@@ -8,7 +8,7 @@
 
 namespace Model;
 
-class Budjet extends  Transactions
+class Budget extends  Transactions
 {
 
     protected $budjet_name;

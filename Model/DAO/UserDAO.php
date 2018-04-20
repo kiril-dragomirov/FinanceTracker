@@ -40,7 +40,13 @@ class UserDAO extends DAO
                                                     WHERE email=? AND password=? ");
         $statement->execute([$email,$password]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
-        return $row;
+        if($row["id"] == null){
+            return $row;
+        }else {
+            $stat = self::$pdo->prepare("INSERT INTO logs (user_id,date) VALUES (?,now())");
+            $stat->execute([$row["id"]]);
+            return $row;
+        }
 
     }
 

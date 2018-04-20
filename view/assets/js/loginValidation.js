@@ -12,9 +12,9 @@ function sendEmailAndPass() {
                 document.getElementById("errors").style.color = "red";
                 document.getElementById("errors").innerHTML = this.responseText;
             }else{
-                // location.href="index.html";
-                document.getElementById("errors").style.color = "red";
-                document.getElementById("errors").innerHTML = this.responseText;
+                location.href="../view/main.html";
+                // document.getElementById("errors").style.color = "red";
+                // document.getElementById("errors").innerHTML = this.responseText;
             }
         }
     }
