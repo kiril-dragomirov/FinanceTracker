@@ -11,7 +11,7 @@ function showTotal(){
             div2.setAttribute("class","alert alert-warning text-center");
             var i=document.createElement("i");
             i.setAttribute("class","fa  fa-pencil fa-3x");
-            if(response["income"]!=null) {
+            if(response["accNumber"]>0){
                 var total = response["income"] - response["expense"];
                 i.innerHTML = "Total in all accounts:";
                 if (total < 0) {
@@ -25,7 +25,7 @@ function showTotal(){
                     i.style.color = "yellow";
                 }
             }else{
-                i.innerHTML="Still no accounts in order to get the total amount!";
+                i.innerHTML="Still no accounts to show the total available amount!";
             }
             div2.appendChild(i);
             div.appendChild(div2);

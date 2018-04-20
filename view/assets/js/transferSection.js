@@ -50,8 +50,10 @@ function showTransferSection(id) {
             //Later we will use id to for the transaction in DB;
             id = this.value;
             console.log(id);
-        }
-    }
+            }
+        document.getElementById("table").innerHTML="";
+        showTable();
+    };
     mainDiv.appendChild(selectAcc);
     accTrans.appendChild(mainDiv);
 
@@ -332,10 +334,45 @@ function showTransferSection(id) {
     var mainDivErr = document.createElement("div");
 
     accTrans.appendChild(mainDivErr);
+    var divTable = document.createElement("div");
+    divTable.setAttribute("class","panel panel-default");
+    divTable.id="table";
+    function showTable() {
+       var table= document.getElementById("table");
+       table.innerHTML="";
+       var panelHeading=document.createElement("div");
+       panelHeading.setAttribute("class","panel-heading");
+       panelHeading.innerHTML="Transactions";
+       table.appendChild(panelHeading);
+       var panelBody=document.createElement("div");
+       panelBody.setAttribute("class","panel-body");
+       var responsiveTable=document.createElement("div");
+       responsiveTable.setAttribute("class","table-responsive");
+       var tableBody=document.createElement("table");
+       tableBody.setAttribute("class","table table-hover");
+       var tbody=document.createElement("tbody");
+       var tr=document.createElement("tr");
+       var td=document.createElement("td");
+       td.innerHTML=id;
+       tr.appendChild(td);
+       tbody.appendChild(tr);
+       tableBody.appendChild(tbody);
+       responsiveTable.appendChild(tableBody);
+       panelBody.appendChild(responsiveTable);
+       table.appendChild(panelBody);
 
+    }
+    accTrans.appendChild(divTable);
+    showTable();
+
+
+
+
+    accTrans.appendChild(divTable);
 
 }
 
 
 // !!!!!!!!!--------!!!!!!!! Must have validaions if Any value of the drop down is empty string /""/ and if
 // there is such value in db!;
+

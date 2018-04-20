@@ -17,13 +17,25 @@ function showAccounts(){
                div1.setAttribute("class","col-lg-3");
                var div2=document.createElement("div");
                 div2.setAttribute("class","alert alert-warning text-center");
-                div2.setAttribute("id",response[item]["id"]);
-                div2.onclick=function(){
+
+                var i=document.createElement("i");
+                i.onclick=function(){
                     showTransferSection(this.id);
                 }
-                var i=document.createElement("i");
                 i.setAttribute("class","fa  fa-pencil fa-3x");
+                i.setAttribute("id",response[item]["id"]);
                 div2.appendChild(i);
+                //Button to delete ACC;
+                var buttonRemove=document.createElement("button");
+                buttonRemove.setAttribute("class","btn btn-warning btn-circle btn-lg");
+                buttonRemove.id=response[item]["id"];
+                var iButton=document.createElement("i");
+                iButton.setAttribute("class","fa fa-times");
+                buttonRemove.appendChild(iButton);
+                buttonRemove.onclick=function(){
+                    removeAcc(this.id);
+                };
+                div2.appendChild(buttonRemove);
                 for(var each in response[item]){
                     i.innerHTML=response[item]["name"];
                     var total=response[item]["income"]-response[item]["expense"];
