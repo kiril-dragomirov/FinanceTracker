@@ -13,15 +13,82 @@ class Transactions extends Accounts
 
     protected $amount;
     protected $category_id;
-    protected $date_trans;
+    protected $accId;
     protected $type_id;
 
-    public function Transaction($amount,$category_id,$date_trans,$type_id)
+    public function Transaction($amount,$category_id,$accId,$type_id)
     {
         $this->amount=$amount;
-        $this->category=$category_id;
-        $this->date_trans=$date_trans;
+        $this->category_id=$category_id;
+        $this->accId=$accId;
         $this->type_id=$type_id;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param mixed $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryId()
+    {
+        return $this->category_id;
+    }
+
+    /**
+     * @param mixed $category_id
+     */
+    public function setCategoryId($category_id)
+    {
+        $this->category_id = $category_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccId()
+    {
+        return $this->accId;
+    }
+
+    /**
+     * @param mixed $accId
+     */
+    public function setAccId($accId)
+    {
+        $this->accId = $accId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypeId()
+    {
+        return $this->type_id;
+    }
+
+    /**
+     * @param mixed $type_id
+     */
+    public function setTypeId($type_id)
+    {
+        $this->type_id = $type_id;
+    }
+
+
 
 }
