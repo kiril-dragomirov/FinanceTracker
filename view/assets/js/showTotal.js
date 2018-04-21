@@ -100,3 +100,10 @@ function showBiggestExpenseInAccount(){
     }
     request.send();
 }
+
+
+function showDiagram(){
+   //DIAGRAM with all the income and expenses from all accounts.
+
+
+}

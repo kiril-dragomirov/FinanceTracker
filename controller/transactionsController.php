@@ -65,9 +65,9 @@ class transactionsController
         $date_from=htmlentities(trim($_POST["date_from"]));
         $date_to=htmlentities(trim($_POST["date_to"]));
 
-        if($typeId==0 && $date_from==0 && $date_to==0){
-            echo json_encode(TransactionsDAO::getAllTransactions($accId));
-        }
+
+            echo json_encode(TransactionsDAO::getAllTransactions($accId,$typeId,$date_from,$date_to));
+
     }
 
 

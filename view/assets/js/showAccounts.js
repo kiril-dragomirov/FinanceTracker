@@ -76,6 +76,8 @@ function showAccounts(){
     };
     request.send();
     showTotal();
+    showDiagram();
     showBiggestIncomeInAccount();
     showBiggestExpenseInAccount();
+
 }
