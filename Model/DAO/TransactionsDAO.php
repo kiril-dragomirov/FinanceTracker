@@ -53,4 +53,52 @@ class TransactionsDAO extends DAO
         }
     }
 
+    static public function getFirstDateForUser($user_id,$acc_id){
+        $statement=self::$pdo->prepare("SELECT DISTINCT date FROM transactions as t
+                                                JOIN accounts as a
+                                                ON (t.account_id=a.id)
+                                                WHERE a.user_id=? AND a.id=?");
+        $statement->execute([$user_id,$acc_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function getDateToList($date,$acc_id,$user_id){
+        $statement=self::$pdo->prepare("SELECT DISTINCT t.date FROM transactions as t
+                                                    JOIN accounts as a
+                                                    ON (t.account_id=a.id)
+                                                    WHERE a.user_id=? AND a.id=? AND date>=?");
+        $statement->execute([$user_id,$acc_id,$date]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+
+
+    }
+
+    static public function getAllTransactions($accId){
+        $statement=self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+                                                    JOIN categories as c 
+                                                    ON(t.category_id=c.id)
+                                                    JOIN accounts as a
+                                                    ON(a.id=t.account_id)
+                                                    WHERE a.id=?");
+        $statement->execute([$accId]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function RemoveTrans($transId){
+        $statement=self::$pdo->prepare("DELETE FROM transactions WHERE id=?");
+        $statement->execute([$transId]);
+    }
+
 }

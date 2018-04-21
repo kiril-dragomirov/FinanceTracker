@@ -53,6 +53,7 @@ function showTransferSection(id) {
             }
         document.getElementById("table").innerHTML="";
         showTable();
+        searchTable(id,0,0,0)
     };
     mainDiv.appendChild(selectAcc);
     accTrans.appendChild(mainDiv);
@@ -338,6 +339,7 @@ function showTransferSection(id) {
     divTable.setAttribute("class","panel panel-default");
     divTable.id="table";
     function showTable() {
+
        var table= document.getElementById("table");
        table.innerHTML="";
        var panelHeading=document.createElement("div");
@@ -346,11 +348,118 @@ function showTransferSection(id) {
        table.appendChild(panelHeading);
        var panelBody=document.createElement("div");
        panelBody.setAttribute("class","panel-body");
+       var selectTypeTable=document.createElement("select");
+        selectTypeTable.setAttribute("class","col-sm-3"); //form-control
+
+
+
+        //Getting all the Type Transactions with AJAX:
+        var tableType = new XMLHttpRequest();
+        tableType.open("get", "../index.php?target=accounts&action=transType&transType=get");
+        tableType.onreadystatechange = function () {
+            if (tableType.status === 200 && tableType.readyState === 4) {
+                var responseType = JSON.parse(this.responseText);
+                var tableOptionType = document.createElement("option");
+                tableOptionType.innerHTML = "";
+                tableOptionType.value = 0;
+                selectTypeTable.appendChild(tableOptionType);
+                for (var i in responseType) {
+                    var tableOptionType = document.createElement("option");
+                    tableOptionType.innerHTML = responseType[i]["name"];
+                    tableOptionType.value = responseType[i]["id"];
+                    selectTypeTable.appendChild(tableOptionType);
+                }
+            }
+        }
+        tableType.send();
+            var tableTypeId="";
+        selectTypeTable.onchange = function () {
+            //updating id with the selected acc id!
+            tableTypeId = this.value;
+            searchTable(id,tableTypeId,selectDateFromValue,selectDateToValue);
+            console.log(tableTypeId);
+
+        }
+
+       panelBody.appendChild(selectTypeTable);
+
+        //Select menu with available dates
+       var selectDateFrom=document.createElement("select");
+        selectDateFrom.setAttribute("class","col-sm-3"); //form-control
+        var requestDateFrom= new XMLHttpRequest();
+        requestDateFrom.open("get","../index.php?target=transactions&action=dateFrom&accId="+id);
+        requestDateFrom.onreadystatechange=function(){
+            if(requestDateFrom.readyState===4 && requestDateFrom.status===200){
+                var responseDateFrom=JSON.parse(this.responseText);
+                var optionDateFrom=document.createElement("option");
+                optionDateFrom.value=0;
+                optionDateFrom.innerHTML="";
+                selectDateFrom.appendChild(optionDateFrom);
+                for(var i in responseDateFrom){
+                    var optionDateFrom=document.createElement("option");
+                    optionDateFrom.value=responseDateFrom[i]["date"];
+                    optionDateFrom.innerHTML=responseDateFrom[i]["date"];
+                    selectDateFrom.appendChild(optionDateFrom);
+                }
+               // console.log(responseDateFrom); TESTING PURPOSE
+            }
+
+        }
+        requestDateFrom.send();
+
+        panelBody.appendChild(selectDateFrom);
+
+        //SELECT menu with "TO:" dates;
+        var selectDateToValue="";
+        var selectDateTo=document.createElement("select");
+        selectDateTo.setAttribute("class","col-sm-3"); //form-control
+        var selectDateFromValue="";
+        selectDateFrom.onchange=function(){
+            selectDateTo.innerHTML="";
+            selectDateFromValue=this.value;
+            var selectDateToValue="";
+            searchTable(id,tableTypeId,selectDateFromValue,selectDateToValue);
+            console.log(selectDateFromValue);
+            if(selectDateFromValue.trim()!=0){
+                var requestSelectDateTo= new XMLHttpRequest();
+                requestSelectDateTo.open("get","../index.php?target=transactions&action=getDateToList&dateFrom="
+                    +selectDateFromValue+"&accId="+id);
+                requestSelectDateTo.onreadystatechange=function(){
+                    if(requestSelectDateTo.readyState===4 && requestSelectDateTo.status===200){
+                        var responseSelectDateTo=JSON.parse(this.responseText);
+                        var optionDateTo=document.createElement("option");
+                        optionDateTo.value=0;
+                        optionDateTo.innerHTML="";
+                        selectDateTo.appendChild(optionDateTo);
+                        for(var i in responseSelectDateTo){
+                            var optionDateTo=document.createElement("option");
+                            optionDateTo.value=responseSelectDateTo[i]["date"];
+                            optionDateTo.innerHTML=responseSelectDateTo[i]["date"];
+                            selectDateTo.appendChild(optionDateTo);
+                        }
+                       // console.log(responseSelectDateTo); Testing Purpose
+                    }
+                }
+                requestSelectDateTo.send();
+
+                selectDateTo.onchange=function(){
+                    selectDateToValue=this.value;
+                    console.log(selectDateToValue);
+                    searchTable(id,tableTypeId,selectDateFromValue,selectDateToValue);
+                }
+            }
+
+
+        }
+
+        panelBody.appendChild(selectDateTo);
+
        var responsiveTable=document.createElement("div");
        responsiveTable.setAttribute("class","table-responsive");
        var tableBody=document.createElement("table");
        tableBody.setAttribute("class","table table-hover");
        var tbody=document.createElement("tbody");
+       tbody.setAttribute("id","tbody");
        var tr=document.createElement("tr");
        var td=document.createElement("td");
        td.innerHTML=id;
@@ -363,7 +472,9 @@ function showTransferSection(id) {
 
     }
     accTrans.appendChild(divTable);
+
     showTable();
+    searchTable(id,0,0,0);
 
 
 

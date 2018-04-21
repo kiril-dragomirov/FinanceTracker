@@ -46,4 +46,34 @@ class transactionsController
         }
     }
 
+    public function dateFrom(){
+        $accId=htmlentities(trim($_GET["accId"]));
+       echo json_encode(TransactionsDAO::getFirstDateForUser($_SESSION["user"]["id"],$accId));
+    }
+
+    public function getDateToList(){
+        $date=htmlentities(trim($_GET["dateFrom"]));
+        $accId=htmlentities(trim($_GET["accId"]));
+        $userId=$_SESSION["user"]["id"];
+        echo json_encode(TransactionsDAO::getDateToList($date,$accId,$userId));
+
+    }
+
+    public function getTransactions(){
+        $accId=htmlentities(trim($_POST["accId"]));
+        $typeId=htmlentities(trim($_POST["type_id"]));
+        $date_from=htmlentities(trim($_POST["date_from"]));
+        $date_to=htmlentities(trim($_POST["date_to"]));
+
+        if($typeId==0 && $date_from==0 && $date_to==0){
+            echo json_encode(TransactionsDAO::getAllTransactions($accId));
+        }
+    }
+
+
+    //Removing Transaction
+    public function removeTransaction(){
+        $transId=htmlentities(trim($_POST["transId"]));
+        TransactionsDAO::RemoveTrans($transId);
+    }
 }
