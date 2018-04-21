@@ -2,7 +2,7 @@ getUserEditInfo();
 
 function getUserEditInfo(){
     var request=new XMLHttpRequest();
-    request.open("get","../Controller/editController.php?get=UserInfo");
+    request.open("get","../index.php?target=user&action=getUserData");
     request.onreadystatechange=function(){
         if(request.readyState===4 && request.status===200){
             var response=JSON.parse(this.responseText);
@@ -66,7 +66,7 @@ function Validation(form){
     }else if(!emailRegex.test(form.email.value.trim())){
         emailErr.style.visibility="visible";
         emailErr.style.color="red";
-        emailErr.innerHTML="Incorect email";
+        emailErr.innerHTML="Incorrect email";
         errors=false;
     }else{
         emailErr.style.visibility="hidden";

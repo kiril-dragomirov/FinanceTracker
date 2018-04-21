@@ -5,6 +5,7 @@ function showTotal(){
     request.onreadystatechange=function(){
         if(request.readyState===4 && request.status===200){
             var response=JSON.parse(this.responseText);
+            //console.log(response);
             var div=document.createElement("div");
             div.setAttribute("class","col-lg-12");
             var div2=document.createElement("div");
@@ -30,7 +31,7 @@ function showTotal(){
             div2.appendChild(i);
             div.appendChild(div2);
             document.getElementById("row2").appendChild(div);
-            console.log(this.responseText);
+            //console.log(this.responseText); Test
 
         }
     }
@@ -103,7 +104,73 @@ function showBiggestExpenseInAccount(){
 
 
 function showDiagram(){
-   //DIAGRAM with all the income and expenses from all accounts.
+    var div = document.createElement("div");
+    div.setAttribute("class","col-lg-8");
+    var piechart=document.createElement("div");
+    piechart.setAttribute("id","piechart");
+
+    console.log("chart");
+    var request= new XMLHttpRequest();
+    request.open("get","../index.php?target=accounts&action=giveTotal&give=total");
+    request.onreadystatechange=function(){
+        if(request.readyState===4 && request.status===200) {
+            var response = JSON.parse(this.responseText);
+            console.log(response);
+
+            var income = response["income"];
+            console.log(income);
+            if(income==null){
+                income=0
+            }
+            var expense = response["expense"];
+            if(expense==null){
+                expense=0;
+            }
 
 
+            console.log(expense);
+            if (income != 0 || expense != 0 ) {
+            //DIAGRAM with all the income and expenses from all accounts.
+            google.charts.load('current', {'packages': ['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+
+                function drawChart() {
+
+
+                    var data = google.visualization.arrayToDataTable([
+                        ['Name', 'Total'],
+                        ['Income', Number(income)],
+                        ['Expense', Number(expense)]
+                    ]);
+                    console.log(data);
+                    var options = {
+                        title: 'Total incomes and expenses',
+                        is3D: true,
+                        backgroundColor: "#e2e44f"
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                    chart.draw(data, options);
+
+
+                }
+            }else{
+
+                var h1=document.createElement("h1");
+                piechart.appendChild(h1);
+                h1.innerHTML="Still no data to display charts";
+                piechart.style.height="150px";
+                piechart.setAttribute("class","alert alert-info alert-dismissable");
+            }
+        }
+        };
+
+    request.send();
+
+
+
+    div.appendChild(piechart);
+    document.getElementById("row3").appendChild(div);
 }
