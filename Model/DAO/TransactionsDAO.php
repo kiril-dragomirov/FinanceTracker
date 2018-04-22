@@ -168,4 +168,29 @@ class TransactionsDAO extends DAO
         $statement->execute([$transId]);
     }
 
+    static public function chartIncomeExpenses($accId){
+        $statement=self::$pdo->prepare("SELECT 
+                                                        income, expense
+                                                    FROM
+                                                        (SELECT 
+                                                            SUM(i.amount) AS income
+                                                        FROM
+                                                            transactions AS i
+                                                        WHERE
+                                                            i.type_id = 1 AND i.account_id = ?) AS t
+                                                            JOIN
+                                                        (SELECT 
+                                                            SUM(e.amount) AS expense
+                                                        FROM
+                                                            transactions AS e
+                                                        WHERE
+                                                            e.type_id = 2 AND e.account_id = ?) AS k");
+        $statement->execute([$accId,$accId]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
 }

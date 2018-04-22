@@ -131,7 +131,7 @@ function showDiagram(){
             console.log(expense);
             if (income != 0 || expense != 0 ) {
             //DIAGRAM with all the income and expenses from all accounts.
-            google.charts.load('current', {'packages': ['corechart']});
+                google.charts.load("current", {packages: ["corechart"]});
             google.charts.setOnLoadCallback(drawChart);
 
 
@@ -139,17 +139,20 @@ function showDiagram(){
 
 
                     var data = google.visualization.arrayToDataTable([
-                        ['Name', 'Total'],
+                        ['Task', 'Amount'],
                         ['Income', Number(income)],
                         ['Expense', Number(expense)]
                     ]);
                     console.log(data);
                     var options = {
                         title: 'Total incomes and expenses',
-                        is3D: true,
-                        backgroundColor: "#e2e44f"
-                    };
+                        height:260,
 
+                        is3D: true
+                    };
+                    $(window).resize(function(){
+                        drawChart();
+                    });
                     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 
                     chart.draw(data, options);

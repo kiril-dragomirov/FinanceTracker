@@ -39,16 +39,16 @@ function Validation(form){
 
 
     //regex for password;
-    var reMedium = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+    var reMedium = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])");
 
     //regex for Age;
     var reAge=/\s[0-1]{1}[0-9]{0,3}/;
 
-    if(form.name.value.trim()===""){
-        nameErr.style.visibility="visible";
-        nameErr.style.color="red";
-        nameErr.innerHTML="There is no first name entered";
-        errors=false;
+    if(form.name.value.trim()!==""){
+        // nameErr.style.visibility="visible";
+        // nameErr.style.color="red";
+        // nameErr.innerHTML="There is no first name entered";
+        // errors=false;
     }else if(!nameRegex.test(form.name.value.trim())){
         nameErr.style.visibility="visible";
         nameErr.style.color="red";
@@ -58,11 +58,11 @@ function Validation(form){
         nameErr.style.visibility="hidden";
     }
 
-    if(form.email.value.trim()===""){
-        emailErr.style.visibility="visible";
-        emailErr.style.color="red";
-        emailErr.innerHTML="Please insert email";
-        errors=false;
+    if(form.email.value.trim()!==""){
+        // emailErr.style.visibility="visible";
+        // emailErr.style.color="red";
+        // emailErr.innerHTML="Please insert email";
+        // errors=false;
     }else if(!emailRegex.test(form.email.value.trim())){
         emailErr.style.visibility="visible";
         emailErr.style.color="red";
@@ -72,14 +72,12 @@ function Validation(form){
         emailErr.style.visibility="hidden";
     }
 
-    // if(form.password.value.trim()===""){
-    //     passwordErr.style.visibility="visible";
-    //     passwordErr.style.color="red";
-    //     passwordErr.innerHTML="Please insert password!";
-    //     errors=false;
-    // }else
-
-        if (!reMedium.test(form.password.value.trim())) {
+    if(form.password.value.trim()!=="" || form.repeatPassword.value.trim()!==""){
+        // passwordErr.style.visibility="visible";
+        // passwordErr.style.color="red";
+        // passwordErr.innerHTML="Please insert password!";
+        // errors=false;
+     if (!reMedium.test(form.password.value.trim())) {
             passwordErr.style.visibility = "visible";
             passwordErr.style.color = "red";
             passwordErr.innerHTML = "password must contain one Big Letter and One small letter,except number AND BE LONGER THAN 8 CHARS!";
@@ -97,12 +95,13 @@ function Validation(form){
     }else{
         rePasswordErr.style.visibility="hidden";
     }
+    }
 
-    if(form.family.value.trim()===""){
-        familyErr.style.visibility="visible";
-        familyErr.style.color="red";
-        familyErr.innerHTML="Please insert family name!";
-        errors=false;
+    if(form.family.value.trim()!==""){
+        // familyErr.style.visibility="visible";
+        // familyErr.style.color="red";
+        // familyErr.innerHTML="Please insert family name!";
+        // errors=false;
     }else if(!nameRegex.test(form.family.value.trim())){
         familyErr.style.visibility="visible";
         familyErr.style.color="red";
@@ -112,11 +111,11 @@ function Validation(form){
         familyErr.style.visibility="hidden";
     }
 
-    if(form.age.value.trim()===""){
-        ageErr.style.visibility="visible";
-        ageErr.style.color="red";
-        ageErr.innerHTML="Please Insert age!";
-        errors=false;
+    if(form.age.value.trim()!==""){
+        // ageErr.style.visibility="visible";
+        // ageErr.style.color="red";
+        // ageErr.innerHTML="Please Insert age!";
+        // errors=false;
     }else if(reAge.test(form.age.value.trim())){
         ageErr.style.visibility="visible";
         ageErr.style.color="red";
@@ -143,7 +142,7 @@ function Validation(form){
     //PROBLEM NOT SHA1 in JS
     if(form.currentPassword.value.trim()===""){
         currentPasswordErr.style.visibility="visible";
-        currentPasswordErr.style.visibility="red";
+        currentPasswordErr.style.color="red";
         currentPasswordErr.innerHTML="Please insert your current password";
         errors=false;
     }

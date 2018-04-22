@@ -76,4 +76,9 @@ class transactionsController
         $transId=htmlentities(trim($_POST["transId"]));
         TransactionsDAO::RemoveTrans($transId);
     }
+
+    public function chartIncomeExpenses(){
+        $accId=htmlentities(trim($_GET["ia"]));
+        echo json_encode(TransactionsDAO::chartIncomeExpenses($accId));
+    }
 }

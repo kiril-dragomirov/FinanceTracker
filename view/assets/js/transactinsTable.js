@@ -53,6 +53,7 @@ function searchTable(acc_id,type_id,date_from,date_to) {
 
                                 //Deleting Transaction
                                 removeTransaction.onclick = function () {
+
                                     var remove_id = this.id;
                                     var removetr = document.getElementById("tr" + remove_id);
                                     tbody.removeChild(removetr);
@@ -66,7 +67,7 @@ function searchTable(acc_id,type_id,date_from,date_to) {
                                         }
                                     }
                                     removeRequest.send("transId=" + remove_id);
-
+                                    TransactionIncomeExpenseChart(acc_id);
                                     console.log(remove_id);
                                 }
                                 tr.appendChild(removeTransaction);
