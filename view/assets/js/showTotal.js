@@ -16,13 +16,13 @@ function showTotal(){
                 var total = response["income"] - response["expense"];
                 i.innerHTML = "Total in all accounts:";
                 if (total < 0) {
-                    i.innerHTML += "<br>" + total + "<br>";
+                    i.innerHTML += "<br>" + total.toFixed(2) + "<br>";
                     i.style.color = "red";
                 } else if (total > 0) {
-                    i.innerHTML += "<br>" + total + "<br>";
+                    i.innerHTML += "<br>" + total.toFixed(2) + "<br>";
                     i.style.color = "green";
                 } else {
-                    i.innerHTML += "<br>" + total + "<br>";
+                    i.innerHTML += "<br>" + total.toFixed(2) + "<br>";
                     i.style.color = "yellow";
                 }
             }else{

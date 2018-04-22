@@ -10,7 +10,7 @@ function Validation(form){
 
 
     //regex for name;
-    var nameRegex = /^[a-zA-Z ]+$/;
+    var nameRegex = /^[a-z ,.'-]+$/i;
 
     //regex for email;
     var emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;

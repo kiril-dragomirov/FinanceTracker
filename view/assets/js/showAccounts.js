@@ -41,12 +41,12 @@ function showAccounts(){
                     var total=response[item]["income"]-response[item]["expense"];
                     if(total<0){
                         i.style.color="red";
-                        i.innerHTML+="<br>"+ total +"<br>";
+                        i.innerHTML+="<br>"+ total.toFixed(2) +"<br>";
                     }else if(total>0){
-                        i.innerHTML += "<br>" + total + "<br>";
+                        i.innerHTML += "<br>" + total.toFixed(2) + "<br>";
                         i.style.color="green";
                     }else{
-                        i.innerHTML += "<br>" + total + "<br>";
+                        i.innerHTML += "<br>" + total.toFixed(2) + "<br>";
                         i.style.color="yellow";
                     }
                     div1.appendChild(div2);

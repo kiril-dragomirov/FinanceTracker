@@ -19,7 +19,7 @@ function searchTable(acc_id,type_id,date_from,date_to) {
     }else if(type_id.trim()!=0 && date_from.trim()!=0 && date_to.trim()!=0){
         console.log("Smetka: " + acc_id + " tip tranzakciya: " + type_id + "ot data: " + date_from + " do data: " + date_to);
         getData();
-    }else if(type_id.trim()==0 && date_from!=0 && date_to!=0){
+    }else if(type_id.trim()==0 && date_from.trim()!=0 && date_to.trim()!=0){
         console.log("Smetka: " + acc_id + " tip tranzakciya: " + "Vsichki" + "ot data: " + date_from + " do data: " + date_to);
         getData();
     }

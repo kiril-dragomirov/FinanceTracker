@@ -55,13 +55,22 @@ function showNewAccountSection(){
             divErr.setAttribute("class","alert alert-danger col-md-4");
             divErr.style.visibility="hidden";
             insertAccButton.onclick=function(){
+
+                var regexName= /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
+                var regexAmount=/^\d+(\.\d{1,2})?$/;
+
             var err=false;
             divErr.innerHTML="";
             if(document.getElementById("name").value.trim()===""){
                 divErr.style.visibility="visible";
                 divErr.innerHTML+="Please enter account name!";
                 err=true;
-            }else{
+            }else if(!regexName.test(document.getElementById("name").value.trim())){
+                divErr.style.visibility="visible";
+                divErr.innerHTML+="Please enter valid name!";
+                err=true;
+            }
+            else{
                 divErr.style.visibility="hidden";
                 divErr.innerHTML="";
             }
@@ -75,7 +84,13 @@ function showNewAccountSection(){
                 divErr.style.visibility="visible";
                 divErr.innerHTML+="Please enter amount bigger than 0!";
                 err=true;
-            }else{
+            }else if(!regexAmount.test(document.getElementById("amount").value.trim())){
+                divErr.innerHTML="";
+                divErr.style.visibility="visible";
+                divErr.innerHTML+="Please enter amount which is valid!";
+                err=true;
+            }
+                else{
                 divErr.style.visibility="hidden";
                 divErr.innerHTML="";
             }
