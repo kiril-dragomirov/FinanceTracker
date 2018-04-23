@@ -166,8 +166,10 @@ function showTransferSection(id) {
             nameNewCat.setAttribute("maxlength", "20");
             nameNewCat.id = "newCategoryName";
             mainDiv4.appendChild(nameNewCat);
-
+            var divSelectIconOther=document.createElement("div");
+            divSelectIconOther.setAttribute("class","drop-down");
             var selectIcon = document.createElement("select");
+            selectIcon.setAttribute("name","options");
             selectIcon.setAttribute("class", "form-control");
             selectIcon.setAttribute("id", "iconList");
             var pIcon = document.createElement("p");
@@ -187,11 +189,13 @@ function showTransferSection(id) {
                     for (var e in responseIcon) {
                         var optionIcon = document.createElement("option");
                         optionIcon.setAttribute("value", responseIcon[e]["id"]);
+                        optionIcon.setAttribute("class",responseIcon[e]["id"]);
                         //  var img = document.createElement("img");
                         //  img.setAttribute("src", responseIcon[e]["img_url"]);
                         optionIcon.style.backgroundImage = "url(" + responseIcon[e]["img_url"] + ")";
                         //  mainDiv4.appendChild(img); //Test
                         selectIcon.appendChild(optionIcon);
+
                     }
                 }
 
@@ -203,7 +207,8 @@ function showTransferSection(id) {
                 icon_id = this.value;
                 console.log(icon_id); //Testing;
             }
-            mainDiv4.appendChild(selectIcon);
+            divSelectIconOther.appendChild(selectIcon);
+            mainDiv4.appendChild(divSelectIconOther);
 
 
             mainDiv44.appendChild(mainDiv4);
@@ -376,10 +381,18 @@ function showTransferSection(id) {
         }
         tableType.send();
             var tableTypeId="";
+        var selectedDateTo="";//Del
         selectTypeTable.onchange = function () {
-            //updating id with the selected acc id!
             tableTypeId = this.value;
-            searchTable(id,tableTypeId,selectDateFromValue,selectDateToValue);
+            //updating id with the selected acc id!
+            if(selectDateTo.selectedIndex != 0){
+                selectedDateTo=selectDateTo.value;
+                searchTable(id,tableTypeId,selectDateFromValue,selectedDateTo);
+            }else {
+
+
+                searchTable(id, tableTypeId, selectDateFromValue, selectedDateTo);
+            }
             console.log(tableTypeId);
 
         }
@@ -454,7 +467,8 @@ function showTransferSection(id) {
 
 
         }
-
+        selectedDateTo=selectDateToValue;
+        var selectedDateFrom=selectDateFromValue;
         panelBody.appendChild(selectDateTo);
 
        var responsiveTable=document.createElement("div");

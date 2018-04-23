@@ -55,18 +55,36 @@ class accountsController
 
     public function insertAccount()
     {
+
+        function validateAmount($amount)
+        {
+            if (preg_match("/^[0-9]+(\.[0-9]{2})?$/", $amount)) {
+                return true;
+            }
+            return false;
+        }
+        function validateNameAcc($name)
+        {
+            if (false===(strpbrk($name, "#$%^&*()+=-[]';,./{}|:<>?~"))) {
+                return true;
+            }
+            return false;
+        }
         if (isset($_POST["name"])) {
             $name = htmlentities(trim($_POST["name"]));
             $amount = htmlentities(trim($_POST["amount"]));
             if (!empty($amount) && !empty($name)) {
                 if ($amount > 0) {
-
-                    //  $accounts = new Accounts();
-                    $result = $accounts = AccountsDAO::checkIfAccountExistsAndInsert($name, $amount, $_SESSION["user"]["id"]);
-                    if ($result) {
-                        echo "correct";
-                    } else {
-                        echo "incorrect";
+                    if (validateNameAcc($name)) {
+                        if (validateAmount($amount)) {
+                            //  $accounts = new Accounts();
+                            $result = $accounts = AccountsDAO::checkIfAccountExistsAndInsert($name, $amount, $_SESSION["user"]["id"]);
+                            if ($result) {
+                                echo "correct";
+                            } else {
+                                echo "incorrect";
+                            }
+                        }
                     }
                 }
             }
