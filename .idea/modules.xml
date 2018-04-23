@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/FinanceTracker.iml" filepath="$PROJECT_DIR$/.idea/FinanceTracker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../chart/.idea/chart.iml" filepath="$PROJECT_DIR$/../chart/.idea/chart.iml" />
       <module fileurl="file://$PROJECT_DIR$/../final.bg/.idea/final.bg.iml" filepath="$PROJECT_DIR$/../final.bg/.idea/final.bg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../shmataroci/.idea/shmataroci.iml" filepath="$PROJECT_DIR$/../shmataroci/.idea/shmataroci.iml" />
+      <module fileurl="file://$USER_HOME$/PhpstormProjects/test/.idea/test.iml" filepath="$USER_HOME$/PhpstormProjects/test/.idea/test.iml" />
     </modules>
   </component>
 </project>

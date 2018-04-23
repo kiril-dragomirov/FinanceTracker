@@ -16,4 +16,5 @@ class Budget extends  Transactions
     protected $budjet_date_from;
     protected $budjet_date_to;
 
+
 }

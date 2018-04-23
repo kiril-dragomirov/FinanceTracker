@@ -13,38 +13,55 @@ use Model\Accounts;
 class AccountsDAO extends DAO
 {
 
-    static  public function getTotal($id)
+    static public function getTotal($id)
     {
+//        $statement = self::$pdo->prepare("SELECT
+//    income,expense
+//FROM
+//    (SELECT
+//        account_id AS income_acc_id, SUM(amount) AS income
+//    FROM
+//        transactions AS i
+//    JOIN accounts AS acc ON (acc.id = i.account_id)
+//    WHERE
+//        i.type_id = 1 AND acc.user_id = ?) AS t
+//      JOIN
+//    (SELECT
+//        account_id AS expense_acc_id, SUM(amount) AS expense
+//    FROM
+//        transactions AS e
+//        JOIN accounts AS a ON (a.id = e.account_id)
+//    WHERE
+//        e.type_id = 2 AND a.user_id = ?) as e");
         $statement = self::$pdo->prepare("SELECT 
-                                              income, expense
-                                                    FROM
-                                                  (SELECT 
-                                                        account_id as income_acc_id,SUM(amount) AS income
-                                                     FROM
-                                                        transactions AS i
-                                                       WHERE
-                                                         i.type_id = 1) AS t
-                                                      JOIN
-                                                           (SELECT 
-                                                                    account_id as expense_acc_id,SUM(amount) AS expense
-                                                                FROM
-                                                                    transactions AS e
-                                                                WHERE
-                                                                    e.type_id = 2) AS e
-                                                                    JOIN
-                                                                accounts AS a
-                                                                ON (a.id=expense_acc_id) AND a.id=income_acc_id
-                                                            WHERE
-                                                                a.user_id = ?
-                                                            GROUP BY user_id");
-        $statement->execute([$id]);
-        $row=$statement->fetch(\PDO::FETCH_ASSOC);
+                                               income,expense,COUNT(aj.id) as accNumber
+                                        FROM
+                                            (SELECT 
+                                                account_id AS income_acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            JOIN accounts AS acc ON (acc.id = i.account_id)
+                                            WHERE
+                                                i.type_id = 1 AND acc.user_id = ?) AS t
+                                              JOIN
+                                            (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                                JOIN accounts AS a ON (a.id = e.account_id)
+                                            WHERE
+                                                e.type_id = 2 AND a.user_id = ?) as e
+                                                JOIN accounts as aj
+                                               WHERE aj.user_id=?
+                                                ");
+        $statement->execute([$id, $id, $id]);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
 
 
     }
 
-    static  public function getAccountsInfo($id)
+    static public function getAccountsInfo($id)
     {
         $result = [];
         $statement = self::$pdo->prepare("SELECT 
@@ -76,8 +93,9 @@ class AccountsDAO extends DAO
     }
 
 
-    static  public function getMaxIncomeFromAllAccounts($id){
-        $statement=self::$pdo->prepare("SELECT 
+    static public function getMaxIncomeFromAllAccounts($id)
+    {
+        $statement = self::$pdo->prepare("SELECT 
                                                 MAX(income) as income, a.name,acc_id
                                                 FROM
                                                     (SELECT 
@@ -95,12 +113,13 @@ class AccountsDAO extends DAO
                                                 ORDER BY income DESC
                                                 LIMIT 1");
         $statement->execute([$id]);
-        $row=$statement->fetch(\PDO::FETCH_ASSOC);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
     }
 
-  static  public function getMinIncomeFromAllAccounts($id){
-        $statement=self::$pdo->prepare("SELECT 
+    static public function getMinIncomeFromAllAccounts($id)
+    {
+        $statement = self::$pdo->prepare("SELECT 
                                          MAX(expense) AS expense, a.name, acc_id
                                          FROM
                                          (SELECT 
@@ -118,24 +137,25 @@ class AccountsDAO extends DAO
                                            ORDER BY expense DESC
                                             LIMIT 1");
         $statement->execute([$id]);
-        $row=$statement->fetch(\PDO::FETCH_ASSOC);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
     }
 
-   static public function getAccNamesAndAccIds($user_id){
-        $result=[];
-        $statement=self::$pdo->prepare("SELECT name, id FROM accounts WHERE user_id=?");
+    static public function getAccNamesAndAccIds($user_id)
+    {
+        $result = [];
+        $statement = self::$pdo->prepare("SELECT name, id FROM accounts WHERE user_id=?");
         $statement->execute([$user_id]);
-        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[]=$row;
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = $row;
         }
         return $result;
 
     }
 
-   static public function checkIfAccountExistsAndInsert($name,$amount,$id)
+    static public function checkIfAccountExistsAndInsert($name, $amount, $id)
     {
-        $numberAcc =self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
+        $numberAcc = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
         $numberAcc->execute([$id]);
         $result = $numberAcc->fetch(\PDO::FETCH_ASSOC);
         if ($result["count"] <= 4) {
@@ -163,38 +183,58 @@ class AccountsDAO extends DAO
         return false;
     }
 
-   static public function getTransactionType(){
-        $result=[];
-        $statement=self::$pdo->prepare("SELECT id,name FROM type_transactions");
+    static public function getTransactionType()
+    {
+        $result = [];
+        $statement = self::$pdo->prepare("SELECT id,name FROM type_transactions");
         $statement->execute();
-        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[]=$row;
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = $row;
         }
         return $result;
     }
 
-    static public function getCategoryList($id){
-        $result=[];
-        $statement=self::$pdo->prepare("SELECT c.id,c.name,i.img_url FROM categories as c
+    static public function getCategoryList($id)
+    {
+        $result = [];
+        $statement = self::$pdo->prepare("SELECT c.id,c.name,i.img_url FROM categories as c
                                                 JOIN icons as i
                                                 ON (i.id=c.image_id)
                                                 WHERE c.user_id=0 OR c.user_id=?");
         $statement->execute([$id]);
-        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[]=$row;
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = $row;
         }
         return $result;
     }
 
-    static function getIconList(){
-        $result=[];
-        $statement=self::$pdo->prepare("SELECT id,img_url FROM icons");
+    static public function getIconList()
+    {
+        $result = [];
+        $statement = self::$pdo->prepare("SELECT id,img_url FROM icons");
         $statement->execute();
-        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[]=$row;
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+            $result[] = $row;
         }
         return $result;
     }
 
+    static public function removeAcc($acc_id)
+    {
+        try {
+            $trans=self::$pdo->beginTransaction();
+            $statement = self::$pdo->prepare("DELETE FROM transactions WHERE account_id=?");
+            $statement->execute([$acc_id]);
+            $removeAcc = self::$pdo->prepare("DELETE FROM accounts WHERE id=?");
+            $removeAcc->execute([$acc_id]);
+            $trans=self::$pdo->commit();
+        } catch (\PDOException $e) {
+            $trans=self::$pdo->rollBack();
+        }
+    }
+
+//    static function removeAcc($id){
+//        $statement=""
+//    }
 
 }

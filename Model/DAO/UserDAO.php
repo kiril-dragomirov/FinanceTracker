@@ -13,7 +13,7 @@ use Model\User;
 class UserDAO extends DAO
 {
 
-    function registerUser(User $user)
+    static function  registerUser(User $user)
     {
         $statement = self::$pdo->prepare("SELECT COUNT(*) as count FROM users WHERE email=? AND password=?");
         $statement->execute([$user->getEmail(),
@@ -50,7 +50,7 @@ class UserDAO extends DAO
 
     }
 
-    function getUserInfoForEit($id){
+    static public function getUserInfoForEit($id){
         $statement = self::$pdo->prepare("SELECT id, name, family_name,password, email, image_url, age FROM users 
                                                    WHERE id=? ");
         $statement->execute([$id]);
@@ -58,7 +58,7 @@ class UserDAO extends DAO
         return $row;
     }
 
-    function editUser($name,$family,$password,$email,$image_url,$age,$id){
+   static public function editUser($name,$family,$password,$email,$image_url,$age,$id){
         $statement=self::$pdo->prepare("UPDATE users SET name=?,family_name=?,password=?,email=?,image_url=?,age=? WHERE id=? ");
         $statement->execute([$name,$family,$password,$email,$image_url,$age,$id]);
     }

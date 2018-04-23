@@ -99,4 +99,9 @@ class accountsController
             echo json_encode($accounts=AccountsDAO::getIconList());
         }
     }
+
+    public function removeAcc(){
+        $accId=htmlentities(trim($_POST["accId"]));
+        AccountsDAO::removeAcc($accId);
+    }
 }
