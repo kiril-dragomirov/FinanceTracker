@@ -35,8 +35,26 @@ class BudgetDAO extends DAO
         $statement->execute([$account_id,$budget_amount,$category_id]);
     }
 
-    public static function makeStatistic($user_id){
+    public static function selectCategories($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, COUNT(*) as counter
+                                                    FROM budgets as b 
+                                                    JOIN categories as c 
+                                                    ON b.category_id = c.id 
+                                                    JOIN accounts as a
+                                                    ON a.id = b.account_id
+                                                    WHERE a.user_id = ?
+                                                    GROUP BY b.category_id");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    public static function selectCategoryAmount($user_id){
+        $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amout) as amount
                                                     FROM budgets as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 

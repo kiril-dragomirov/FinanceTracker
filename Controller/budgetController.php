@@ -33,12 +33,36 @@ class budgetController
 
     }
 
-    public function makeStatistic(){
+    public function selectCategories(){
         //$user_id = $_SESSION["user"]["id"];
-        $statResult = BudgetDAO::makeStatistic(7);
-
+        $statResult = BudgetDAO::selectCategories(7);
         echo json_encode($statResult);
 
+
+    }
+
+    public function selectCategoryAmount(){
+        //$user_id = $_SESSION["user"]["id"];
+        $statResult = BudgetDAO::selectCategoryAmount(7);
+
+        function random_color() {
+            return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+        }
+
+        $result = [];
+        for ($i = 0; $i < count($statResult); $i++){
+
+            $test = [];
+            foreach($statResult[$i] as $key => $value){
+
+                $test[$key] = $value;
+
+            }
+            $test["color"] = "#".random_color().random_color().random_color();
+            $result[] = $test;
+
+        }
+        echo json_encode($result);
 
     }
 
