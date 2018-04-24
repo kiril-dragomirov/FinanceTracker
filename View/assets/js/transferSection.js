@@ -1,4 +1,4 @@
-function showTransferSection(id) {
+function showTransferSection(   id) {
     var divShow = document.getElementById("show");
     document.getElementById("row1").innerHTML = "";
     document.getElementById("row2").innerHTML = "";
@@ -54,7 +54,7 @@ function showTransferSection(id) {
         document.getElementById("table").innerHTML="";
         showTable();
         searchTable(id,0,0,0);
-        TransactionIncomeExpenseChart(id);
+        incomeExpenseChart(id);
     };
     mainDiv.appendChild(selectAcc);
     accTrans.appendChild(mainDiv);
@@ -496,19 +496,17 @@ function showTransferSection(id) {
     searchTable(id,0,0,0);
 
 
-
-
-    // accTrans.appendChild(divTable);
-
     var divChart=document.createElement("div");
-    divChart.id="chart";
-
-
+    divChart.setAttribute("class","col-sm-5");
+    var mainDivChart=document.createElement("div");
+    mainDivChart.setAttribute("id","chartAcc");
+    mainDivChart.style.width="100%";
+    mainDivChart.style.height="400px";
+    divChart.appendChild(mainDivChart);
     accTrans.appendChild(divChart);
 
+    incomeExpenseChart(id);
 
-
-    TransactionIncomeExpenseChart(id);
 }
 
 

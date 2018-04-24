@@ -122,4 +122,9 @@ class accountsController
         $accId=htmlentities(trim($_POST["accId"]));
         AccountsDAO::removeAcc($accId);
     }
+
+    public function chartAccountsAmounts(){
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(AccountsDAO::chartAccountsAmounts($user_id));
+    }
 }

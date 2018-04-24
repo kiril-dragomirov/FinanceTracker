@@ -107,73 +107,62 @@ function showDiagram(){
     var div = document.createElement("div");
     div.setAttribute("class","col-lg-8");
     var piechart=document.createElement("div");
+    piechart.style.width="100%";
+    piechart.style.height="400px";
     piechart.setAttribute("id","piechart");
 
+
     console.log("chart");
-    var request= new XMLHttpRequest();
-    request.open("get","../index.php?target=accounts&action=giveTotal&give=total");
-    request.onreadystatechange=function(){
-        if(request.readyState===4 && request.status===200) {
-            var response = JSON.parse(this.responseText);
+    var request = new XMLHttpRequest();
+    request.open("get", "../index.php?target=accounts&action=chartAccountsAmounts");
+    request.onreadystatechange = function () {
+        if (!(request.readyState === 4 && request.status === 200)) {
+        }else{
+            var response =JSON.parse(this.responseText);
             console.log(response);
-
-            var income = response["income"];
-            console.log(income);
-            if(income==null){
-                income=0
-            }
-            var expense = response["expense"];
-            if(expense==null){
-                expense=0;
-            }
-
-
-            console.log(expense);
-            if (income != 0 || expense != 0 ) {
-            //DIAGRAM with all the income and expenses from all accounts.
-                google.charts.load("current", {packages: ["corechart"]});
-            google.charts.setOnLoadCallback(drawChart);
-
-
-                function drawChart() {
-
-
-                    var data = google.visualization.arrayToDataTable([
-                        ['Task', 'Amount'],
-                        ['Income', Number(income)],
-                        ['Expense', Number(expense)]
-                    ]);
-                    console.log(data);
-                    var options = {
-                        title: 'Total incomes and expenses',
-                        height:260,
-
-                        is3D: true
-                    };
-                    $(window).resize(function(){
-                        drawChart();
-                    });
-                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-                    chart.draw(data, options);
-
-
-                }
-            }else{
-
-                var h1=document.createElement("h1");
-                piechart.appendChild(h1);
-                h1.innerHTML="Still no data to display charts";
-                piechart.style.height="150px";
-                piechart.setAttribute("class","alert alert-info alert-dismissable");
+            var legend;
+            var dar = response;
+            console.log(dar);
+            var chartData = dar;
+            if (AmCharts.isReady) {
+                configChart(chartData);
+            } else {
+                AmCharts.ready(configChart(chartData));
             }
         }
-        };
+
+
+    }
 
     request.send();
 
-
-
     div.appendChild(piechart);
     document.getElementById("row3").appendChild(div);
+
+}
+
+function configChart(chartData) {
+    for (var i in chartData) {
+        chartData[i].Total = Math.abs(chartData[i].Total);
+    }
+    console.log("am chart ready");
+    // PIE CHART
+    var chart = new AmCharts.AmPieChart();
+    chart.addTitle("Incomes And Expenses", 16);
+    chart.dataProvider = chartData;
+    chart.titleField = "name";
+    chart.valueField = "Total";
+    chart.outlineColor = "#FFFFFF";
+    chart.outlineAlpha = 0.8;
+    chart.outlineThickness = 2;
+    chart.balloonText = "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>";
+    // this makes the chart 3D
+    chart.depth3D = 15;
+    chart.angle = 30;
+    // WRITE
+    chart.write("piechart");
+
+
+
+
 }

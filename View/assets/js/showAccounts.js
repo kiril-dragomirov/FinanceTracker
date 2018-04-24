@@ -75,6 +75,9 @@ function showAccounts(){
         }
     };
     request.send();
+
+    // var chartAcc= document.getElementById("chartAcc");
+    // chartAcc.style.display="none";
     showTotal();
     showDiagram();
     showBiggestIncomeInAccount();

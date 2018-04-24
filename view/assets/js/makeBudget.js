@@ -26,7 +26,7 @@ xhr.onreadystatechange = function (ev) {
         document.getElementById("account").innerHTML = str6;
         var str1 = "<div class=\"form-group\"><label>Type Amount</label><input type=\"number\" class=\"form-control\" id=\"am\"></div>";
         document.getElementById("amount").innerHTML = str1;
-        var str2 = "<div class=\"form-group\"><label>Select category</label><select class=\"form-control\" id=\"cat\">";
+        var str2 = "<div class=\"form-group\"><label>Select category</label><select class=\"form-control\" id=\"cate\">";
 
         for(var j in response){
             if(response[j].cat != null) {
@@ -59,7 +59,7 @@ xhr.send();
 document.getElementById("but").addEventListener("click",function(){
     var e1 = document.getElementById("acc");
     var str1 = e1.options[e1.selectedIndex].value;
-    var e2 = document.getElementById("cat");
+    var e2 = document.getElementById("cate");
     var str2 = e2.options[e2.selectedIndex].value;
     var e3 = document.getElementById("am").value;
     var e4 = document.getElementById("datefrom").value;

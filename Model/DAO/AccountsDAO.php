@@ -222,15 +222,49 @@ class AccountsDAO extends DAO
     static public function removeAcc($acc_id)
     {
         try {
-            $trans=self::$pdo->beginTransaction();
+            $trans = self::$pdo->beginTransaction();
+            $removeBudget = self::$pdo->prepare("DELETE FROM budgets WHERE account_id=?");
+            $removeBudget->execute($acc_id);
             $statement = self::$pdo->prepare("DELETE FROM transactions WHERE account_id=?");
             $statement->execute([$acc_id]);
             $removeAcc = self::$pdo->prepare("DELETE FROM accounts WHERE id=?");
             $removeAcc->execute([$acc_id]);
-            $trans=self::$pdo->commit();
+            $trans = self::$pdo->commit();
         } catch (\PDOException $e) {
-            $trans=self::$pdo->rollBack();
+            $trans = self::$pdo->rollBack();
         }
+    }
+
+    static public function chartAccountsAmounts($user_id)
+    {
+        $result = [];
+        $statement = self::$pdo->prepare("SELECT 
+                                  a.user_id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
+                                        FROM
+                                            accounts AS a
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            WHERE
+                                                type_id = 1
+                                            GROUP BY account_id) AS t ON a.id = acc_id
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                            WHERE
+                                                type_id = 2
+                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+                                        HAVING a.user_id = 11");
+        $statement->execute([$user_id]);
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
+        }
+        return $result;
     }
 
 //    static function removeAcc($id){

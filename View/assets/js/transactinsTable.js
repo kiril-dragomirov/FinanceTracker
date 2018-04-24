@@ -67,7 +67,7 @@ function searchTable(acc_id,type_id,date_from,date_to) {
                                         }
                                     }
                                     removeRequest.send("transId=" + remove_id);
-                                    TransactionIncomeExpenseChart(acc_id);
+                                    incomeExpenseChart(acc_id);
                                     console.log(remove_id);
                                 }
                                 tr.appendChild(removeTransaction);

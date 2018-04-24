@@ -29,9 +29,16 @@ class budgetController
             $date_to = htmlentities($_POST["date_to"]);
 
 
-
-
             echo BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
+
+    }
+
+    public function makeStatistic(){
+        //$user_id = $_SESSION["user"]["id"];
+        $statResult = BudgetDAO::makeStatistic(11);
+
+        echo json_encode($statResult);
+
 
     }
 
