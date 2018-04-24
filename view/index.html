@@ -94,7 +94,7 @@
                                 <a id="budgetChart">Budget Charts</a>
                             </li>
                             <li>
-                                <a href="morris.html">Morris Charts</a>
+                                <a id="accountChart">Account Charts</a>
                             </li>
                         </ul>
                         <!-- second-level-items -->
@@ -196,6 +196,10 @@
         <script>
             $("#budgetChart").click(function () {
                 $('#div1').load('budgetChart.html');
+                $("#main").hide();
+            });
+            $("#accountChart").click(function () {
+                $('#div1').load('accountChart.html');
                 $("#main").hide();
             });
             $("#budgetForm").click(function () {

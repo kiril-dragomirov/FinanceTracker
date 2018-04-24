@@ -121,4 +121,11 @@ class transactionsController
         $accId = htmlentities(trim($_GET["ia"]));
         echo json_encode(TransactionsDAO::chartIncomeExpenses($accId));
     }
+
+    public function chartCategory(){
+        $user_id=$_SESSION["user"]["id"];
+        $accId=htmlentities(trim($_GET["accId"]));
+        $typeId=htmlentities(trim($_GET["typeId"]));
+        echo json_encode(TransactionsDAO::chartCategory($user_id,$accId,$typeId));
+    }
 }

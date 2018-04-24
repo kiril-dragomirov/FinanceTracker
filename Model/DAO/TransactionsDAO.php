@@ -211,4 +211,29 @@ class TransactionsDAO extends DAO
 
     }
 
+    static public function chartCategory($user_id,$acc_id,$type_id){
+        $params=[];
+        $query="SELECT SUM(t.amount) as valuee,c.name as kkey FROM transactions as t 
+                                                        JOIN accounts as a
+                                                        ON (t.account_id=a.id)
+                                                        JOIN categories as c
+                                                        ON(t.category_id=c.id)
+                                                        WHERE a.user_id=? AND type_id=?";
+        if($acc_id!="all"){
+            $query.=" AND a.id=? GROUP BY c.name";
+            $params=[$user_id,$type_id,$acc_id];
+        }else{
+            $query.="GROUP BY c.name";
+            $params=[$user_id,$type_id];
+        }
+        $statement=self::$pdo->prepare($query);
+        $statement->execute($params);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+
 }
