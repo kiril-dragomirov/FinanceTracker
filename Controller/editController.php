@@ -107,8 +107,8 @@ if (isset($_POST["edit"])) {
 
                     } else {
                         //  unlink(/* ADR na img koito shte mahnem! */);
-                        if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../view/assets/user-image/" . $_SESSION["user"]["name"]."jpg")) {
-                            $_SESSION["user"]["image_url"] = "/assets/view/" . $_SESSION["user"]["name"].".jpg";
+                        if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../View/assets/user-image/" . $_SESSION["user"]["name"]."jpg")) {
+                            $_SESSION["user"]["image_url"] = "/assets/View/" . $_SESSION["user"]["name"].".jpg";
                         }
 
                     }

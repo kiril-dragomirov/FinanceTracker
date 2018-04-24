@@ -60,7 +60,7 @@ class registerController
                 if (isset($_FILES["avatar"]["tmp_name"])) { //ZASHTO ISSET, A NE IS_UPLOADED FILE?
                     if ($_FILES["avatar"]["size"] > 2097152) {
                         $file_data = false;
-                        $url = "/view/user-image/default.png";
+                        $url = "/View/user-image/default.png";
                     } else {
                         $file_data = true;
 
@@ -76,58 +76,58 @@ class registerController
                                         if (validateAge($age)) {
                                             if ($age > 0 && $age < 120) {
                                                 if (file_exists($_FILES["avatar"]["tmp_name"])) {
-                                                    if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../view/assets/user-image/$name.png")) {
-                                                        $url = "/view/user-image/$name.png";
+                                                    if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../View/assets/user-image/$name.png")) {
+                                                        $url = "/View/user-image/$name.png";
                                                     }
 
                                                 } else {
-                                                    $url = "/view/user-image/default.png";
+                                                    $url = "/View/user-image/default.png";
                                                 }
                                                 $user = new User();
                                                 $user->First($name, $family_name, $age, sha1($password), $email, $url);
                                                 if (UserDAO::registerUser($user)) {
-                                                    header("location:../view/login.html");
+                                                    header("location:../View/login.html");
                                                 }
 
 
                                             } else {
                                                 echo "Age incorrect";
-                                                header("location:../view/register.html");
+                                                header("location:../View/register.html");
                                             }
                                         } else {
                                             echo "age incorrect";
-                                            header("location:../view/register.html");
+                                            header("location:../View/register.html");
                                         }
 
                                     } else {
                                         echo " email incorrect";
-                                        header("location:../view/register.html");
+                                        header("location:../View/register.html");
                                     }
                                 } else {
                                     echo "family incorrect";
-                                    header("location:../view/register.html");
+                                    header("location:../View/register.html");
                                 }
                             } else {
                                 echo "name incorrect";
-                                header("location:../view/register.html");
+                                header("location:../View/register.html");
                             }
                         } else {
                             echo "password incorrect";
-                            header("location:../view/register.html");
+                            header("location:../View/register.html");
                         }
                     } else {
                         echo "repassword incorrect";
-                        header("location:../view/register.html");
+                        header("location:../View/register.html");
                     }
 
 
                 } else {
                     echo "incorrect IMG!";
-                    header("location:../view/register.html");
+                    header("location:../View/register.html");
                 }
             } else {
                 echo "incorrect";
-                header("location:../view/register.html");
+                header("location:../View/register.html");
             }
 
         }

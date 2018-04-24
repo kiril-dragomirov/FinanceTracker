@@ -1,6 +1,6 @@
 <?php
 //session_start();
-//require_once ("view/layouts/header.php");
+//require_once ("View/layouts/header.php");
 //
 //if(isset($_GET["page"])){
 //    $page=htmlentities($_GET["page"]);
@@ -13,23 +13,23 @@
 //        session_destroy();
 //        header("location:index.php?page=login");
 //    }elseif($page!=="login" && $page!=="register"){
-//        require_once ("view/$page.html");
+//        require_once ("View/$page.html");
 //    }else{
-//        require_once ("view/main.html");
+//        require_once ("View/main.html");
 //    }
 //}else{
 //    if($page==="login"){
-//        require_once ("view/login.html");
+//        require_once ("View/login.html");
 //    }elseif($page==="register"){
-//        require_once ("view/register.html");
+//        require_once ("View/register.html");
 //    }else{
-//        require_once ("view/login.html");
+//        require_once ("View/login.html");
 //    }
 //}
 //
 //
 //
-//require_once ("view/layouts/footer.php");
+//require_once ("View/layouts/footer.php");
 
 
 spl_autoload_register(function ($class) {
