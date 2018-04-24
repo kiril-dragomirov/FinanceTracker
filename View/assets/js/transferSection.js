@@ -498,12 +498,16 @@ function showTransferSection(id) {
 
 
 
-    accTrans.appendChild(divTable);
+    // accTrans.appendChild(divTable);
 
     var divChart=document.createElement("div");
     divChart.id="chart";
 
+
     accTrans.appendChild(divChart);
+
+
+
     TransactionIncomeExpenseChart(id);
 }
 
