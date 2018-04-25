@@ -278,4 +278,8 @@ class userController
 
         }
     }
+
+    public function getUserId(){
+        echo $_SESSION["user"]["id"];
+    }
 }

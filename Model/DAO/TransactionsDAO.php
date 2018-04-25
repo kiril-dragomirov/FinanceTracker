@@ -236,4 +236,96 @@ class TransactionsDAO extends DAO
     }
 
 
+    static public function getCategoryAcc($acc_id,$user_id){
+        $query="SELECT  DISTINCT(c.name),c.id FROM categories as c
+                JOIN transactions as t
+                ON(c.id=t.category_id)
+                JOIN accounts as a
+                ON (a.id=t.account_id)
+                WHERE a.user_id=? ";
+        if($acc_id=="all"){
+            $params=[$user_id];
+        }else{
+            $query.=" AND a.id=?";
+            $params=[$user_id,$acc_id];
+        }
+        $statement=self::$pdo->prepare($query);
+        $statement->execute($params);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function getIncomeExpensesAccordingCategoryAndAccount($user_id,$acc_id,$category_id){
+        $query="SELECT tt.name as kkey,SUM(t.amount) as valuee FROM transactions as t 
+                                        JOIN categories as c
+                                  ON c.id=t.category_id
+                                  JOIN accounts as a
+                                        ON (t.account_id=a.id)
+                                        JOIN type_transactions as tt
+                                        ON (tt.id=t.type_id)
+                                        WHERE a.user_id=? AND t.category_id=? ";
+
+        if($acc_id=="all"){
+            $params=[$user_id,$category_id];
+            $query.="GROUP BY tt.name";
+        }else{
+            $params=[$user_id,$category_id,$acc_id];
+            $query.="AND t.account_id=? GROUP BY tt.name";
+
+        }
+        $statement=self::$pdo->prepare($query);
+        $statement->execute($params);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+
+        return $result;
+    }
+
+    static public function transfer($user_from,$user_to,$amount,$accId){
+        try{
+            $statement=self::$pdo->prepare("SELECT 
+                                  a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
+                                        FROM
+                                            accounts AS a
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            WHERE
+                                                type_id = 1
+                                            GROUP BY account_id) AS t ON a.id = acc_id
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                            WHERE
+                                                type_id = 2
+                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+                                        HAVING a.user_id =? AND a.id=?");
+            $statement->execute([$user_from,$accId]);
+            $row=$statement->fetch(\PDO::FETCH_ASSOC);
+            if($row["Total"]>$amount) {
+                $trans=self::$pdo->beginTransaction();
+                $insertTransaction = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
+                                                                     VALUES (?,?,12,now(),2)");
+                $insertTransaction->execute([$accId, $amount]);
+                $makeTransfer = self::$pdo->prepare("INSERT INTO transfers(from_user_id,to_user_id,date,amount)
+                                                                VALUES(?,?,now(),?)");
+                $makeTransfer->execute([$user_from, $user_to, $amount]);
+                $trans=self::$pdo->commit();
+            }
+        }catch(\Exception $e){
+                $trans=self::$pdo->rollBack();
+                throw new \Exception($e->getMessage());
+        }
+    }
+
+
 }

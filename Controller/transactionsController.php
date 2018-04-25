@@ -128,4 +128,26 @@ class transactionsController
         $typeId=htmlentities(trim($_GET["typeId"]));
         echo json_encode(TransactionsDAO::chartCategory($user_id,$accId,$typeId));
     }
+
+    public function getCategoryAcc(){
+        $accId=htmlentities(trim($_GET["accId"]));
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(TransactionsDAO::getCategoryAcc($accId,$user_id));
+    }
+
+    public function getIncomeExpensesAccordingCategoryAndAccount(){
+        $accId=htmlentities(trim($_GET["accId"]));
+        $categoryId=htmlentities(trim($_GET["categoryId"]));
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(TransactionsDAO::getIncomeExpensesAccordingCategoryAndAccount($user_id,$accId,$categoryId));
+    }
+
+    public function transfer(){
+        $accId=htmlentities($_GET["accId"]);
+        $user_from=$_SESSION["user"]["id"];
+        $amount=htmlentities(trim($_GET["amount"]));
+        $user_to=htmlentities(trim($_GET["userId"]));
+       echo TransactionsDAO::transfer($user_from,$user_to,$amount,$accId);
+
+    }
 }

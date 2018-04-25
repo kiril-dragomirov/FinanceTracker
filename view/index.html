@@ -103,7 +103,7 @@
                         <a id="budgetForm"><i class="fa fa-dashboard fa-fw"></i>Budget</a>
                     </li>
                      <li>
-                        <a href="timeline.html"><i class="fa fa-flask fa-fw"></i>Timeline</a>
+                        <a id="transfer"><i class="fa fa-flask fa-fw"></i>Transfer</a>
                     </li>
                     <li>
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i>Tables</a>
@@ -214,6 +214,10 @@
 
             $("#home").click(function () {
                 $('#div1').load('main.html');
+                $("#main").hide();
+            });
+            $("#transfer").click(function () {
+                $('#div1').load('transfer.html');
                 $("#main").hide();
             });
         </script>
