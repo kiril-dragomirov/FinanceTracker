@@ -100,10 +100,15 @@
                         <!-- second-level-items -->
                     </li>
                     <li >
-                        <a id="budgetForm"><i class="fa fa-dashboard fa-fw"></i>Budget</a>
+                        <a id="budgetForm"><i class="fa fa-dashboard fa-fw"></i>Create Budget</a>
                     </li>
                      <li>
+
+                        <a id="checkBudget"><i class="fa fa-flask fa-fw"></i>Check Budget Planner</a>
+                     </li>
+                    <li>
                         <a id="transfer"><i class="fa fa-flask fa-fw"></i>Transfer</a>
+
                     </li>
                     <li>
                         <a href="tables.html"><i class="fa fa-table fa-fw"></i>Tables</a>
@@ -216,6 +221,13 @@
                 $('#div1').load('main.html');
                 $("#main").hide();
             });
+
+
+            $("#checkBudget").click(function () {
+                $('#div1').load('checkBudget.html');
+                $("#main").hide();
+            });
+
             $("#transfer").click(function () {
                 $('#div1').load('transfer.html');
                 $("#main").hide();
