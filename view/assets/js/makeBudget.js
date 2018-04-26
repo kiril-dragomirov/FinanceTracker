@@ -30,7 +30,7 @@ xhr.onreadystatechange = function (ev) {
 
         for(var j in response){
             if(response[j].cat != null) {
-                str2 += "<option value=\""+ response[i].id_cat +"\">";
+                str2 += "<option value=\""+ response[j].id_cat +"\">";
                 str2 += response[j].cat;
                 str2 += "</option>";
             }
@@ -59,9 +59,7 @@ xhr.onreadystatechange = function (ev) {
 xhr.send();
 //ADDING EVENT ON THE BUTTON
 
-$(document).ready(function() {
-    $("#datepicker").datepicker();
-});
+
 
 document.getElementById("but").addEventListener("click",function(){
     var e1 = document.getElementById("acc");

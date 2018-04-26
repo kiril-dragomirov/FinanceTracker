@@ -43,6 +43,7 @@ function amountBudgetStat(){
         if(request.status === 200 && request.readyState === 4) {
             var response = JSON.parse(this.responseText);
             console.log(response);
+            console.log("opa");
 
             var chart = AmCharts.makeChart("chart", {
                 "theme": "light",

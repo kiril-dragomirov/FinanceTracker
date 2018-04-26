@@ -30,7 +30,7 @@ class BudgetDAO extends DAO
     }
 
     public static function makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to){
-        $statement = self::$pdo->prepare("INSERT INTO budgets (account_id, amout, date_from, date_to, category_id) 
+        $statement = self::$pdo->prepare("INSERT INTO budgets (account_id, amount, date_from, date_to, category_id) 
                                                     VALUES (?,?,now(),now(),?)");
         $statement->execute([$account_id,$budget_amount,$category_id]);
     }
@@ -54,7 +54,7 @@ class BudgetDAO extends DAO
     }
 
     public static function selectCategoryAmount($user_id){
-        $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amout) as amount
+        $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amount) as amount
                                                     FROM budgets as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
@@ -62,6 +62,32 @@ class BudgetDAO extends DAO
                                                     ON a.id = b.account_id
                                                     WHERE a.user_id = ?
                                                     GROUP BY b.category_id");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    public static function wrongBudgeting($user_id){
+        $statement = self::$pdo->prepare("SELECT b.id as budgetId,
+                                                    (b.amount - SUM(t.amount)) as minusAmount, 
+                                                    b.date_from as startBudget,
+                                                    b.date_to as endBudget,
+                                                    c.name as category FROM budgets as b
+                                                    JOIN transactions as t 
+                                                    ON b.category_id = t.category_id
+                                                    JOIN categories as c
+                                                    ON t.category_id = c.id
+                                                    JOIN accounts as a
+                                                    ON b.account_id = a.id
+                                                    WHERE a.user_id = ?
+                                                    AND b.amount < t.amount
+                                                    AND t.type_id = 2
+                                                    AND t.date BETWEEN b.date_from AND b.date_to
+                                                    GROUP BY t.category_id ");
         $statement->execute([$user_id]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){

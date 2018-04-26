@@ -12,7 +12,7 @@ function sendEmailAndPass() {
                 document.getElementById("errors").style.color = "red";
                 document.getElementById("errors").innerHTML = this.responseText;
             }else{
-                location.href="../..//main.html";
+                location.href="./index.html";
                 // document.getElementById("errors").style.color = "red";
                 // document.getElementById("errors").innerHTML = this.responseText;
             }

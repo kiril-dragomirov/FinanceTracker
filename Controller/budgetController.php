@@ -54,17 +54,22 @@ class budgetController
         $result = [];
         for ($i = 0; $i < count($statResult); $i++){
 
-            $test = [];
+            $temp = [];
             foreach($statResult[$i] as $key => $value){
-
-                $test[$key] = $value;
-
+                $temp[$key] = $value;
             }
-            $test["color"] = "#".random_color().random_color().random_color();
-            $result[] = $test;
+            $temp["color"] = "#".random_color().random_color().random_color();
+            $result[] = $temp;
 
         }
         echo json_encode($result);
+
+    }
+
+    public function wrongBudgeting(){
+        // $user = $_SESSION["user"]["id"];
+        $minusBudget = BudgetDAO::wrongBudgeting(7);
+        echo json_encode($minusBudget);
 
     }
 
