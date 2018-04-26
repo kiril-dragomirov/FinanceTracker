@@ -158,7 +158,8 @@ class AccountsDAO extends DAO
         $numberAcc = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
         $numberAcc->execute([$id]);
         $result = $numberAcc->fetch(\PDO::FETCH_ASSOC);
-        if ($result["count"] <= 4) {
+        $maxNumberOfAccounts=4;//which means that each user can have only 4 accounts.
+        if ($result["count"] <= $maxNumberOfAccounts) {
             $statement = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE name=? AND user_id=?");
             $statement->execute([$name, $id]);
             $row = $statement->fetch(\PDO::FETCH_ASSOC);

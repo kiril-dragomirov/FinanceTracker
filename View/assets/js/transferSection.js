@@ -25,7 +25,7 @@ function showTransferSection(   id) {
     mainDiv.appendChild(pSelectAcc);
     //AJAX to catch all accounts names + their ids;
     var request = new XMLHttpRequest();
-    request.open("get", "../index.php?target=accounts&action=accName&accName=get");
+    request.open("get", "../index.php?target=accounts&action=accName");
     request.onreadystatechange = function () {
         if (request.status === 200 && request.readyState === 4) {
             var response = JSON.parse(this.responseText);
@@ -82,7 +82,7 @@ function showTransferSection(   id) {
     pTypeTransaction.innerHTML = "Select Type of transaction";
     mainDiv2.appendChild(pTypeTransaction);
     var requestType = new XMLHttpRequest();
-    requestType.open("get", "../index.php?target=accounts&action=transType&transType=get");
+    requestType.open("get", "../index.php?target=accounts&action=transType");
     requestType.onreadystatechange = function () {
         if (requestType.status === 200 && requestType.readyState === 4) {
             var responseType = JSON.parse(this.responseText);
@@ -119,7 +119,7 @@ function showTransferSection(   id) {
     pCategory.innerHTML = "Category:";
     mainDiv3.appendChild(pCategory);
     var requestCategory = new XMLHttpRequest();
-    requestCategory.open("get", "../index.php?target=accounts&action=giveCategory&giveCategory=get");
+    requestCategory.open("get", "../index.php?target=accounts&action=giveCategory");
     requestCategory.onreadystatechange = function () {
         if (requestCategory.status === 200 && requestCategory.readyState === 4) {
             var responseCategory = JSON.parse(this.responseText);
@@ -177,7 +177,7 @@ function showTransferSection(   id) {
             mainDiv4.appendChild(pIcon);
 
             var requestIcon = new XMLHttpRequest();
-            requestIcon.open("get", "../index.php?target=accounts&action=getIconList&getIconList=get");
+            requestIcon.open("get", "../index.php?target=accounts&action=getIconList");
             requestIcon.onreadystatechange = function () {
                 if (requestIcon.status === 200 && requestIcon.readyState === 4) {
                     var responseIcon = JSON.parse(this.responseText);
@@ -363,7 +363,7 @@ function showTransferSection(   id) {
 
         //Getting all the Type Transactions with AJAX:
         var tableType = new XMLHttpRequest();
-        tableType.open("get", "../index.php?target=accounts&action=transType&transType=get");
+        tableType.open("get", "../index.php?target=accounts&action=transType");
         tableType.onreadystatechange = function () {
             if (tableType.status === 200 && tableType.readyState === 4) {
                 var responseType = JSON.parse(this.responseText);

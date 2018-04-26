@@ -320,10 +320,12 @@ class TransactionsDAO extends DAO
                                                                 VALUES(?,?,now(),?)");
                 $makeTransfer->execute([$user_from, $user_to, $amount]);
                 $trans=self::$pdo->commit();
+            }else{
+                return "wrong";
             }
         }catch(\Exception $e){
                 $trans=self::$pdo->rollBack();
-                throw new \Exception($e->getMessage());
+                throw new \Exception("wrong");
         }
     }
 

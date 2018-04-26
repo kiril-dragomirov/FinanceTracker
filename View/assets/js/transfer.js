@@ -133,7 +133,13 @@ function showTransferSection(){
             request.open("get","../index.php?target=transactions&action=transfer&userId="+userId+
                 "&amount="+amount+"&accId="+accId);
             request.onreadystatechange=function(){
-                console.log(this.responseText);
+                if(request.readyState===4 && request.status===200) {
+                    console.log(this.responseText);
+                    if(this.responseText!==""){
+                        divErrorHolder.innerHTML="Something went wrong with your transaction";
+                        divErrorHolder.style.display="block";
+                    }
+                }
             };
             request.send();
         }
