@@ -258,7 +258,7 @@ class AccountsDAO extends DAO
                                             WHERE
                                                 type_id = 2
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
-                                        HAVING a.user_id = 11");
+                                        HAVING a.user_id = ?");
         $statement->execute([$user_id]);
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
 
@@ -267,8 +267,38 @@ class AccountsDAO extends DAO
         return $result;
     }
 
-//    static function removeAcc($id){
-//        $statement=""
-//    }
+    static public function accNameForPositiveAcc($user_id){
+        $statement=self::$pdo->prepare("SELECT 
+                                  a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
+                                        FROM
+                                            accounts AS a
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            WHERE
+                                                type_id = 1
+                                            GROUP BY account_id) AS t ON a.id = acc_id
+                                                LEFT JOIN
+                                                (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                            WHERE
+                                                type_id = 2
+                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+                                        HAVING a.user_id =?");
+        $statement->execute([$user_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+
+    }
+
+
+
 
 }

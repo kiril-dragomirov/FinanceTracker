@@ -127,4 +127,9 @@ class accountsController
         $user_id=$_SESSION["user"]["id"];
         echo json_encode(AccountsDAO::chartAccountsAmounts($user_id));
     }
+
+    public function accNameForPositiveAcc(){
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(AccountsDAO::accNameForPositiveAcc($user_id));
+    }
 }
