@@ -39,10 +39,12 @@ xhr.onreadystatechange = function (ev) {
         str2 += "</select></div>";
         document.getElementById("category").innerHTML = str2;
 
-        var str3 = "<div class=\"form-group\"><label>Date From </label><form><input class=\"form-control\" id=\"datepicker\" ></form></div>";
-        document.getElementById("from").innerHTML = str3;
+         var str3 = "<div class=\"form-group\"><label>Date From </label><form><input class=\"form-control\" type=\"date\" id=\"datepicker\" ></form></div>";
+         document.getElementById("from").innerHTML = str3;
 
-        var str4 = "<div class=\"form-group\"><label>Date To</label><input class=\"form-control\" id=\"dateto\" ></div>";
+
+
+        var str4 = "<div class=\"form-group\"><label>Date To</label><input class=\"form-control\" type=\"date\" id=\"dateto\" ></div>";
         document.getElementById("to").innerHTML = str4;
 
         var str = "<button type=\"submit\"  class=\"btn btn-primary\" >Make a plan</button>";

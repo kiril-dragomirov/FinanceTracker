@@ -87,7 +87,7 @@ class BudgetDAO extends DAO
                                                     AND b.amount < t.amount
                                                     AND t.type_id = 2
                                                     AND t.date BETWEEN b.date_from AND b.date_to
-                                                    GROUP BY t.category_id ");
+                                                    GROUP BY b.date_from ");
         $statement->execute([$user_id]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){

@@ -14,7 +14,7 @@ class budgetController
 
     public function selectAccount(){
        // if(isset($_SESSION["user"])) {
-          //$user_id = $_SESSION["user"]["id"];
+         // $user_id = $_SESSION["user"]["id"];
             $selectAccounts = BudgetDAO::selectAccounts(7);
             echo json_encode($selectAccounts);
         //}
@@ -34,7 +34,7 @@ class budgetController
     }
 
     public function selectCategories(){
-        //$user_id = $_SESSION["user"]["id"];
+       // $user_id = $_SESSION["user"]["id"];
 
         $statResult = BudgetDAO:: selectCategories(7);
 
@@ -67,9 +67,12 @@ class budgetController
     }
 
     public function wrongBudgeting(){
-        // $user = $_SESSION["user"]["id"];
+         //$user_id = $_SESSION["user"]["id"];
         $minusBudget = BudgetDAO::wrongBudgeting(7);
         echo json_encode($minusBudget);
+
+    }
+    public function budgetingDiff(){
 
     }
 
