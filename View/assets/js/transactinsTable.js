@@ -40,8 +40,14 @@ function searchTable(acc_id,type_id,date_from,date_to) {
                     for (var e in response[i]) {
                         if (e != "Type") {
                             if (e != "ID") {
-                                var td = document.createElement("td");
-                                td.innerHTML = response[i][e];
+
+                                if(e=="image"){
+                                    var img=document.createElement("img");
+                                    img.setAttribute("src",response[i][e]);
+                                    td.appendChild(img);
+                                }else{ var td = document.createElement("td");
+                                    td.innerHTML = response[i][e];
+                                }
                                 tr.appendChild(td);
                             } else if (e == "ID") {
                                 var removeTransaction = document.createElement("button");

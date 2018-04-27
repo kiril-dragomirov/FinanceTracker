@@ -2,6 +2,10 @@
 showAccounts();
 function showAccounts(){
     // document.getElementById("show").innerHTML="";
+    document.getElementById("row1").innerHTML = "";
+    document.getElementById("row2").innerHTML = "";
+    document.getElementById("row3").innerHTML = "";
+    document.getElementById("row4").innerHTML = "";
     document.getElementById("show").style.display="block";
     var request= new XMLHttpRequest();
     request.open("get","../index.php?target=accounts&action=showAcc");
@@ -82,5 +86,6 @@ function showAccounts(){
     showDiagram();
     showBiggestIncomeInAccount();
     showBiggestExpenseInAccount();
+    showTotalTransferIncome();
 
 }

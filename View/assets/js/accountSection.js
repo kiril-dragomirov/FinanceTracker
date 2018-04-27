@@ -4,6 +4,7 @@ function showNewAccountSection(){
      document.getElementById("row1").innerHTML="";
     document.getElementById("row2").innerHTML="";
     document.getElementById("row3").innerHTML="";
+    document.getElementById("row4").innerHTML="";
      divShow.style.display="none";
         //getting element!
         var divTrans=document.getElementById("trans");

@@ -95,27 +95,6 @@ function showTransferSection(){
         var userId=inputTransferId.value;
         var accId=selectedAcc;
         console.log(accId);
-        // function get() {
-        //     var requestForAmount = new XMLHttpRequest();
-        //     requestForAmount.open("get", "../index.php?target=accounts&action=accNameForPositiveAcc");
-        //     requestForAmount.onreadystatechange = function () {
-        //         if (requestForAmount.status === 200 && requestForAmount.readyState === 4) {
-        //             var response = JSON.parse(this.responseText);
-        //             for (var item in response) {
-        //                 if (response[item]["id"] == accId) {
-        //                     var available = response[item]["Total"];
-        //                     return available
-        //                 } else {
-        //                     return "not";
-        //                 }
-        //             }
-        //             //console.log(JSON.parse(this.responseText)); TEST
-        //
-        //         }
-        //     }
-        //     requestForAmount.send();
-        // }
-        // console.log(get());
         divErrorHolder.innerHTML="";
         divErrorHolder.style.display="none";
         var errors=false;
@@ -138,12 +117,59 @@ function showTransferSection(){
                     if(this.responseText!==""){
                         divErrorHolder.innerHTML="Something went wrong with your transaction";
                         divErrorHolder.style.display="block";
-                    }
+                        }else{
+                        inputTransferId.innerHTML="";
+                        inputTransferAmount.innerHTML="";
+                        transferChart();
+                        }
                 }
             };
             request.send();
         }
     }
+
+
+
+        var divPanelBody = document.createElement("div");
+    divPanelBody.id="transferTableId";
+    mainDiv.appendChild(divPanelBody);
+    transferChart();
+    function transferChart() {
+       var divPanelBody= document.getElementById("transferTableId");
+        divPanelBody.innerHTML = "";
+        divPanelBody.setAttribute("class", "panel-body");
+        var divTableResponsive = document.createElement("div");
+        divTableResponsive.setAttribute("class", "table-responsive");
+        var table = document.createElement("table");
+        table.setAttribute("class", "table table-hover");
+        var tbody = document.createElement("tbody");
+        var requestTable = new XMLHttpRequest();
+        requestTable.open("get", "../index.php?target=transactions&action=getTransfers");
+        requestTable.onreadystatechange = function () {
+            if (requestTable.readyState === 4 && requestTable.status === 200) {
+                var responseTable = JSON.parse(this.responseText);
+                for (var i in responseTable) {
+                    var tr = document.createElement("tr");
+                    for (var e in responseTable[i]) {
+                        var td = document.createElement("td");
+                        td.innerHTML = responseTable[i][e];
+                        tr.appendChild(td);
+                    }
+                    tbody.appendChild(tr);
+                }
+            }
+        }
+        requestTable.send();
+
+
+        table.appendChild(tbody);
+        divTableResponsive.appendChild(table);
+        divPanelBody.appendChild(divTableResponsive);
+    }
+
+
+
+
 
 
 
