@@ -165,9 +165,11 @@ class transactionsController
         $user_id=$_SESSION["user"]["id"];
         echo json_encode(TransactionsDAO::getIncomedTransfers($user_id));
     }
-//Todo tomorrow!
-//    public function changeTransferToAcc(){
-//        $user_id=$_SESSION["user"]["id"];
-//        $accId=$_POST[""][""]
-//    }
+
+    public function changeTransferToAcc(){
+        $user_id=$_SESSION["user"]["id"];
+        $accId=htmlentities(trim($_POST["accId"]));
+        $id=htmlentities(trim($_POST["id"]));
+        echo TransactionsDAO::changeTransferToAcc($user_id,$accId,$id);
+    }
 }

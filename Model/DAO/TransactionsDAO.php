@@ -378,4 +378,25 @@ class TransactionsDAO extends DAO
         return $result;
     }
 
+    static public function changeTransferToAcc($user_id,$accId,$id){
+        try {
+            $trans = self::$pdo->beginTransaction();
+                $statement=self::$pdo->prepare("UPDATE transfers SET type_id=2 WHERE id=?");
+                $statement->execute([$id]);
+                $getData=self::$pdo->prepare("SELECT amount from transfers WHERE id=?");
+                $getData->execute([$id]);
+                $row=$getData->fetch(\PDO::FETCH_ASSOC);
+                $amount=$row["amount"];
+                $insertInTransactions=self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
+                                                                    VALUES (?,?,13,now(),1) ");
+                $insertInTransactions->execute([$accId,$amount]);
+
+
+
+            $trans = self::$pdo->commit();
+        }catch(\Exception $e){
+            $trans=self::$pdo->rollBack();
+        }
+
+    }
 }

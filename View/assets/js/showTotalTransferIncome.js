@@ -128,11 +128,12 @@ function setTransferToAccount(){
                             button.onclick=function(){
                                 if(accId!="not") {
                                     var requestChangeType = new XMLHttpRequest();
-                                    requestChangeType.open("get", "../index.php?target=transactions&action=changeTransferToAcc&accId=" + accId);
+                                    requestChangeType.open("post", "../index.php?target=transactions&action=changeTransferToAcc");
+                                    requestChangeType.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                     requestChangeType.onreadystatechange = function () {
 
                                     }
-                                    requestChangeType.send();
+                                    requestChangeType.send("accId=" + accId+"&id=" + this.value);
                                     transferChartAcc();
                                 }
                             }
