@@ -87,11 +87,13 @@ class TransactionsDAO extends DAO
     static public function getAllTransactions($accId, $type_id, $date_from, $date_to)
     {
         if ($type_id == 0 && $date_from == 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=?");
             $statement->execute([$accId]);
             $result = [];
@@ -99,11 +101,13 @@ class TransactionsDAO extends DAO
                 $result[] = $row;
             }
         } else if ($type_id != 0 && $date_from == 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=? AND t.type_id=?");
             $statement->execute([$accId, $type_id]);
             $result = [];
@@ -111,11 +115,13 @@ class TransactionsDAO extends DAO
                 $result[] = $row;
             }
         } else if ($type_id != 0 && $date_from != 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=? AND t.type_id=? AND t.date>=?");
             $statement->execute([$accId, $type_id,$date_from]);
             $result = [];
@@ -123,11 +129,13 @@ class TransactionsDAO extends DAO
                 $result[] = $row;
             }
         }else if($type_id==0 && $date_from!=0 && $date_to==0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=? AND t.date>=?");
             $statement->execute([$accId, $date_from]);
             $result = [];
@@ -135,11 +143,13 @@ class TransactionsDAO extends DAO
                 $result[] = $row;
             }
         }else if($type_id!=0 && $date_from!=0 && $date_to!=0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=? AND t.type_id=? AND t.date BETWEEN ? AND ?");
             $statement->execute([$accId, $type_id ,$date_from,$date_to]);
             $result = [];
@@ -147,11 +157,13 @@ class TransactionsDAO extends DAO
                 $result[] = $row;
             }
         }else if($type_id==0 && $date_from!=0 && $date_to!=0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID FROM transactions as t
+            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
                                                     WHERE a.id=? AND t.date BETWEEN ? AND ?");
             $statement->execute([$accId, $date_from,$date_to]);
             $result = [];
@@ -311,21 +323,80 @@ class TransactionsDAO extends DAO
                                         HAVING a.user_id =? AND a.id=?");
             $statement->execute([$user_from,$accId]);
             $row=$statement->fetch(\PDO::FETCH_ASSOC);
-            if($row["Total"]>$amount) {
+            if($row["Total"]>$amount && $user_to!=$user_from) {
                 $trans=self::$pdo->beginTransaction();
                 $insertTransaction = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
-                                                                     VALUES (?,?,12,now(),2)");
+                                                                     VALUES (?,?,13,now(),2)");
                 $insertTransaction->execute([$accId, $amount]);
-                $makeTransfer = self::$pdo->prepare("INSERT INTO transfers(from_user_id,to_user_id,date,amount)
-                                                                VALUES(?,?,now(),?)");
+                $makeTransfer = self::$pdo->prepare("INSERT INTO transfers(from_user_id,to_user_id,date,amount,type_id)
+                                                                VALUES(?,?,now(),?,3)");
                 $makeTransfer->execute([$user_from, $user_to, $amount]);
                 $trans=self::$pdo->commit();
+            }else{
+                return "wrong";
             }
         }catch(\Exception $e){
                 $trans=self::$pdo->rollBack();
-                throw new \Exception($e->getMessage());
+                throw new \Exception("wrong");
         }
     }
 
+    static public function getTransfers($user_id){
+        $statement=self::$pdo->prepare("SELECT CONCAT(u.name,\" \",u.family_name) as name,t.date,t.amount FROM transfers as t
+                                                  JOIN users as u
+                                                  ON(u.id=t.to_user_id)
+                                                  WHERE t.from_user_id=?");
+        $statement->execute([$user_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
 
+        return $result;
+    }
+
+    static public function getAllTransferIncomes($user_id){
+        $statement=self::$pdo->prepare("SELECT IF(SUM(amount) IS NULL,0,SUM(amount)) as sum FROM transfers
+                                                    WHERE to_user_id=? AND type_id=3");
+        $statement->execute([$user_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function getIncomedTransfers($user_id){
+        $statement=self::$pdo->prepare("SELECT CONCAT(u.name,\" \",family_name) as 'full name',date,amount,t.id FROM transfers AS T
+                                                                      JOIN users as u ON from_user_id=u.id
+                                                                          WHERE to_user_id=? AND type_id=3");
+        $statement->execute([$user_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function changeTransferToAcc($user_id,$accId,$id){
+        try {
+            $trans = self::$pdo->beginTransaction();
+                $statement=self::$pdo->prepare("UPDATE transfers SET type_id=2 WHERE id=?");
+                $statement->execute([$id]);
+                $getData=self::$pdo->prepare("SELECT amount from transfers WHERE id=?");
+                $getData->execute([$id]);
+                $row=$getData->fetch(\PDO::FETCH_ASSOC);
+                $amount=$row["amount"];
+                $insertInTransactions=self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
+                                                                    VALUES (?,?,13,now(),1) ");
+                $insertInTransactions->execute([$accId,$amount]);
+
+
+
+            $trans = self::$pdo->commit();
+        }catch(\Exception $e){
+            $trans=self::$pdo->rollBack();
+        }
+
+    }
 }

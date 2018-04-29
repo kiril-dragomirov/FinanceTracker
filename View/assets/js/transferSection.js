@@ -3,6 +3,7 @@ function showTransferSection(   id) {
     document.getElementById("row1").innerHTML = "";
     document.getElementById("row2").innerHTML = "";
     document.getElementById("row3").innerHTML = "";
+    document.getElementById("row4").innerHTML = "";
     divShow.style.display = "none";
     var accTrans = document.getElementById("accTrans");
     accTrans.innerHTML = "";
@@ -25,7 +26,7 @@ function showTransferSection(   id) {
     mainDiv.appendChild(pSelectAcc);
     //AJAX to catch all accounts names + their ids;
     var request = new XMLHttpRequest();
-    request.open("get", "../index.php?target=accounts&action=accName&accName=get");
+    request.open("get", "../index.php?target=accounts&action=accName");
     request.onreadystatechange = function () {
         if (request.status === 200 && request.readyState === 4) {
             var response = JSON.parse(this.responseText);
@@ -82,7 +83,7 @@ function showTransferSection(   id) {
     pTypeTransaction.innerHTML = "Select Type of transaction";
     mainDiv2.appendChild(pTypeTransaction);
     var requestType = new XMLHttpRequest();
-    requestType.open("get", "../index.php?target=accounts&action=transType&transType=get");
+    requestType.open("get", "../index.php?target=accounts&action=transType");
     requestType.onreadystatechange = function () {
         if (requestType.status === 200 && requestType.readyState === 4) {
             var responseType = JSON.parse(this.responseText);
@@ -119,7 +120,7 @@ function showTransferSection(   id) {
     pCategory.innerHTML = "Category:";
     mainDiv3.appendChild(pCategory);
     var requestCategory = new XMLHttpRequest();
-    requestCategory.open("get", "../index.php?target=accounts&action=giveCategory&giveCategory=get");
+    requestCategory.open("get", "../index.php?target=accounts&action=giveCategory");
     requestCategory.onreadystatechange = function () {
         if (requestCategory.status === 200 && requestCategory.readyState === 4) {
             var responseCategory = JSON.parse(this.responseText);
@@ -150,6 +151,37 @@ function showTransferSection(   id) {
     var mainDiv44 = document.createElement("div");
     accTrans.appendChild(mainDiv44);
 
+    //
+        console.log("here");
+    /* Custom select design */
+    jQuery('.drop-down').append('<div class="button"></div>');
+    jQuery('.drop-down').append('<ul class="select-list"></ul>');
+    jQuery('.drop-down select option').each(function() {
+        var bg = jQuery(this).css('background-image');
+        jQuery('.select-list').append('<li class="clsAnchor"><span value="' + jQuery(this).val() + '" class="' + jQuery(this).attr('class') + '" style=background-image:' + bg + '>' + jQuery(this).text() + '</span></li>');
+    });
+    jQuery('.drop-down .button').html('<span style=background-image:' + jQuery('.drop-down select').find(':selected').css('background-image') + '>' + jQuery('.drop-down select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link">Arrow</a>');
+    jQuery('.drop-down ul li').each(function() {
+        if (jQuery(this).find('span').text() == jQuery('.drop-down select').find(':selected').text()) {
+            jQuery(this).addClass('active');
+        }
+    });
+    jQuery('.drop-down .select-list span').on('click', function()
+    {
+        var dd_text = jQuery(this).text();
+        var dd_img = jQuery(this).css('background-image');
+        var dd_val = jQuery(this).attr('value');
+        jQuery('.drop-down .button').html('<span style=background-image:' + dd_img + '>' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link">Select Icon</a>');
+        jQuery('.drop-down .select-list span').parent().removeClass('active');
+        jQuery(this).parent().addClass('active');
+        $('.drop-down select[name=options]').val( dd_val );
+        $('.drop-down .select-list li').slideUp();
+    });
+    jQuery('.drop-down .button').on('click','a.select-list-link', function()
+    {
+        jQuery('.drop-down ul li').slideToggle();
+    });
+
     //var icon_id = "";
     var category_id = "";
     selectCategory.onchange = function () {
@@ -177,7 +209,7 @@ function showTransferSection(   id) {
             mainDiv4.appendChild(pIcon);
 
             var requestIcon = new XMLHttpRequest();
-            requestIcon.open("get", "../index.php?target=accounts&action=getIconList&getIconList=get");
+            requestIcon.open("get", "../index.php?target=accounts&action=getIconList");
             requestIcon.onreadystatechange = function () {
                 if (requestIcon.status === 200 && requestIcon.readyState === 4) {
                     var responseIcon = JSON.parse(this.responseText);
@@ -186,18 +218,48 @@ function showTransferSection(   id) {
                     optionIcon.setAttribute("value", "");
                     optionIcon.innerHTML = "";
                     selectIcon.appendChild(optionIcon);
-                    for (var e in responseIcon) {
-                        var optionIcon = document.createElement("option");
-                        optionIcon.setAttribute("value", responseIcon[e]["id"]);
-                        optionIcon.setAttribute("class",responseIcon[e]["id"]);
-                        //  var img = document.createElement("img");
-                        //  img.setAttribute("src", responseIcon[e]["img_url"]);
-                        optionIcon.style.backgroundImage = "url(" + responseIcon[e]["img_url"] + ")";
-                        //  mainDiv4.appendChild(img); //Test
-                        selectIcon.appendChild(optionIcon);
+                for (var e in responseIcon) {
+                    var optionIcon = document.createElement("option");
+                    optionIcon.setAttribute("value", responseIcon[e]["id"]);
+                    optionIcon.setAttribute("class",responseIcon[e]["id"]);
+                    //  var img = document.createElement("img");
+                    //  img.setAttribute("src", responseIcon[e]["img_url"]);
+                    optionIcon.style.backgroundImage = "url(" + responseIcon[e]["img_url"] + ")";
+                    //  mainDiv4.appendChild(img); //Test
+                    selectIcon.appendChild(optionIcon);
 
-                    }
                 }
+
+                    console.log("here")
+                    /* Custom select design */
+                    jQuery('.drop-down').append('<div class="button"></div>');
+                    jQuery('.drop-down').append('<ul class="select-list"></ul>');
+                    jQuery('.drop-down select option').each(function() {
+                        var bg = jQuery(this).css('background-image');
+                        jQuery('.select-list').append('<li class="clsAnchor"><span value="' + jQuery(this).val() + '" class="' + jQuery(this).attr('class') + '" style=background-image:' + bg + '>' + jQuery(this).text() + '</span></li>');
+                    });
+                    jQuery('.drop-down .button').html('<span style=background-image:' + jQuery('.drop-down select').find(':selected').css('background-image') + '>' + jQuery('.drop-down select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link">Arrow</a>');
+                    jQuery('.drop-down ul li').each(function() {
+                        if (jQuery(this).find('span').text() == jQuery('.drop-down select').find(':selected').text()) {
+                            jQuery(this).addClass('active');
+                        }
+                    });
+                    jQuery('.drop-down .select-list span').on('click', function()
+                    {
+                        var dd_text = jQuery(this).text();
+                        var dd_img = jQuery(this).css('background-image');
+                        var dd_val = jQuery(this).attr('value');
+                        jQuery('.drop-down .button').html('<span style=background-image:' + dd_img + '>' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link">Arrow</a>');
+                        jQuery('.drop-down .select-list span').parent().removeClass('active');
+                        jQuery(this).parent().addClass('active');
+                        $('.drop-down select[name=options]').val( dd_val );
+                        $('.drop-down .select-list li').slideUp();
+                    });
+                    jQuery('.drop-down .button').on('click','a.select-list-link', function()
+                    {
+                        jQuery('.drop-down ul li').slideToggle();
+                    });
+            }
 
             }
             requestIcon.send();
@@ -363,7 +425,7 @@ function showTransferSection(   id) {
 
         //Getting all the Type Transactions with AJAX:
         var tableType = new XMLHttpRequest();
-        tableType.open("get", "../index.php?target=accounts&action=transType&transType=get");
+        tableType.open("get", "../index.php?target=accounts&action=transType");
         tableType.onreadystatechange = function () {
             if (tableType.status === 200 && tableType.readyState === 4) {
                 var responseType = JSON.parse(this.responseText);
