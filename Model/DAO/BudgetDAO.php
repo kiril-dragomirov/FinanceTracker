@@ -30,14 +30,14 @@ class BudgetDAO extends DAO
     }
 
     public static function makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to){
-        $statement = self::$pdo->prepare("INSERT INTO budgets (account_id, amount, date_from, date_to, category_id) 
+        $statement = self::$pdo->prepare("INSERT INTO budgets-js (account_id, amount, date_from, date_to, category_id) 
                                                     VALUES (?,?,now(),now(),?)");
         $statement->execute([$account_id,$budget_amount,$category_id]);
     }
 
     public static function selectCategories($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, COUNT(*) as counter
-                                                    FROM budgets as b 
+                                                    FROM budgets-js as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
                                                     JOIN accounts as a
@@ -55,7 +55,7 @@ class BudgetDAO extends DAO
 
     public static function selectCategoryAmount($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amount) as amount
-                                                    FROM budgets as b 
+                                                    FROM budgets-js as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
                                                     JOIN accounts as a
@@ -76,7 +76,7 @@ class BudgetDAO extends DAO
                                                     (b.amount - SUM(t.amount)) as minusAmount, 
                                                     b.date_from as startBudget,
                                                     b.date_to as endBudget,
-                                                    c.name as category FROM budgets as b
+                                                    c.name as category FROM budgets-js as b
                                                     JOIN transactions as t 
                                                     ON b.category_id = t.category_id
                                                     JOIN categories as c

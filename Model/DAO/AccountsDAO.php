@@ -223,7 +223,7 @@ class AccountsDAO extends DAO
     {
         try {
             $trans = self::$pdo->beginTransaction();
-            $removeBudget = self::$pdo->prepare("DELETE FROM budgets WHERE account_id=?");
+            $removeBudget = self::$pdo->prepare("DELETE FROM budgets-js WHERE account_id=?");
             $removeBudget->execute($acc_id);
             $statement = self::$pdo->prepare("DELETE FROM transactions WHERE account_id=?");
             $statement->execute([$acc_id]);
