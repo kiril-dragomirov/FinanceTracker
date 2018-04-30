@@ -7333,9 +7333,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Creates a clone of `dataView`.
 	     *
 	     * @private
-	     * @param {Object} dataView The data view to clone.
+	     * @param {Object} dataView The data View to clone.
 	     * @param {boolean} [isDeep] Specify a deep clone.
-	     * @returns {Object} Returns the cloned data view.
+	     * @returns {Object} Returns the cloned data View.
 	     */
 	    function cloneDataView(dataView, isDeep) {
 	      var buffer = isDeep ? cloneArrayBuffer(dataView.buffer) : dataView.buffer;
@@ -8898,14 +8898,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    /**
-	     * Gets the view, applying any `transforms` to the `start` and `end` positions.
+	     * Gets the View, applying any `transforms` to the `start` and `end` positions.
 	     *
 	     * @private
-	     * @param {number} start The start of the view.
-	     * @param {number} end The end of the view.
-	     * @param {Array} transforms The transformations to apply to the view.
+	     * @param {number} start The start of the View.
+	     * @param {number} end The end of the View.
+	     * @param {Array} transforms The transformations to apply to the View.
 	     * @returns {Object} Returns an object containing the `start` and `end`
-	     *  positions of the view.
+	     *  positions of the View.
 	     */
 	    function getView(start, end, transforms) {
 	      var index = -1,
@@ -18036,15 +18036,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @returns {Object} Returns `object`.
 	     * @example
 	     *
-	     * var view = {
+	     * var View = {
 	     *   'label': 'docs',
 	     *   'click': function() {
 	     *     console.log('clicked ' + this.label);
 	     *   }
 	     * };
 	     *
-	     * _.bindAll(view, ['click']);
-	     * jQuery(element).on('click', view.click);
+	     * _.bindAll(View, ['click']);
+	     * jQuery(element).on('click', View.click);
 	     * // => Logs 'clicked docs' when clicked.
 	     */
 	    var bindAll = flatRest(function(object, methodNames) {
