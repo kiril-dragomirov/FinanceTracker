@@ -14,8 +14,8 @@ class budgetController
 
     public function selectAccount(){
        // if(isset($_SESSION["user"])) {
-         // $user_id = $_SESSION["user"]["id"];
-            $selectAccounts = BudgetDAO::selectAccounts(7);
+          $user_id = $_SESSION["user"]["id"];
+            $selectAccounts = BudgetDAO::selectAccounts($user_id);
             echo json_encode($selectAccounts);
         //}
     }
@@ -34,9 +34,9 @@ class budgetController
     }
 
     public function selectCategories(){
-       // $user_id = $_SESSION["user"]["id"];
+       $user_id = $_SESSION["user"]["id"];
 
-        $statResult = BudgetDAO:: selectCategories(7);
+        $statResult = BudgetDAO:: selectCategories($user_id);
 
         echo json_encode($statResult);
 
@@ -44,8 +44,8 @@ class budgetController
     }
 
     public function selectCategoryAmount(){
-        //$user_id = $_SESSION["user"]["id"];
-        $statResult = BudgetDAO::selectCategoryAmount(7);
+        $user_id = $_SESSION["user"]["id"];
+        $statResult = BudgetDAO::selectCategoryAmount($user_id);
 
         function random_color() {
             return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
@@ -67,14 +67,14 @@ class budgetController
     }
 
     public function wrongBudgeting(){
-         //$user_id = $_SESSION["user"]["id"];
-        $minusBudget = BudgetDAO::wrongBudgeting(7);
+         $user_id = $_SESSION["user"]["id"];
+        $minusBudget = BudgetDAO::wrongBudgeting($user_id);
         echo json_encode($minusBudget);
 
     }
     public function differentBudgetLoading(){
-        // $user = $_SESSION["user"]["id"];
-        $budgetStatsResult = BudgetDAO::differentBudgetLoading(7);
+         $user_id = $_SESSION["user"]["id"];
+        $budgetStatsResult = BudgetDAO::differentBudgetLoading($user_id);
         $result = [];
         for ($i = 0; $i < count($budgetStatsResult); $i++){
 
@@ -82,8 +82,12 @@ class budgetController
             foreach($budgetStatsResult[$i] as $key => $value){
                 if($budgetStatsResult[$i]["budgetAmount"] >= $budgetStatsResult[$i]["transactAmount"]){
                     $percent = ($budgetStatsResult[$i]["transactAmount"]/$budgetStatsResult[$i]["budgetAmount"])*100;
-                    $number = number_format($percent, 2, '.', '');
-                    $temp["percent"] = $number;
+                    if(!is_float($percent)){
+                        $temp["percent"] = $percent;
+                    }else{
+                        $number = number_format($percent, 2, '.', '');
+                        $temp["percent"] = $number;
+                    }
                 }elseif($budgetStatsResult[$i]["budgetAmount"] < $budgetStatsResult[$i]["transactAmount"]){
                     $temp["percent"]=$budgetStatsResult[$i]["budgetAmount"] - $budgetStatsResult[$i]["transactAmount"];
                 }

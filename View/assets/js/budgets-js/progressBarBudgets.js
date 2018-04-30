@@ -44,9 +44,9 @@ req.onreadystatechange = function (ev) {
                 str += "            </div>";
                 str += "        </div>";
                 str += "    </div>";
-                str += "<div><p>Over Limit Expenses (";
+                str += "<div><p>Over Limit Expenses (<span style=\" color:red;\">";
                 str += res[i].percent;
-                str += ")</p></div>";
+                str += "</span>)</p></div>";
                 str += "</div>";
             }
 
