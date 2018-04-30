@@ -112,7 +112,7 @@
 
                     </li>
                     <li>
-                        <a href="tables.html"><i class="fa fa-table fa-fw"></i>Tables</a>
+                        <a id="targets"><i class="fa fa-table fa-fw"></i>Targets</a>
                     </li>
                     <li>
                         <a href="forms.html"><i class="fa fa-edit fa-fw"></i>Forms</a>
@@ -221,7 +221,10 @@
                 $('#div1').load('./budgets-html/budget.html');
                 $("#main").hide();
             });
-
+            $("#targets").click(function () {
+                $('#div1').load('targets.html');
+                $("#main").hide();
+            });
 
 
             $("#home").click(function () {

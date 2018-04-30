@@ -155,11 +155,13 @@ class AccountsDAO extends DAO
 
     static public function checkIfAccountExistsAndInsert($name, $amount, $id)
     {
+        //First Check if user has less than 4 ACCs, only 4 is possible for each user
         $numberAcc = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
         $numberAcc->execute([$id]);
         $result = $numberAcc->fetch(\PDO::FETCH_ASSOC);
         $maxNumberOfAccounts=4;//which means that each user can have only 4 accounts.
         if ($result["count"] <= $maxNumberOfAccounts) {
+            //Check if that Acc already exist for this user
             $statement = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE name=? AND user_id=?");
             $statement->execute([$name, $id]);
             $row = $statement->fetch(\PDO::FETCH_ASSOC);
