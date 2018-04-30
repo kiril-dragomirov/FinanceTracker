@@ -282,4 +282,17 @@ class userController
     public function getUserId(){
         echo $_SESSION["user"]["id"];
     }
+
+    public function check(){
+        if(isset($_SESSION["user"])){
+            echo "true";
+        }else{
+            echo "false";
+        }
+    }
+
+    public function logout(){
+        unset($_SESSION["user"]);
+        echo "true";
+    }
 }

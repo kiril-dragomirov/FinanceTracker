@@ -17,6 +17,7 @@
     <!-- Page-Level CSS -->
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
 
+
 </head>
 <body>
 
@@ -32,7 +33,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" id="home2">
                     <img src="assets/img/logoFinance.png" style="width: 200px; height: 50px;" alt="" />
                 </a>
             </div>
@@ -51,7 +52,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
+                        <li><a onclick="logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- end dropdown-user -->
@@ -200,6 +201,14 @@
 
 
         <script>
+            $(document).ready(function(){
+                $('#main').load('main.html');
+
+            });
+            $("#home2").click(function () {
+                $('#div1').load('main.html');
+                $("#main").hide();
+            });
             $("#budgetChart").click(function () {
                 $('#div1').load('./budgets-html/budgetChart.html');
                 $("#main").hide();
@@ -213,10 +222,7 @@
                 $("#main").hide();
             });
 
-            $(document).ready(function(){
-                $('#main').load('main.html');
 
-            });
 
             $("#home").click(function () {
                 $('#div1').load('main.html');
@@ -236,8 +242,8 @@
         </script>
 
 
-
-
+    <script src="assets/js/logout.js"></script>
+    <script src="./assets/js/checkIfUserIsLogged.js"></script>
     <!-- Core Scripts - Include with every page -->
     <!--<script src="assets/plugins/jquery-1.10.2.js"></script>-->
     <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>

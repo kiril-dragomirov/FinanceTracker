@@ -187,7 +187,7 @@ class AccountsDAO extends DAO
     static public function getTransactionType()
     {
         $result = [];
-        $statement = self::$pdo->prepare("SELECT id,name FROM type_transactions");
+        $statement = self::$pdo->prepare("SELECT id,name FROM type_transactions WHERE id=1 OR id=2");
         $statement->execute();
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
