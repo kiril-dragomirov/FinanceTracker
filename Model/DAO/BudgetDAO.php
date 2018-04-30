@@ -76,7 +76,7 @@ class BudgetDAO extends DAO
                                                     (b.amount - SUM(t.amount)) as minusAmount, 
                                                     b.date_from as startBudget,
                                                     b.date_to as endBudget,
-                                                    c.name as category FROM budgets-js as b
+                                                    c.name as category FROM budgets as b
                                                     JOIN transactions as t 
                                                     ON b.category_id = t.category_id
                                                     JOIN categories as c
@@ -88,6 +88,30 @@ class BudgetDAO extends DAO
                                                     AND t.type_id = 2
                                                     AND t.date BETWEEN b.date_from AND b.date_to
                                                     GROUP BY b.date_from ");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    public static function differentBudgetLoading($user_id){
+        $statement = self::$pdo->prepare("SELECT  b.amount as budgetAmount, SUM(t.amount) as transactAmount, 
+                                                    CONCAT( c.name,\", \", a.name, \" ( \",b.date_from ,\" - \", b.date_to , \" )\") as fromTo
+                                                    FROM budgets as b
+                                                    JOIN transactions as t 
+                                                    ON b.account_id = t.account_id 
+                                                    JOIN accounts as a
+                                                    ON a.id = b.account_id
+                                                    JOIN categories as c
+                                                    ON b.category_id = c.id
+                                                    WHERE a.user_id = 7 
+                                                    AND b.category_id = t.category_id 
+                                                    AND t.type_id = 2 
+                                                    AND t.date BETWEEN b.date_from AND b.date_to OR t.date = b.date_from
+                                                    GROUP BY b.id");
         $statement->execute([$user_id]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){

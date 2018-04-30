@@ -72,7 +72,29 @@ class budgetController
         echo json_encode($minusBudget);
 
     }
-    public function budgetingDiff(){
+    public function differentBudgetLoading(){
+        // $user = $_SESSION["user"]["id"];
+        $budgetStatsResult = BudgetDAO::differentBudgetLoading(7);
+        $result = [];
+        for ($i = 0; $i < count($budgetStatsResult); $i++){
+
+            $temp = [];
+            foreach($budgetStatsResult[$i] as $key => $value){
+                if($budgetStatsResult[$i]["budgetAmount"] >= $budgetStatsResult[$i]["transactAmount"]){
+                    $percent = ($budgetStatsResult[$i]["transactAmount"]/$budgetStatsResult[$i]["budgetAmount"])*100;
+                    $number = number_format($percent, 2, '.', '');
+                    $temp["percent"] = $number;
+                }elseif($budgetStatsResult[$i]["budgetAmount"] < $budgetStatsResult[$i]["transactAmount"]){
+                    $temp["percent"]=$budgetStatsResult[$i]["budgetAmount"] - $budgetStatsResult[$i]["transactAmount"];
+                }
+                if($key == "fromTo") {
+                    $temp[$key] = $value;
+                }
+            }
+            $result[] = $temp;
+        }
+
+        echo json_encode($result);
 
     }
 
