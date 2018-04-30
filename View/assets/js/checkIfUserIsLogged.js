@@ -27,7 +27,7 @@ function checkIfUserIsLogged() {
             }
 
         }
-    }
+    };
 
     request.send();
 }

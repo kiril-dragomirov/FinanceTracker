@@ -11445,8 +11445,8 @@ function write_BrtBeginWsView(ws, o) {
 	if(o == null) o = new_buf(30);
 	o.write_shift(2, 924); // bit flag
 	o.write_shift(4, 0);
-	o.write_shift(4, 0); // view first row
-	o.write_shift(4, 0); // view first col
+	o.write_shift(4, 0); // View first row
+	o.write_shift(4, 0); // View first col
 	o.write_shift(1, 0); // gridline color ICV
 	o.write_shift(1, 0);
 	o.write_shift(2, 0);
@@ -11454,7 +11454,7 @@ function write_BrtBeginWsView(ws, o) {
 	o.write_shift(2, 0);
 	o.write_shift(2, 0);
 	o.write_shift(2, 0);
-	o.write_shift(4, 0); // workbook view id
+	o.write_shift(4, 0); // workbook View id
 	return o;
 }
 
@@ -16712,7 +16712,7 @@ var write_content_ods = (function() {
 			'xmlns:rpt':          "http://openoffice.org/2005/report",
 			'xmlns:of':           "urn:oasis:names:tc:opendocument:xmlns:of:1.2",
 			'xmlns:xhtml':        "http://www.w3.org/1999/xhtml",
-			'xmlns:grddl':        "http://www.w3.org/2003/g/data-view#",
+			'xmlns:grddl':        "http://www.w3.org/2003/g/data-View#",
 			'xmlns:tableooo':     "http://openoffice.org/2009/table",
 			'xmlns:drawooo':      "http://openoffice.org/2010/draw",
 			'xmlns:calcext':      "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0",

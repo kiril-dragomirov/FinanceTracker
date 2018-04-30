@@ -1,6 +1,6 @@
 function categoryStat() {
     var xhr = new XMLHttpRequest();
-    xhr.open("get", "../index.php?target=budget&action=selectCategories");
+    xhr.open("get", "../../index.php?target=budget&action=selectCategories");
     xhr.onreadystatechange = function () {
         if (!(xhr.readyState === 4 && xhr.status === 200)) {
 
