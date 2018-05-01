@@ -30,14 +30,14 @@ class BudgetDAO extends DAO
     }
 
     public static function makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to){
-        $statement = self::$pdo->prepare("INSERT INTO budgets-js (account_id, amount, date_from, date_to, category_id) 
+        $statement = self::$pdo->prepare("INSERT INTO budgets (account_id, amount, date_from, date_to, category_id) 
                                                     VALUES (?,?,now(),now(),?)");
         $statement->execute([$account_id,$budget_amount,$category_id]);
     }
 
     public static function selectCategories($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, COUNT(*) as counter
-                                                    FROM budgets-js as b 
+                                                    FROM budgets as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
                                                     JOIN accounts as a
@@ -55,7 +55,7 @@ class BudgetDAO extends DAO
 
     public static function selectCategoryAmount($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amount) as amount
-                                                    FROM budgets-js as b 
+                                                    FROM budgets as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
                                                     JOIN accounts as a
@@ -99,7 +99,7 @@ class BudgetDAO extends DAO
 
     public static function differentBudgetLoading($user_id){
         $statement = self::$pdo->prepare("SELECT  b.amount as budgetAmount, SUM(t.amount) as transactAmount, 
-                                                    CONCAT( c.name,\", \", a.name, \" ( \",b.date_from ,\" - \", b.date_to , \" )\") as fromTo
+                                                    CONCAT( c.name,\", \", a.name, \" ( \",b.date_from ,\" / \", b.date_to , \" )\") as fromTo
                                                     FROM budgets as b
                                                     JOIN transactions as t 
                                                     ON b.account_id = t.account_id 
@@ -107,7 +107,7 @@ class BudgetDAO extends DAO
                                                     ON a.id = b.account_id
                                                     JOIN categories as c
                                                     ON b.category_id = c.id
-                                                    WHERE a.user_id = 7 
+                                                    WHERE a.user_id = ? 
                                                     AND b.category_id = t.category_id 
                                                     AND t.type_id = 2 
                                                     AND t.date BETWEEN b.date_from AND b.date_to OR t.date = b.date_from
