@@ -30,4 +30,30 @@ class CryptoDAO extends DAO
         $statement->execute([$crypto_name,$crypto_abb,$user_id]);
     }
 
+    public static function checkCryptoAbb($crypto_abb, $user_id){
+        $statement = self::$pdo->prepare("SELECT COUNT(name) as count 
+                                                    FROM cryptocurrencies
+                                                    WHERE abbreviation = ? 
+                                                    AND user_id = ?
+                                                    ");
+        $statement->execute([$crypto_abb,$user_id]);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $row["count"];
+
+    }
+
+    public static function showUserCrypto($user_id){
+        $statement = self::$pdo->prepare("SELECT name,abbreviation 
+                                                    FROM cryptocurrencies
+                                                    WHERE user_id = ?");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
 }

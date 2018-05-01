@@ -53,7 +53,6 @@ class cryptoController
 
     public function addCryptocurrency(){
         $user_id = $_SESSION["user"]["id"];
-        $crypto_name = trim(htmlentities($_POST["cryptoName"]));
         $crypto_abb = trim(htmlentities(strtoupper($_POST["cryptoAbb"])));
 
         $file = file_get_contents("https://www.cryptocompare.com/api/data/coinlist/");
@@ -63,10 +62,15 @@ class cryptoController
         foreach($info as $key => $val){
 
             if($key == "Data"){
-                foreach($info[$key] as $k=>$v){
+                foreach($info[$key] as $k => $v){
                     if($k === $crypto_abb){
-                        $flag = true;
-                        break;
+                        foreach($info[$key][$k] as $ke => $val){
+                            if($ke == "FullName"){
+                                $crypto_name = $val;
+                                $flag = true;
+                                break;
+                            }
+                        }
                     }
                 }
 
@@ -74,10 +78,38 @@ class cryptoController
 
         }
         if($flag) {
-           CryptoDAO::addCryptocurrency($crypto_name, $crypto_abb, $user_id);
+            $checkAbb = CryptoDAO::checkCryptoAbb($crypto_abb, $user_id);
+            if($checkAbb != 0){
+                echo "Already exist in your list!!!";
+            }else {
+                CryptoDAO::addCryptocurrency($crypto_name, $crypto_abb, $user_id);
+            }
         }else{
             echo "Incorrect abbreviation!!!";
         }
+    }
+
+    public function showUserCrypto(){
+        $user_id = $_SESSION["user"]["id"];
+        $userCrypto = CryptoDAO::showUserCrypto($user_id);
+
+        $result = [];
+        $temp = [];
+        for($i = 0; $i < count($userCrypto); $i++){
+            foreach($userCrypto[$i] as $key => $value) {
+                if($key == "abbreviation"){
+                    $apiInfo = file_get_contents("https://min-api.cryptocompare.com/data/price?fsym=".$value."&tsyms=,USD,EUR");
+                    $apiInfo = json_decode($apiInfo,true);
+                }else{
+                    $temp["name"] = $value;
+                }
+            }
+            $result[] = array_merge($temp,$apiInfo);
+            $temp = [];
+
+        }
+        echo json_encode($result);
+
     }
 
 }
