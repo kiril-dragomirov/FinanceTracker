@@ -1,7 +1,14 @@
 
 <body>
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="./assets/js/addCrypto.js"></script>
+<script src="./assets/js/listUserCrypto.js"></script>
+<script>
+    listUserCrypto();
+    addCrypto();
+</script>
 
 <div class="col-sm-10">
     <div class="panel-heading">
@@ -11,7 +18,15 @@
 
 <div class="col-sm-10" >
     <div class="panel-heading">
-        <div class="panel-title">Check cryptocurrency</div>
+        <div class="panel-title">My cryptocurrencies</div>
+    </div>
+    <div id="listCrypto" style="width: 100%; height: 400px;"></div>
+
+</div>
+
+<div class="col-sm-10" >
+    <div class="panel-heading">
+        <div class="panel-title">Add cryptocurrency</div>
     </div>
     <div id="addCrypto" style="width: 100%; height: 400px;"></div>
     <div id="error" style=" color:red;"></div>
