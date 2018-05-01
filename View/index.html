@@ -118,7 +118,11 @@
                     </li>
                     <li>
 
-                        <a id="crypto"><i class="fa fa-table fa-fw"></i>Cryptocurrencies</a>
+                        <a id="crypto"><i class="fa fa-table fa-fw"></i>Top 10 Cryptocurrencies</a>
+                    </li>
+                    <li>
+
+                        <a id="yourCrypto"><i class="fa fa-table fa-fw"></i>Your Cryptocurrencies</a>
                     </li>
                     <li>
                         <a id="targets"><i class="fa fa-table fa-fw"></i>Targets</a>
@@ -183,7 +187,7 @@
                         <!--<a href="#"><i class="fa fa-files-o fa-fw"></i>Sample Pages<span class="fa arrow"></span></a>-->
                         <!--<ul class="nav nav-second-level">-->
                             <!--<li>-->
-                                <!--<a href="blank.html">Blank Page</a>-->
+                                <!--<a href="topTenCrypto.html">Blank Page</a>-->
                             <!--</li>-->
                             <!--<li>-->
                                 <!--<a href="login.html">Login Page</a>-->
@@ -244,12 +248,16 @@
             });
 
             $("#crypto").click(function () {
-                $('#div1').load('blank.html');
+                $('#div1').load('topTenCrypto.html');
                 $("#main").hide();
             });
 
             $("#crChart").click(function () {
                 $('#div1').load('cryptocurrencyChart.html');
+                $("#main").hide();
+            });
+            $("#yourCrypto").click(function () {
+                $('#div1').load('yourCryptocurrencies.html');
                 $("#main").hide();
             });
 
