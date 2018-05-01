@@ -65,4 +65,14 @@ class targetsController{
         $target_id=htmlentities($_POST["id"]);
         echo json_encode(TargetsDAO::startTarget($target_id));
     }
+
+    public function setTargetToFinished(){
+        $target_id=htmlentities(trim($_POST["id"]));
+        echo json_encode(TargetsDAO::setTargetToFinished($target_id));
+    }
+
+    public function getAllFinishedAndSaved(){
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(TargetsDAO::getAllFinishedAndSaved($user_id));
+    }
 }

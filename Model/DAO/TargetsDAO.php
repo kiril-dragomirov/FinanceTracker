@@ -66,4 +66,26 @@ class TargetsDAO extends DAO
         $statement->execute([1,$target_id]);
     }
 
+    static public function setTargetToFinished($target_id){
+        $statement=self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
+        $statement->execute([3,$target_id]);
+    }
+
+    static public function getAllFinishedAndSaved($user_id){
+        $statement=self::$pdo->prepare("SELECT tar.name,IF(SUM(t.amount) IS NULL,0,SUM(t.amount))
+                                                  as spesteno,tar.amount FROM transactions as t
+                                                    JOIN target_transaction_id as tt
+                                                    ON(tt.id_transactions=t.id)
+                                                    RIGHT OUTER JOIN targets as tar
+                                                    ON(tar.id=tt.id_target)
+                                                    WHERE tar.user_id=? AND tar.type_target=?
+                                                    GROUP BY tar.id");
+        $statement->execute([$user_id,3]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
 }
