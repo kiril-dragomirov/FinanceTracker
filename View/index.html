@@ -99,6 +99,9 @@
                             <li>
                                 <a id="accountChart">Account Charts</a>
                             </li>
+                            <li>
+                                <a id="crChart">Cryptocurrency Chart</a>
+                            </li>
                         </ul>
                         <!-- second-level-items -->
                     </li>
@@ -113,9 +116,9 @@
                         <a id="transfer"><i class="fa fa-flask fa-fw"></i>Transfer</a>
 
                     </li>
-                    <!--<li>-->
-                        <!--<a href="tables.html"><i class="fa fa-table fa-fw"></i>Tables</a>-->
-                    <!--</li>-->
+                    <li>
+                        <a id="crypto"><i class="fa fa-table fa-fw"></i>Cryptocurrencies</a>
+                    </li>
                     <!--<li>-->
                         <!--<a href="forms.html"><i class="fa fa-edit fa-fw"></i>Forms</a>-->
                     <!--</li>-->
@@ -231,6 +234,15 @@
             });
             $("#budgetForm").click(function () {
                 $('#div1').load('./budgets-html/budget.html');
+                $("#main").hide();
+            });
+            $("#crypto").click(function () {
+                $('#div1').load('blank.html');
+                $("#main").hide();
+            });
+
+            $("#crChart").click(function () {
+                $('#div1').load('cryptocurrencyChart.html');
                 $("#main").hide();
             });
 
