@@ -80,9 +80,9 @@ function searchTable(acc_id,type_id,date_from,date_to) {
                             }
                         } else {
                             if (response[i][e] == 1) {
-                                tr.style.backgroundColor = "green";
+                                tr.style.backgroundColor = "#00cc44";
                             } else {
-                                tr.style.backgroundColor = "red";
+                                tr.style.backgroundColor = "#ff6666";
 
                             }
 

@@ -36,4 +36,34 @@ class TargetsDAO extends DAO
         }
     }
 
+    static public function getAllActiveTargets($user_id){
+        $statement=self::$pdo->prepare("SELECT id,name,amount FROM targets WHERE user_id=? AND type_target=?");
+        $statement->execute([$user_id,1]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function pauseTarget($target_id){
+        $statement=self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
+        $statement->execute([2,$target_id]);
+    }
+
+    static public function getAllWaitingTargets($user_id){
+        $statement=self::$pdo->prepare("SELECT id,name,amount FROM targets WHERE user_id=? AND type_target=?");
+        $statement->execute([$user_id,2]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function startTarget($target_id){
+        $statement=self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
+        $statement->execute([1,$target_id]);
+    }
+
 }
