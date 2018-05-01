@@ -6,6 +6,7 @@ function checkIfUserIsLogged() {
     request.onreadystatechange = function () {
         if (request.readyState === 4 && request.status === 200) {
             var loc = window.location.href;
+
         if (this.responseText === "true") {
 
             if (loc == "http://localhost/FinanceTracker/view/login.html" || loc == "http://localhost/FinanceTracker/view/register.html") {
@@ -31,3 +32,4 @@ function checkIfUserIsLogged() {
 
     request.send();
 }
+

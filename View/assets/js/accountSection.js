@@ -54,7 +54,7 @@ function showNewAccountSection(){
             var divErrHold=document.createElement("div");
             var divErr=document.createElement("div");
             divErr.setAttribute("class","alert alert-danger col-md-4");
-            divErr.style.visibility="hidden";
+            divErr.style.display="none";
             insertAccButton.onclick=function(){
 
                 var regexName= /^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$/;
@@ -63,38 +63,42 @@ function showNewAccountSection(){
             var err=false;
             divErr.innerHTML="";
             if(document.getElementById("name").value.trim()===""){
-                divErr.style.visibility="visible";
+                divErr.style.display="block";
                 divErr.innerHTML+="Please enter account name!";
                 err=true;
             }else if(!regexName.test(document.getElementById("name").value.trim())){
-                divErr.style.visibility="visible";
+                divErr.style.display="block";
                 divErr.innerHTML+="Please enter valid name!";
                 err=true;
             }
-            else{
-                divErr.style.visibility="hidden";
-                divErr.innerHTML="";
-            }
+            // else{
+            //     divErr.style.display="none";
+            //     // divErr.innerHTML="";
+            // }
 
             if(document.getElementById("amount").value.trim()===""){
-                divErr.style.visibility="visible";
+                divErr.style.display="block";
                 divErr.innerHTML+="Please enter amount!";
                 err=true;
             }else if(document.getElementById("amount").value.trim()<0){
-                divErr.innerHTML="";
-                divErr.style.visibility="visible";
+                // divErr.innerHTML="";
+                divErr.style.display="block";
                 divErr.innerHTML+="Please enter amount bigger than 0!";
                 err=true;
             }else if(!regexAmount.test(document.getElementById("amount").value.trim())){
-                divErr.innerHTML="";
-                divErr.style.visibility="visible";
+                // divErr.innerHTML="";
+                divErr.style.display="block";
                 divErr.innerHTML+="Please enter amount which is valid!";
                 err=true;
             }
-                else{
-                divErr.style.visibility="hidden";
-                divErr.innerHTML="";
-            }
+            //     else{
+            //     divErr.style.display="none";
+            //     // divErr.innerHTML="";
+            // }
+                if(err===false){
+                        divErr.style.display="none";
+                        divErr.innerHTML="";
+                }
 
             if(err===false){
                 var accName = document.getElementById("name").value.trim();

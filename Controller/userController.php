@@ -232,48 +232,48 @@ class userController
                                                 $user = new User();
                                                 $user->First($name, $family_name, $age, sha1($password), $email, $url);
                                                 if (UserDAO::registerUser($user)) {
-                                                    header("location:../View/login.html");
+                                                    header("location:view/login.html");
                                                 }
 
 
                                             } else {
                                                 echo "Age incorrect";
-                                                header("location:../View/register.html");
+                                                header("location:/View/register.html");
                                             }
                                         } else {
                                             echo "age incorrect";
-                                            header("location:../View/register.html");
+                                            header("location:/View/register.html");
                                         }
 
                                     } else {
                                         echo " email incorrect";
-                                        header("location:../View/register.html");
+                                        header("location:/View/register.html");
                                     }
                                 } else {
                                     echo "family incorrect";
-                                    header("location:../View/register.html");
+                                    header("location:/View/register.html");
                                 }
                             } else {
                                 echo "name incorrect";
-                                header("location:../View/register.html");
+                                header("location:/View/register.html");
                             }
                         } else {
                             echo "password incorrect";
-                            header("location:../View/register.html");
+                            header("location:/View/register.html");
                         }
                     } else {
                         echo "repassword incorrect";
-                        header("location:../View/register.html");
+                        header("location:/View/register.html");
                     }
 
 
                 } else {
                     echo "incorrect IMG!";
-                    header("location:../View/register.html");
+                    header("location:/View/register.html");
                 }
             } else {
                 echo "incorrect";
-                header("location:../View/register.html");
+                header("location:/View/register.html");
             }
 
         }

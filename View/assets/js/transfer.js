@@ -26,6 +26,7 @@ function showTransferSection(){
     inputTransferId.setAttribute("maxlength","10");
     inputTransferId.setAttribute("class","form-control");
     inputTransferId.setAttribute("type","number");
+    inputTransferId.setAttribute("id","inputTransferId");
     divTransferToId.appendChild(inputTransferId);
     mainDiv.appendChild(divTransferToId);
 
@@ -37,6 +38,7 @@ function showTransferSection(){
     inputTransferAmount.setAttribute("type","number");
     inputTransferAmount.setAttribute("maxlength","10");
     inputTransferAmount.setAttribute("class","form-control");
+    inputTransferAmount.setAttribute("id","inputTransferAmount");
     divTransferAmount.appendChild(inputTransferAmount);
     mainDiv.appendChild(divTransferAmount);
 
@@ -100,11 +102,22 @@ function showTransferSection(){
         var errors=false;
 
 
+        var regexAmount=/^\d+(\.\d{1,2})?$/;
 
         if(inputTransferAmount.value.trim()<0 || inputTransferAmount.value.trim()=="" || inputTransferId.value.trim()<0 || inputTransferId.value.trim()==""){
             divErrorHolder.innerHTML="Wrong inputs";
             divErrorHolder.style.display="block";
             errors=true;
+        }else if(!regexAmount.test(inputTransferAmount.value.trim())){
+            divErrorHolder.innerHTML="Wrong inputs";
+            divErrorHolder.style.display="block";
+            errors=true;
+        }else if(!regexAmount.test(inputTransferId.value.trim())){
+            divErrorHolder.innerHTML="Wrong inputs";
+            divErrorHolder.style.display="block";
+            errors=true;
+        }else{
+            divErrorHolder.style.display="none";
         }
 
         if(errors===false){
@@ -118,8 +131,8 @@ function showTransferSection(){
                         divErrorHolder.innerHTML="Something went wrong with your transaction";
                         divErrorHolder.style.display="block";
                         }else{
-                        inputTransferId.innerHTML="";
-                        inputTransferAmount.innerHTML="";
+                        document.getElementById("inputTransferId").value="";
+                        document.getElementById("inputTransferAmount").value="";
                         transferChart();
                         }
                 }

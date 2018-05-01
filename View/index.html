@@ -117,7 +117,13 @@
 
                     </li>
                     <li>
+
                         <a id="crypto"><i class="fa fa-table fa-fw"></i>Cryptocurrencies</a>
+                    </li>
+                    <li>
+                        <a id="targets"><i class="fa fa-table fa-fw"></i>Targets</a>
+                    </li>
+
                     </li>
                     <!--<li>-->
                         <!--<a href="forms.html"><i class="fa fa-edit fa-fw"></i>Forms</a>-->
@@ -236,6 +242,7 @@
                 $('#div1').load('./budgets-html/budget.html');
                 $("#main").hide();
             });
+
             $("#crypto").click(function () {
                 $('#div1').load('blank.html');
                 $("#main").hide();
@@ -243,6 +250,12 @@
 
             $("#crChart").click(function () {
                 $('#div1').load('cryptocurrencyChart.html');
+                $("#main").hide();
+            });
+
+
+            $("#targets").click(function () {
+                $('#div1').load('targets.html');
                 $("#main").hide();
             });
 

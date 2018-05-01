@@ -147,7 +147,27 @@ class transactionsController
         $user_from=$_SESSION["user"]["id"];
         $amount=htmlentities(trim($_GET["amount"]));
         $user_to=htmlentities(trim($_GET["userId"]));
-       echo TransactionsDAO::transfer($user_from,$user_to,$amount,$accId);
+        //Regex for amount.
+        function validateAmount($amount)
+        {
+            if (preg_match("/^[0-9]+(\.[0-9]{2})?$/", $amount)) {
+                return true;
+            }
+            return false;
+        }
+        function validateId($id)
+        {
+            if (preg_match("/^[0-9]+(\.[0-9]{2})?$/", $id)) {
+                return true;
+            }
+            return false;
+        }
+        if(validateAmount($amount)){
+            if(validateId($user_to)){
+                echo TransactionsDAO::transfer($user_from,$user_to,$amount,$accId);
+            }
+        }
+
 
     }
 
