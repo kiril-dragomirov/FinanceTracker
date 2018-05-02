@@ -18,13 +18,13 @@ $controllerClassName = '\\Controller\\' . $controllerName . 'Controller';
     if (class_exists($controllerClassName)) {
         $contoller = new $controllerClassName();
         if (method_exists($contoller, $methodName)) {
-                   // if request is not for login or register, check for login
-//                    if(!($controllerName == "user" && $methodName == "login")){
-//                        if(!isset($_SESSION["user"])){
-//                            header("HTTP/1.1 401 Unauthorized");
-//                            die();
-//                        }
-//                    }
+//                    if request is not for login or register, check for login
+                    if(!($controllerName == "user" && $methodName == "login" || $methodName=="register")){
+                        if(!isset($_SESSION["user"])){
+                            header("HTTP/1.1 401 Unauthorized");
+                            die();
+                        }
+                    }
             try {
                 $contoller->$methodName();
             } catch (\PDOException $e) {

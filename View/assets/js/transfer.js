@@ -10,6 +10,9 @@ function showTransferSection(){
         if(request.readyState===4 && request.status===200){
             var response=this.responseText;
             p.innerHTML="Your id is: "+response;
+        }else if(request.status===401){
+            location.href="login.html";
+            console.log(this.status);
         }
 
     };

@@ -33,6 +33,9 @@ function showTotal(){
             document.getElementById("row2").appendChild(div);
             //console.log(this.responseText); Test
 
+        }else if(request.status===401){
+            window.location.href="login.html";
+            console.log(this.status);
         }
     }
     request.send();

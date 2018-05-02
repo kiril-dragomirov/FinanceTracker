@@ -25,6 +25,9 @@ requestChartAcc.onreadystatechange = function () {
             selectAccChart.appendChild(option);
         }
         //console.log(JSON.parse(this.responseText)); TEST
+    }else if(requestChartAcc.status===401){
+        window.location.href="login.html";
+        console.log(this.status);
     }
 }
 requestChartAcc.send();
@@ -192,7 +195,10 @@ function categoryChartDisplay(acc_id, type_id) {
     request.open("get", "../index.php?target=transactions&action=chartCategory&accId=" + acc_id + "&typeId=" + type_id);
     request.onreadystatechange = function () {
         if (!(request.readyState === 4 && request.status === 200)) {
-        } else {
+        }else if(request.status===401){
+            window.location.href="login.html";
+            console.log(this.status);
+        }        else {
             var response = JSON.parse(this.responseText);
             console.log(response);
             var legend;
