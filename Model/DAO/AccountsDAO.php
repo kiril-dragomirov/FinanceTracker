@@ -226,12 +226,20 @@ class AccountsDAO extends DAO
     {
         try {
             $trans = self::$pdo->beginTransaction();
-            $removeBudget = self::$pdo->prepare("DELETE FROM budgets-js WHERE account_id=?");
+            $removeBudget = self::$pdo->prepare("DELETE FROM budgets WHERE account_id=?");
             $removeBudget->execute($acc_id);
             $statement = self::$pdo->prepare("DELETE FROM transactions WHERE account_id=?");
             $statement->execute([$acc_id]);
             $removeAcc = self::$pdo->prepare("DELETE FROM accounts WHERE id=?");
             $removeAcc->execute([$acc_id]);
+            $removeTargetTrans=self::$pdo->prepare("DELETE w
+                                                            FROM target_transaction_id w
+                                                            JOIN transactions e
+                                                              ON e.id=w.id_transactions
+                                                            JOIN accounts as a
+                                                            ON a.id=e.account_id
+                                                            WHERE a.id=?");
+            $removeTargetTrans->execute([$acc_id]);
             $trans = self::$pdo->commit();
         } catch (\PDOException $e) {
             $trans = self::$pdo->rollBack();
