@@ -186,6 +186,18 @@ function tableTargetsType(type_id){
             if(requestFirst.readyState===4 && requestFirst.status===200){
                 var response=JSON.parse(this.responseText);
                 console.log(response);
+                var tr=document.createElement("tr");
+                var th1=document.createElement("th");
+                th1.innerHTML="Actions:";
+                tr.appendChild(th1);
+                var th12=document.createElement("th");
+                th12.innerHTML="Name";
+                tr.appendChild(th12);
+
+                var th13=document.createElement("th");
+                th13.innerHTML="Goal Amount";
+                tr.appendChild(th13);
+                tbody.appendChild(tr);
                 for(var i in response){
                     var tr=document.createElement("tr");
                     // tbody.setAttribute("id","TR"+response[i]["id"])
@@ -210,6 +222,20 @@ function tableTargetsType(type_id){
 
                                 }
                                 mainTargetDiv.appendChild(toTargetSectionButton);
+
+                                var divTargetName=document.createElement("div");
+                                divTargetName.setAttribute("class","alert alert-info");
+                                var requestTargetName=new XMLHttpRequest();
+                                requestTargetName.open("get","../index.php?target=targets&action=getTargetName&targetId="+target_id);
+                                requestTargetName.onreadystatechange=function(){
+                                    if(requestTargetName.readyState===4 && requestTargetName.status===200){
+                                        var p=document.createElement("p");
+                                        p.innerHTML="Target Name :  "+requestTargetName.responseText;
+                                        divTargetName.appendChild(p);
+                                    }
+                                }
+                                requestTargetName.send();
+                                mainTargetDiv.appendChild(divTargetName);
 
                                 var divAccSelect=document.createElement("div");
                                 var pSelectAcc=document.createElement("p");
@@ -254,11 +280,16 @@ function tableTargetsType(type_id){
                                 var inputType=document.createElement("input");
                                 inputType.setAttribute("type","number");
                                 inputType.setAttribute("maxlength","10");
+                                inputType.setAttribute("id","amountTargetInput");
                                 inputType.setAttribute("min","0");
                                 inputType.setAttribute("class","form-control");
                                 divAmount.appendChild(inputType);
                                 mainTargetDiv.appendChild(divAmount);
 
+                                var divErr=document.createElement("div");
+                                divErr.setAttribute("class","alert alert-danger");
+                                divErr.style.display="none";
+                                mainTargetDiv.appendChild(divErr);
                                 var divbuttonFinished=document.createElement("div");
                                 var buttonFinished=document.createElement("button");
                                 buttonFinished.innerHTML="Finished";
@@ -283,9 +314,67 @@ function tableTargetsType(type_id){
                                 var buttonAdd=document.createElement("button");
                                 buttonAdd.innerHTML="Add savings to target";
                                 buttonAdd.setAttribute("class","btn btn-info");
-                                divbuttonFinished.appendChild(buttonAdd);
-                                mainTargetDiv.appendChild(divbuttonFinished)
+                                buttonAdd.setAttribute("value",target_id);
+                                buttonAdd.onclick=function(){
+                                    // console.log(this.value); Testing purpose
+                                    var id=this.value;
+                                    var errors=true;
+                                    var amountValue=document.getElementById("amountTargetInput").value.trim();
+                                    var regexAmount=/^\d+(\.\d{1,2})?$/;
+                                    if(selectedAcc==="not") {
+                                        divErr.innerHTML = "Select Acc";
+                                        errors=false;
+                                    }else if(amountValue<=0){
+                                        divErr.innerHTML = "Insert Amount";
+                                        errors=false;
+                                    }else if(amountValue==""){
+                                        divErr.innerHTML = "Insert Amount";
+                                        errors=false;
+                                    }else if(!regexAmount.test(amountValue)){
+                                            divErr.innerHTML = "Insert correct Amount";
+                                        errors=false;
+                                    }
 
+                                    if(errors===false){
+                                        divErr.style.display="block";
+                                    }else {
+                                        divErr.style.display = "none";
+
+                                        var request = new XMLHttpRequest();
+                                        request.open("post", "../index.php?target=targets&action=insertAmountForTarget");
+                                        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                        request.onreadystatechange = function () {
+                                            if (request.readyState === 4 && request.status === 200) {
+                                                console.log(this.responseText);
+                                                if(this.responseText=="wrong"){
+                                                    divErr.innerHTML="";
+                                                    divErr.innerHTML="Something went wrong with ur input";
+                                                    divErr.style.display = "block";
+                                                }else{
+                                                    document.getElementById("amountTargetInput").value="";
+                                                    loadChart(target_id);
+                                                    tableTargetSavings(target_id);
+                                                }
+                                            }
+                                        };
+                                        request.send("target_id=" + id+"&amount="+amountValue+"&accId="+selectedAcc);
+                                    }
+                                };
+                                divbuttonFinished.appendChild(buttonAdd);
+                                mainTargetDiv.appendChild(divbuttonFinished);
+
+
+                                var divChart=document.createElement("div");
+                                divChart.setAttribute("id","targetCharts");
+                                divChart.style.width="100%";
+                                divChart.style.height="400px";
+                                mainTargetDiv.appendChild(divChart);
+                                loadChart(target_id);
+
+                                var divTableSavings=document.createElement("div");
+                                divTableSavings.setAttribute("id","tableSavings");
+                                mainTargetDiv.appendChild(divTableSavings);
+                                tableTargetSavings(target_id)
 
                             };
                             td.appendChild(buttonInsertToThisTarget);
@@ -325,6 +414,18 @@ function tableTargetsType(type_id){
             if(requestSecond.readyState===4 && requestSecond.status===200){
                 var response=JSON.parse(this.responseText);
                 console.log(response);
+                var tr=document.createElement("tr");
+                var th1=document.createElement("th");
+                th1.innerHTML="Actions:";
+                tr.appendChild(th1);
+                var th12=document.createElement("th");
+                th12.innerHTML="Name";
+                tr.appendChild(th12);
+
+                var th13=document.createElement("th");
+                th13.innerHTML="Goal Amount";
+                tr.appendChild(th13);
+                tbody.appendChild(tr);
                 for(var i in response){
                     var tr=document.createElement("tr");
                     // tbody.setAttribute("id","TR"+response[i]["id"])
@@ -404,4 +505,110 @@ function tableTargetsType(type_id){
     mainDiv.appendChild(divPanelBody);
 
 
+}
+
+
+
+
+function loadChart(target_id) {
+    var request=new XMLHttpRequest();
+    request.open("get","../index.php?target=targets&action=getTargetAvailableAmountInfo&targetId="+target_id);
+    request.onreadystatechange=function() {
+        if (request.readyState === 4 && request.status === 200) {
+            var response = JSON.parse(this.responseText);
+            var legend;
+            var dar = response;
+            console.log(dar);
+            var chartData = dar;
+            if (AmCharts.isReady) {
+                targetsChart(chartData);
+            } else {
+                AmCharts.ready(targetsChart(chartData));
+            }
+        }
+    }
+    request.send();
+
+}
+
+function targetsChart(chartData) {
+    // for (var i in chartData) {
+    //     chartData[i].Total = Math.abs(chartData[i].Total);
+    // }
+    console.log("am chart ready");
+    // PIE CHART
+    var chart = new AmCharts.AmPieChart();
+    chart.addTitle("Total amount", 16);
+    chart.dataProvider = chartData;
+    chart.titleField = "name";
+    chart.valueField = "Total";
+    chart.outlineColor = "#FFFFFF";
+    chart.outlineAlpha = 0.8;
+    chart.outlineThickness = 2;
+    chart.balloonText = "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>";
+    // this makes the chart 3D
+    chart.depth3D = 15;
+    chart.angle = 30;
+    // WRITE
+    chart.write("targetCharts");
+
+
+
+
+}
+
+function tableTargetSavings(target_id){
+    var mainTableDiv=document.getElementById("tableSavings");
+    mainTableDiv.innerHTML="";
+
+    var divPanelBody=document.createElement("div");
+    divPanelBody.setAttribute("class","panel-body");
+    var divTResponsive=document.createElement("div");
+    divTResponsive.setAttribute("class","table-responsive");
+    var table=document.createElement("table");
+    table.id="tableTargets";
+    table.setAttribute("class","table table-hover");
+    var tbody=document.createElement("tbody");
+
+        var request=new XMLHttpRequest();
+        request.open("get","../index.php?target=targets&action=getSavingsForTarget&targetId="+target_id);
+        request.onreadystatechange=function(){
+            if(request.readyState===4 && request.status===200){
+                var response=JSON.parse(this.responseText);
+                var tr=document.createElement("tr");
+                var th1=document.createElement("th");
+                th1.innerHTML="Amount";
+                tr.appendChild(th1);
+                var th12=document.createElement("th");
+                th12.innerHTML="Date";
+                tr.appendChild(th12);
+                tbody.appendChild(tr);
+                // var totalSaved=0;
+                for(var i in response){
+                    // totalSaved=totalSaved+response[i]["amount"];
+                    var tr=document.createElement("tr");
+                    for(var e in response[i]){
+                        var td=document.createElement("td");
+                        td.innerHTML=response[i][e];
+                        tr.appendChild(td);
+                    }
+                    tbody.appendChild(tr);
+                }
+                // console.log(totalSaved);
+            }
+
+        }
+        request.send();
+    //
+    // var tr=document.createElement("tr");
+    // var td=document.createElement("td");
+    // td.innerHTML=target_id;
+    // tr.appendChild(td);
+    // tbody.appendChild(tr);
+
+
+    table.appendChild(tbody);
+    divTResponsive.appendChild(table);
+    divPanelBody.appendChild(divTResponsive);
+    mainTableDiv.appendChild(divPanelBody);
 }
