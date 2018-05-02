@@ -295,4 +295,11 @@ class userController
         unset($_SESSION["user"]);
         echo "true";
     }
+
+
+    public function takeInfoUser(){
+        $user_id = $_SESSION["user"]["id"];
+        $info = UserDAO::takeInfoUser($user_id);
+        echo json_encode($info);
+    }
 }

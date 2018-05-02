@@ -26,12 +26,13 @@ function showAccounts(){
                 i.onclick=function(){
                     showTransferSection(this.id);
                 }
+
                 i.setAttribute("class","fa  fa-pencil fa-3x");
                 i.setAttribute("id",response[item]["id"]);
                 div2.appendChild(i);
                 //Button to delete ACC;
                 var buttonRemove=document.createElement("button");
-                buttonRemove.setAttribute("class","btn btn-warning btn-circle btn-lg");
+                buttonRemove.setAttribute("class","btn btn-danger btn-circle btn-lg");
                 buttonRemove.id=response[item]["id"];
                 var iButton=document.createElement("i");
                 iButton.setAttribute("class","fa fa-times");

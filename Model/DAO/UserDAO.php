@@ -63,5 +63,13 @@ class UserDAO extends DAO
         $statement->execute([$name,$family,$password,$email,$image_url,$age,$id]);
     }
 
+    public static function takeInfoUser($user_id){
+        $statement = self::$pdo->prepare("SELECT CONCAT(name,\" \",family_name) as name,  image_url FROM users 
+                                                   WHERE id=? ");
+        $statement->execute([$user_id]);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $row;
+    }
+
 
 }
