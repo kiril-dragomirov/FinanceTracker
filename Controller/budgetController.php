@@ -27,9 +27,12 @@ class budgetController
             $category_id = htmlentities($_POST["category_id"]);
             $date_from = htmlentities($_POST["date_from"]);
             $date_to = htmlentities($_POST["date_to"]);
-
-
-            echo BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
+            if($budget_amount > 0) {
+                echo "Success!";
+                BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
+            }else{
+                echo "not enough amount!";
+            }
 
     }
 
@@ -82,12 +85,9 @@ class budgetController
             foreach($budgetStatsResult[$i] as $key => $value){
                 if($budgetStatsResult[$i]["budgetAmount"] >= $budgetStatsResult[$i]["transactAmount"]){
                     $percent = ($budgetStatsResult[$i]["transactAmount"]/$budgetStatsResult[$i]["budgetAmount"])*100;
-                    if(!is_float($percent)){
-                        $temp["percent"] = $percent;
-                    }else{
                         $number = number_format($percent, 2, '.', '');
                         $temp["percent"] = $number;
-                    }
+
                 }elseif($budgetStatsResult[$i]["budgetAmount"] < $budgetStatsResult[$i]["transactAmount"]){
                     $temp["percent"]=$budgetStatsResult[$i]["budgetAmount"] - $budgetStatsResult[$i]["transactAmount"];
                 }
@@ -100,6 +100,14 @@ class budgetController
 
         echo json_encode($result);
 
+    }
+
+    public function checkExistAcc(){
+        $user_id = $_SESSION["user"]["id"];
+        $checkAcc = BudgetDAO::checkExistAcc($user_id);
+        if($checkAcc == 0){
+            echo "no info about existing accounts";
+        }
     }
 
 }

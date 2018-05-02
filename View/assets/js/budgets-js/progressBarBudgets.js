@@ -17,12 +17,26 @@ req.onreadystatechange = function (ev) {
             str += "            <strong>";
             str += res[i].fromTo;
             str += "</strong>";
-            if(res[i].percent > 0) {
+            if(res[i].percent >= 0 && res[i].percent <= 50) {
                 str += "<span class=\"pull-right text-muted\">";
                 str +=  res[i].percent + "%</span>";
                 str += "</p>";
                 str += "<div class=\"progress progress-striped active\">";
                 str += "<div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow= \"";
+                str += res[i].percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:";
+                str += res[i].percent + "%\">";
+                str += "<span class=\"sr-only\">";
+                str += res[i].percent + "% Complete (danger)</span>";
+                str += "            </div>";
+                str += "        </div>";
+                str += "    </div>";
+                str += "</div>";
+            }else if(res[i].percent > 50 && res[i].percent <= 99){
+                str += "<span class=\"pull-right text-muted\">";
+                str +=  res[i].percent + "%</span>";
+                str += "</p>";
+                str += "<div class=\"progress progress-striped active\">";
+                str += "<div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow= \"";
                 str += res[i].percent + "\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:";
                 str += res[i].percent + "%\">";
                 str += "<span class=\"sr-only\">";
@@ -44,7 +58,7 @@ req.onreadystatechange = function (ev) {
                 str += "            </div>";
                 str += "        </div>";
                 str += "    </div>";
-                str += "<div><p>Over Limit Expenses (<span style=\" color:red;\">";
+                str += "<div><p>Overlimited Expenses (<span style=\" color:red;\">";
                 str += res[i].percent;
                 str += "</span>)</p></div>";
                 str += "</div>";
