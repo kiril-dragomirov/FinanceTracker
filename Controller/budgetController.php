@@ -82,12 +82,9 @@ class budgetController
             foreach($budgetStatsResult[$i] as $key => $value){
                 if($budgetStatsResult[$i]["budgetAmount"] >= $budgetStatsResult[$i]["transactAmount"]){
                     $percent = ($budgetStatsResult[$i]["transactAmount"]/$budgetStatsResult[$i]["budgetAmount"])*100;
-                    if(!is_float($percent)){
-                        $temp["percent"] = $percent;
-                    }else{
                         $number = number_format($percent, 2, '.', '');
                         $temp["percent"] = $number;
-                    }
+
                 }elseif($budgetStatsResult[$i]["budgetAmount"] < $budgetStatsResult[$i]["transactAmount"]){
                     $temp["percent"]=$budgetStatsResult[$i]["budgetAmount"] - $budgetStatsResult[$i]["transactAmount"];
                 }

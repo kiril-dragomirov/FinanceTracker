@@ -99,7 +99,7 @@ class BudgetDAO extends DAO
 
     public static function differentBudgetLoading($user_id){
         $statement = self::$pdo->prepare("SELECT  b.amount as budgetAmount, SUM(t.amount) as transactAmount, 
-                                                    CONCAT( c.name,\", \", a.name, \" ( \",b.date_from ,\" / \", b.date_to , \" )\") as fromTo
+                                                    CONCAT( c.name,\", \", a.name ,\" ( \",b.date_from ,\" / \", b.date_to , \" ) \",\", budget money: \", b.amount) as fromTo
                                                     FROM budgets as b
                                                     JOIN transactions as t 
                                                     ON b.account_id = t.account_id 
