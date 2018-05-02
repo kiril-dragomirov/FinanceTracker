@@ -19,7 +19,13 @@ function addCrypto() {
                 listUserCrypto();
                 console.log(cryptoAbb);
                 console.log(this.responseText);
-                document.getElementById("error").innerHTML = this.responseText;
+                if(this.responseText == "Incorrect abbreviation!!!" || this.responseText == "Already exist in your list!!!") {
+                    document.getElementById("errHolder").style.visibility = "visible";
+                    document.getElementById("errHolder").style.color = "red";
+                    document.getElementById("errHolder").innerHTML = this.responseText;
+                }else{
+                    document.getElementById("errHolder").style.visibility = "hidden";
+                }
 
             }
         }
