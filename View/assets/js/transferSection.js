@@ -134,9 +134,9 @@ function showTransferSection(   id) {
 
                     optionCategory.setAttribute("value", responseCategory[i]["id"]);
                     // optionCategory.setAttribute("background-image:url",responseCategory[i]["img_url"]);
-                    var imgCat = document.createElement("IMG");
-                    imgCat.setAttribute("src", responseCategory[i]["img_url"]);
-                    optionCategory.innerHTML += imgCat;
+                    // var imgCat = document.createElement("IMG");
+                    // imgCat.setAttribute("src", responseCategory[i]["img_url"]);
+                    // optionCategory.innerHTML += imgCat;
                     optionCategory.innerHTML += responseCategory[i]["name"];
                     selectCategory.appendChild(optionCategory);
                 }
