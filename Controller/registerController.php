@@ -60,7 +60,7 @@ class registerController
                 if (isset($_FILES["avatar"]["tmp_name"])) { //ZASHTO ISSET, A NE IS_UPLOADED FILE?
                     if ($_FILES["avatar"]["size"] > 2097152) {
                         $file_data = false;
-                        $url = "/View/user-image/default.png";
+                        $url = "/View/user-image/defaultwrong.png";
                     } else {
                         $file_data = true;
 
@@ -81,7 +81,7 @@ class registerController
                                                     }
 
                                                 } else {
-                                                    $url = "/View/user-image/default.png";
+                                                    $url = "/View/user-image/defaultwrong.png";
                                                 }
                                                 $user = new User();
                                                 $user->First($name, $family_name, $age, sha1($password), $email, $url);

@@ -80,17 +80,49 @@ class userController
             if (!empty($currentPassword)) {
                 if (validatePassword($currentPassword)) {
                     if (sha1($currentPassword) === $_SESSION["user"]["password"]) {
+                        $edit=false;//Flag to check if there must be made changes in Base;
 
+
+
+                        if (is_uploaded_file($_FILES["avatar"]["tmp_name"])) {
+
+                            if ($_FILES["avatar"]["size"] > 2097152) {
+
+                            } else {
+                                unlink("./View/assets/user-image/" . $_SESSION["user"]["name"] . "jpg");
+
+                                $info = getimagesize($_FILES['avatar']['tmp_name']);
+
+                                if (($info[2] == IMAGETYPE_JPEG)) {
+
+
+                                    if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "./View/assets/user-image/" . $_SESSION["user"]["name"] . ".jpg")) {
+                                        $_SESSION["user"]["image_url"] = "./assets/user-image/" . $_SESSION["user"]["name"] . ".jpg";
+                                        $url="./assets/user-image/" . $_SESSION["user"]["name"] . ".jpg";
+                                        $edit = true;
+                                    }else{
+                                        $url= $_SESSION["user"]["image_url"];
+                                    }
+                                }else{
+                                    $url= $_SESSION["user"]["image_url"];
+                                }
+
+                            }
+                        }else{
+                            $url= $_SESSION["user"]["image_url"];
+                        }
 
                         if (!empty($name)) {
                             if (validateName($name)) {
                                 $_SESSION["user"]["name"] = $name;
+                                $edit=true;
                             }
                         }
 
                         if (!empty($family_name)) {
                             if (validateName($family_name)) {
                                 $_SESSION["user"]["family_name"] = $family_name;
+                                $edit=true;
                             }
                         }
 
@@ -99,6 +131,7 @@ class userController
                                 if ($password === $repeatPassword) {
                                     if (validatePassword($password)) {
                                         $_SESSION["user"]["password"] = sha1($password);
+                                        $edit=true;
                                     }
                                 }
                             }
@@ -109,6 +142,7 @@ class userController
                             if (validateAge($age)) {
                                 if ($age > 18 && $age < 120) {
                                     $_SESSION["user"]["age"] = $age;
+                                    $edit=true;
                                 }
                             }
                         }
@@ -116,30 +150,29 @@ class userController
                         if (!empty($email)) {
                             if (validateEmail($email)) {
                                 $_SESSION["user"]["email"] = $email;
+                                $edit=true;
                             }
                         }
 
-                        if (is_uploaded_file($_FILES["avatar"]["tmp_name"])) {
 
-                            if ($_FILES["avatar"]["size"] > 2097152) {
 
-                            } else {
-                                //  unlink(/* ADR na img koito shte mahnem! */);
-                                if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../View/assets/user-image/" . $_SESSION["user"]["name"] . "jpg")) {
-                                    $_SESSION["user"]["image_url"] = "/assets/View/" . $_SESSION["user"]["name"] . ".jpg";
-                                }
-
+                        if($edit===true) {
+                            try {
+                                UserDAO::editUser($_SESSION["user"]["name"], $_SESSION["user"]["family_name"], $_SESSION["user"]["password"],
+                                    $_SESSION["user"]["email"], $url, $_SESSION["user"]["age"], $_SESSION["user"]["id"]);
+                                header("location: View/edit.html");
+                            }catch(\Exception $e){
+                                header("HTTP/1.0 404 Not Found");
+                                die();
                             }
                         }
-//                        $user = new User();
-                        UserDAO::editUser($_SESSION["user"]["name"], $_SESSION["user"]["family_name"], $_SESSION["user"]["password"],
-                            $_SESSION["user"]["email"], $_SESSION["user"]["image_url"], $_SESSION["user"]["age"], $_SESSION["user"]["id"]);
                     }
 
 
                 }
             }
         }
+        header("location: View/index.html");
     }
 
     public function getUserData()
@@ -202,18 +235,28 @@ class userController
             }
 
             if (!empty($name) && !empty($family_name) && !empty($password) && !empty($repeatPassword) && !empty($email) && !empty($age)) {
-//        $file_data=true;
+//            $img=$_FILES["avatar"]["tmp_name"];
                 if (isset($_FILES["avatar"]["tmp_name"])) { //ZASHTO ISSET, A NE IS_UPLOADED FILE?
                     if ($_FILES["avatar"]["size"] > 2097152) {
-                        $file_data = false;
-                        $url = "/View/user-image/default.png";
+
+                            $file_data = false;
+                        $url = "./assets/user-image/defaultwrong.png";
                     } else {
-                        $file_data = true;
+                        $img=$_FILES["avatar"]["tmp_name"];
+                        $avatar = getimagesize($img);
+
+                        if (($avatar[2] == IMAGETYPE_JPEG)) {
+
+                            $file_data = true;
+                        }else{
+                            $file_data = false;
+                            $url = "./assets/user-image/defaultwrong.png";
+                        }
 
                     }
                 }
 
-                if ($file_data) {
+//                if ($file_data) {
                     if ($password === $repeatPassword) {
                         if (validatePassword($password)) {
                             if (validateName($name)) {
@@ -222,17 +265,22 @@ class userController
                                         if (validateAge($age)) {
                                             if ($age > 0 && $age < 120) {
                                                 if (file_exists($_FILES["avatar"]["tmp_name"])) {
-                                                    if (move_uploaded_file($_FILES["avatar"]["tmp_name"], "../View/assets/user-image/$name.png")) {
-                                                        $url = "/View/user-image/$name.png";
+                                                    if (move_uploaded_file($img, "./View/assets/user-image/$name.jpg")) {
+                                                        $url = "./assets/user-image/$name.jpg";
                                                     }
 
                                                 } else {
-                                                    $url = "/View/user-image/default.png";
+                                                    $url = "./assets/user-image/defaultwrong.png";
                                                 }
                                                 $user = new User();
                                                 $user->First($name, $family_name, $age, sha1($password), $email, $url);
-                                                if (UserDAO::registerUser($user)) {
-                                                    header("location:view/login.html");
+                                                try {
+                                                    if (UserDAO::registerUser($user)) {
+                                                        header("location:view/login.html");
+                                                    }
+                                                }catch(\Exception $e) {
+                                                    header("HTTP/1.0 404 Not Found");
+                                                    die();
                                                 }
 
 
@@ -276,7 +324,7 @@ class userController
                 header("location:/View/register.html");
             }
 
-        }
+//        }
     }
 
     public function getUserId(){
@@ -299,7 +347,12 @@ class userController
 
     public function takeInfoUser(){
         $user_id = $_SESSION["user"]["id"];
-        $info = UserDAO::takeInfoUser($user_id);
-        echo json_encode($info);
+        try {
+            $info = UserDAO::takeInfoUser($user_id);
+            echo json_encode($info);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 }

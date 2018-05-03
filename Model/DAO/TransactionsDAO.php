@@ -86,85 +86,56 @@ class TransactionsDAO extends DAO
 
     static public function getAllTransactions($accId, $type_id, $date_from, $date_to)
     {
-        if ($type_id == 0 && $date_from == 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
+        $query="SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
                                                     JOIN categories as c 
                                                     ON(t.category_id=c.id)
                                                     JOIN accounts as a
                                                     ON(a.id=t.account_id)
                                                      JOIN icons as i
                                                     ON c.image_id=i.id
-                                                    WHERE a.id=?");
+                                                    WHERE a.id=?";
+        if ($type_id == 0 && $date_from == 0 && $date_to == 0) {
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
         } else if ($type_id != 0 && $date_from == 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
-                                                    JOIN categories as c 
-                                                    ON(t.category_id=c.id)
-                                                    JOIN accounts as a
-                                                    ON(a.id=t.account_id)
-                                                     JOIN icons as i
-                                                    ON c.image_id=i.id
-                                                    WHERE a.id=? AND t.type_id=?");
+            $query.="AND t.type_id=?";
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId, $type_id]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
         } else if ($type_id != 0 && $date_from != 0 && $date_to == 0) {
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
-                                                    JOIN categories as c 
-                                                    ON(t.category_id=c.id)
-                                                    JOIN accounts as a
-                                                    ON(a.id=t.account_id)
-                                                     JOIN icons as i
-                                                    ON c.image_id=i.id
-                                                    WHERE a.id=? AND t.type_id=? AND t.date>=?");
+            $query.="AND t.type_id=? AND t.date>=?";
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId, $type_id,$date_from]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
         }else if($type_id==0 && $date_from!=0 && $date_to==0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
-                                                    JOIN categories as c 
-                                                    ON(t.category_id=c.id)
-                                                    JOIN accounts as a
-                                                    ON(a.id=t.account_id)
-                                                     JOIN icons as i
-                                                    ON c.image_id=i.id
-                                                    WHERE a.id=? AND t.date>=?");
+            $query.="AND t.date>=?";
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId, $date_from]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
         }else if($type_id!=0 && $date_from!=0 && $date_to!=0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
-                                                    JOIN categories as c 
-                                                    ON(t.category_id=c.id)
-                                                    JOIN accounts as a
-                                                    ON(a.id=t.account_id)
-                                                     JOIN icons as i
-                                                    ON c.image_id=i.id
-                                                    WHERE a.id=? AND t.type_id=? AND t.date BETWEEN ? AND ?");
+            $query.="AND t.type_id=? AND t.date BETWEEN ? AND ?";
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId, $type_id ,$date_from,$date_to]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
                 $result[] = $row;
             }
         }else if($type_id==0 && $date_from!=0 && $date_to!=0){
-            $statement = self::$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,t.type_id as Type,t.id as ID,i.img_url as image FROM transactions as t
-                                                    JOIN categories as c 
-                                                    ON(t.category_id=c.id)
-                                                    JOIN accounts as a
-                                                    ON(a.id=t.account_id)
-                                                     JOIN icons as i
-                                                    ON c.image_id=i.id
-                                                    WHERE a.id=? AND t.date BETWEEN ? AND ?");
+            $query.=" AND t.date BETWEEN ? AND ?";
+            $statement = self::$pdo->prepare($query);
             $statement->execute([$accId, $date_from,$date_to]);
             $result = [];
             while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {

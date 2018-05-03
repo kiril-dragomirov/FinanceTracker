@@ -12,34 +12,48 @@ class accountsController
     public function showAcc()
     {
 
-            //echo "Hello";
-//            $accounts = new AccountsDAO();
-            echo json_encode($accounts = AccountsDAO::getAccountsInfo($_SESSION["user"]["id"]));
-
+            try {
+                echo json_encode($accounts = AccountsDAO::getAccountsInfo($_SESSION["user"]["id"]));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
     }
 
     public function giveTotal()
     {
 
-            //   $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getTotal($_SESSION["user"]["id"]));
+            try {
+                echo json_encode($accounts = AccountsDAO::getTotal($_SESSION["user"]["id"]));
+            }catch(\Exception $e){
+                header("HTTP/1.0 404 Not Found");
+                die();
+           }
 
     }
 
     public function ShowBiggestIncome()
     {
 
-            // $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getMaxIncomeFromAllAccounts($_SESSION["user"]["id"]));
+            try {
+                echo json_encode($accounts = AccountsDAO::getMaxIncomeFromAllAccounts($_SESSION["user"]["id"]));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
     }
 
     public function showBiggestExpenseInAccount()
     {
 
-            // $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getMinIncomeFromAllAccounts($_SESSION["user"]["id"]));
+            try {
+                echo json_encode($accounts = AccountsDAO::getMinIncomeFromAllAccounts($_SESSION["user"]["id"]));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
     }
 
@@ -47,8 +61,12 @@ class accountsController
     public function accName()
     {
 
-            // $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getAccNamesAndAccIds($_SESSION["user"]["id"]));
+            try {
+                echo json_encode($accounts = AccountsDAO::getAccNamesAndAccIds($_SESSION["user"]["id"]));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
 
     }
@@ -78,11 +96,16 @@ class accountsController
                     if (validateNameAcc($name)) {
                         if (validateAmount($amount)) {
                             //  $accounts = new Accounts();
-                            $result = $accounts = AccountsDAO::checkIfAccountExistsAndInsert($name, $amount, $_SESSION["user"]["id"]);
-                            if ($result) {
-                                echo "correct";
-                            } else {
-                                echo "incorrect";
+                            try {
+                                $result = $accounts = AccountsDAO::checkIfAccountExistsAndInsert($name, $amount, $_SESSION["user"]["id"]);
+                                if ($result) {
+                                    echo "correct";
+                                } else {
+                                    echo "incorrect";
+                                }
+                            }catch(\Exception $e) {
+                                header("HTTP/1.0 404 Not Found");
+                                die();
                             }
                         }
                     }
@@ -95,8 +118,12 @@ class accountsController
     public function transType()
     {
 
-            // $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getTransactionType());
+            try {
+                echo json_encode($accounts = AccountsDAO::getTransactionType());
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
 
     }
@@ -104,8 +131,12 @@ class accountsController
     public function giveCategory()
     {
 
-            // $accounts = new Accounts();
-            echo json_encode($accounts = AccountsDAO::getCategoryList($_SESSION["user"]["id"]));
+            try {
+                echo json_encode($accounts = AccountsDAO::getCategoryList($_SESSION["user"]["id"]));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
 
     }
@@ -113,19 +144,33 @@ class accountsController
     public function getIconList()
     {
 
-        //    $accounts = new Accounts();
-            echo json_encode($accounts=AccountsDAO::getIconList());
+        try {
+            echo json_encode($accounts = AccountsDAO::getIconList());
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
 
     }
 
     public function removeAcc(){
         $accId=htmlentities(trim($_POST["accId"]));
-        AccountsDAO::removeAcc($accId);
+        try {
+            AccountsDAO::removeAcc($accId);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function chartAccountsAmounts(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(AccountsDAO::chartAccountsAmounts($user_id));
+        try {
+            echo json_encode(AccountsDAO::chartAccountsAmounts($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
 //    public function accNameForPositiveAcc(){

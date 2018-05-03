@@ -35,8 +35,13 @@ class transactionsController
                 if(validateAmount($amount)){
                     $transaction = new Transactions();
                 $transaction->Transaction($amount, $categoryId, $accountId, $typeId);
-                TransactionsDAO::insertTransaction($transaction);
-                echo "correct!";
+                try {
+                    TransactionsDAO::insertTransaction($transaction);
+                    echo "correct!";
+                }catch(\Exception $e) {
+                    header("HTTP/1.0 404 Not Found");
+                    die();
+                }
             }
             }
         }
@@ -69,11 +74,16 @@ class transactionsController
             if ($typeId == 1 || $typeId == 2) {
                 if (validateNameAcc($categoryName)) {
                     if (validateAmount($amount)) {
-                        if (TransactionsDAO::insertTransactionAndAddCategory($accountId, $amount, $categoryName, $typeId, $iconId,
-                            $_SESSION["user"]["id"])) {
-                            echo "correct";
-                        } else {
-                            echo "incorrect";
+                        try {
+                            if (TransactionsDAO::insertTransactionAndAddCategory($accountId, $amount, $categoryName, $typeId, $iconId,
+                                $_SESSION["user"]["id"])) {
+                                echo "correct";
+                            } else {
+                                echo "incorrect";
+                            }
+                        }catch(\Exception $e) {
+                            header("HTTP/1.0 404 Not Found");
+                            die();
                         }
                     }
                 }
@@ -92,7 +102,12 @@ class transactionsController
         $date = htmlentities(trim($_GET["dateFrom"]));
         $accId = htmlentities(trim($_GET["accId"]));
         $userId = $_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getDateToList($date, $accId, $userId));
+        try {
+            echo json_encode(TransactionsDAO::getDateToList($date, $accId, $userId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
 
     }
 
@@ -103,8 +118,12 @@ class transactionsController
         $date_from = htmlentities(trim($_POST["date_from"]));
         $date_to = htmlentities(trim($_POST["date_to"]));
 
-
-        echo json_encode(TransactionsDAO::getAllTransactions($accId, $typeId, $date_from, $date_to));
+            try {
+                echo json_encode(TransactionsDAO::getAllTransactions($accId, $typeId, $date_from, $date_to));
+            }catch(\Exception $e) {
+                header("HTTP/1.0 404 Not Found");
+                die();
+            }
 
     }
 
@@ -113,33 +132,58 @@ class transactionsController
     public function removeTransaction()
     {
         $transId = htmlentities(trim($_POST["transId"]));
-        TransactionsDAO::RemoveTrans($transId);
+        try {
+            TransactionsDAO::RemoveTrans($transId);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function chartIncomeExpenses()
     {
         $accId = htmlentities(trim($_GET["ia"]));
-        echo json_encode(TransactionsDAO::chartIncomeExpenses($accId));
+        try {
+            echo json_encode(TransactionsDAO::chartIncomeExpenses($accId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function chartCategory(){
         $user_id=$_SESSION["user"]["id"];
         $accId=htmlentities(trim($_GET["accId"]));
         $typeId=htmlentities(trim($_GET["typeId"]));
-        echo json_encode(TransactionsDAO::chartCategory($user_id,$accId,$typeId));
+        try {
+            echo json_encode(TransactionsDAO::chartCategory($user_id, $accId, $typeId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getCategoryAcc(){
         $accId=htmlentities(trim($_GET["accId"]));
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getCategoryAcc($accId,$user_id));
+        try {
+            echo json_encode(TransactionsDAO::getCategoryAcc($accId, $user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getIncomeExpensesAccordingCategoryAndAccount(){
         $accId=htmlentities(trim($_GET["accId"]));
         $categoryId=htmlentities(trim($_GET["categoryId"]));
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getIncomeExpensesAccordingCategoryAndAccount($user_id,$accId,$categoryId));
+        try {
+            echo json_encode(TransactionsDAO::getIncomeExpensesAccordingCategoryAndAccount($user_id, $accId, $categoryId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function transfer(){
@@ -164,7 +208,12 @@ class transactionsController
         }
         if(validateAmount($amount)){
             if(validateId($user_to)){
-                echo TransactionsDAO::transfer($user_from,$user_to,$amount,$accId);
+                try {
+                    echo TransactionsDAO::transfer($user_from, $user_to, $amount, $accId);
+                }catch(\Exception $e) {
+                    header("HTTP/1.0 404 Not Found");
+                    die();
+                }
             }
         }
 
@@ -173,34 +222,64 @@ class transactionsController
 
     public function getTransfers(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getTransfers($user_id));
+        try {
+            echo json_encode(TransactionsDAO::getTransfers($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getAllTransferIncomes(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getAllTransferIncomes($user_id));
+        try {
+            echo json_encode(TransactionsDAO::getAllTransferIncomes($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getIncomedTransfers(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getIncomedTransfers($user_id));
+        try {
+            echo json_encode(TransactionsDAO::getIncomedTransfers($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function changeTransferToAcc(){
         $user_id=$_SESSION["user"]["id"];
         $accId=htmlentities(trim($_POST["accId"]));
         $id=htmlentities(trim($_POST["id"]));
-        echo TransactionsDAO::changeTransferToAcc($user_id,$accId,$id);
+        try {
+            echo TransactionsDAO::changeTransferToAcc($user_id, $accId, $id);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getCategoryUser(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getCategoryUser($user_id));
+        try {
+            echo json_encode(TransactionsDAO::getCategoryUser($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getIncomesAndExpensesForCategory(){
         $categoryId=htmlentities(trim($_GET["categoryId"]));
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TransactionsDAO::getIncomesAndExpensesForCategory($user_id,$categoryId));
+        try {
+            echo json_encode(TransactionsDAO::getIncomesAndExpensesForCategory($user_id, $categoryId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 }
