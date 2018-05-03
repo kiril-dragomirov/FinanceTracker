@@ -16,6 +16,7 @@
     <link href="assets/css/main-style.css" rel="stylesheet" />
     <!-- Page-Level CSS -->
     <link href="assets/plugins/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
 </head>
@@ -46,22 +47,14 @@
             <!--</div>-->
 
             <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" id="edit" href="edit.html">
+                        <i class="fa fa-pencil-square-o fa-3x"></i>
+                    </a>
+                </li>
 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-3x"></i>
-                    </a>
-                    <!-- dropdown user-->
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li><a onclick="logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a>
-                        </li>
-                    </ul>
-                    <!-- end dropdown-user -->
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="" onclick="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
                 </li>
                 <!-- end main dropdown -->
             </ul>
@@ -244,6 +237,11 @@
                 $('#div1').load('main.html');
                 $("#main").hide();
             });
+            $("#edit").click(function () {
+                $('#div1').load('edit.html');
+                $("#main").hide();
+            });
+
             $("#budgetChart").click(function () {
                 $('#div1').load('./budgets-html/budgetChart.html');
                 $("#main").hide();

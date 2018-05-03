@@ -5,9 +5,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="./assets/js/addCrypto.js"></script>
 <script src="./assets/js/listUserCrypto.js"></script>
+<script src="./assets/js/cryptoCalculator.js"></script>
 <script>
     listUserCrypto();
     addCrypto();
+    cryptoCalculator();
 </script>
 
 <div class="row">
@@ -31,7 +33,9 @@
     <!--<div class="panel-heading">-->
         <!--<div class="panel-title">Add cryptocurrency</div>-->
     <!--</div>-->
+
     <div id="addCrypto" style="width: 100%; "></div>
+    <div id="push"></div>
     <div id="errHolder"></div>
 </div>
 
@@ -39,8 +43,8 @@
     <div class="panel-heading">
         <div class="panel-title">My cryptocurrencies</div>
     </div>
-    <div id="listCrypto" style="width: 100%; height: 600px;"></div>
-
+    <!--<div id="listCrypto" style="width: 100%; height: 600px;"></div>-->
+    <div id="calc" style="width: 100%; height: 600px;"></div>
 </div>
 
 </div>
