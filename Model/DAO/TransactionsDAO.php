@@ -181,40 +181,27 @@ class TransactionsDAO extends DAO
     }
 
     static public function chartIncomeExpenses($accId){
-//        $statement=self::$pdo->prepare("SELECT
-//                                                        income, expense
-//                                                    FROM
-//                                                        (SELECT
-//                                                            SUM(i.amount) AS income
-//                                                        FROM
-//                                                            transactions AS i
-//                                                        WHERE
-//                                                            i.type_id = 1 AND i.account_id = ?) AS t
-//                                                            JOIN
-//                                                        (SELECT
-//                                                            SUM(e.amount) AS expense
-//                                                        FROM
-//                                                            transactions AS e
-//                                                        WHERE
-//                                                            e.type_id = 2 AND e.account_id = ?) AS k");
+
         $statement=self::$pdo->prepare("SELECT 
                   CONCAT('income') AS kkey, SUM(i.amount) AS valuee
                             FROM
                       transactions AS i
                             WHERE
-                  i.type_id = 1 AND i.account_id = ?");
-        $statement->execute([$accId]);
+                  i.type_id = ? AND i.account_id = ?");
+        $typeIncomeId=1;
+        $statement->execute([$typeIncomeId,$accId]);
         $result=[];
         while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
             $result[]=$row;
         }
+        $typeExpenseId=2;
         $incomeStatement=self::$pdo->prepare("SELECT 
                   CONCAT('expense') AS kkey, SUM(i.amount) AS valuee
                             FROM
                       transactions AS i
                             WHERE
-                  i.type_id = 2 AND i.account_id = ?");
-        $incomeStatement->execute([$accId]);
+                  i.type_id = ? AND i.account_id = ?");
+        $incomeStatement->execute([$typeExpenseId,$accId]);
         while($row=$incomeStatement->fetch(\PDO::FETCH_ASSOC)){
             $result[]=$row;
         }
@@ -300,6 +287,8 @@ class TransactionsDAO extends DAO
 
     static public function transfer($user_from,$user_to,$amount,$accId){
         try{
+            $typeIdIncome=1;
+            $typeIdExpense=2;
             $statement=self::$pdo->prepare("SELECT 
                                   a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
                                         FROM
@@ -310,7 +299,7 @@ class TransactionsDAO extends DAO
                                             FROM
                                                 transactions AS i
                                             WHERE
-                                                type_id = 1
+                                                type_id = ?
                                             GROUP BY account_id) AS t ON a.id = acc_id
                                                 LEFT JOIN
                                                 (SELECT 
@@ -318,19 +307,21 @@ class TransactionsDAO extends DAO
                                             FROM
                                                 transactions AS e
                                             WHERE
-                                                type_id = 2
+                                                type_id = ?
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
                                         HAVING a.user_id =? AND a.id=?");
-            $statement->execute([$user_from,$accId]);
+            $statement->execute([$typeIdIncome,$typeIdExpense,$user_from,$accId]);
             $row=$statement->fetch(\PDO::FETCH_ASSOC);
             if($row["Total"]>$amount && $user_to!=$user_from) {
                 $trans=self::$pdo->beginTransaction();
                 $insertTransaction = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
-                                                                     VALUES (?,?,13,now(),2)");
-                $insertTransaction->execute([$accId, $amount]);
+                                                                     VALUES (?,?,13,now(),?)");
+                $type_id_expense=2;
+                $insertTransaction->execute([$accId, $amount,$type_id_expense]);
                 $makeTransfer = self::$pdo->prepare("INSERT INTO transfers(from_user_id,to_user_id,date,amount,type_id)
-                                                                VALUES(?,?,now(),?,3)");
-                $makeTransfer->execute([$user_from, $user_to, $amount]);
+                                                                VALUES(?,?,now(),?,?)");
+                $type_id_transfer=3;
+                $makeTransfer->execute([$user_from, $user_to, $amount,$type_id_transfer]);
                 $trans=self::$pdo->commit();
             }else{
                 return "wrong";
@@ -356,9 +347,10 @@ class TransactionsDAO extends DAO
     }
 
     static public function getAllTransferIncomes($user_id){
+        $transferedTypeId=3;
         $statement=self::$pdo->prepare("SELECT IF(SUM(amount) IS NULL,0,SUM(amount)) as sum FROM transfers
-                                                    WHERE to_user_id=? AND type_id=3");
-        $statement->execute([$user_id]);
+                                                    WHERE to_user_id=? AND type_id=?");
+        $statement->execute([$user_id,$transferedTypeId]);
         $result=[];
         while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
             $result[]=$row;
@@ -367,10 +359,11 @@ class TransactionsDAO extends DAO
     }
 
     static public function getIncomedTransfers($user_id){
+        $transferedTypeId=3;
         $statement=self::$pdo->prepare("SELECT CONCAT(u.name,\" \",family_name) as 'full name',date,amount,t.id FROM transfers AS T
                                                                       JOIN users as u ON from_user_id=u.id
-                                                                          WHERE to_user_id=? AND type_id=3");
-        $statement->execute([$user_id]);
+                                                                          WHERE to_user_id=? AND type_id=?");
+        $statement->execute([$user_id,$transferedTypeId]);
         $result=[];
         while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
             $result[]=$row;
@@ -381,15 +374,18 @@ class TransactionsDAO extends DAO
     static public function changeTransferToAcc($user_id,$accId,$id){
         try {
             $trans = self::$pdo->beginTransaction();
-                $statement=self::$pdo->prepare("UPDATE transfers SET type_id=2 WHERE id=?");
-                $statement->execute([$id]);
+            $expenseTypeId=2;
+                $statement=self::$pdo->prepare("UPDATE transfers SET type_id=? WHERE id=?");
+                $statement->execute([$expenseTypeId,$id]);
                 $getData=self::$pdo->prepare("SELECT amount from transfers WHERE id=?");
                 $getData->execute([$id]);
                 $row=$getData->fetch(\PDO::FETCH_ASSOC);
                 $amount=$row["amount"];
+                $category_transfer_id=13;
+                $typeIncomeId=1;
                 $insertInTransactions=self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
-                                                                    VALUES (?,?,13,now(),1) ");
-                $insertInTransactions->execute([$accId,$amount]);
+                                                                    VALUES (?,?,?,now(),?) ");
+                $insertInTransactions->execute([$accId,$amount,$category_transfer_id,$typeIncomeId]);
 
 
 

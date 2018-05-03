@@ -15,24 +15,8 @@ class AccountsDAO extends DAO
 
     static public function getTotal($id)
     {
-//        $statement = self::$pdo->prepare("SELECT
-//    income,expense
-//FROM
-//    (SELECT
-//        account_id AS income_acc_id, SUM(amount) AS income
-//    FROM
-//        transactions AS i
-//    JOIN accounts AS acc ON (acc.id = i.account_id)
-//    WHERE
-//        i.type_id = 1 AND acc.user_id = ?) AS t
-//      JOIN
-//    (SELECT
-//        account_id AS expense_acc_id, SUM(amount) AS expense
-//    FROM
-//        transactions AS e
-//        JOIN accounts AS a ON (a.id = e.account_id)
-//    WHERE
-//        e.type_id = 2 AND a.user_id = ?) as e");
+        $typeIncomeId=1;
+        $typeExpenseId=2;
         $statement = self::$pdo->prepare("SELECT 
                                                income,expense,COUNT(aj.id) as accNumber
                                         FROM
@@ -42,7 +26,7 @@ class AccountsDAO extends DAO
                                                 transactions AS i
                                             JOIN accounts AS acc ON (acc.id = i.account_id)
                                             WHERE
-                                                i.type_id = 1 AND acc.user_id = ?) AS t
+                                                i.type_id = ? AND acc.user_id = ?) AS t
                                               JOIN
                                             (SELECT 
                                                 account_id AS expense_acc_id, SUM(amount) AS expense
@@ -50,11 +34,11 @@ class AccountsDAO extends DAO
                                                 transactions AS e
                                                 JOIN accounts AS a ON (a.id = e.account_id)
                                             WHERE
-                                                e.type_id = 2 AND a.user_id = ?) as e
+                                                e.type_id = ? AND a.user_id = ?) as e
                                                 JOIN accounts as aj
                                                WHERE aj.user_id=?
                                                 ");
-        $statement->execute([$id, $id, $id]);
+        $statement->execute([$typeIncomeId,$id,$typeExpenseId, $id, $id]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
 
@@ -63,6 +47,8 @@ class AccountsDAO extends DAO
 
     static public function getAccountsInfo($id)
     {
+        $typeIncomeId=1;
+        $typeExpenseId=2;
         $result = [];
         $statement = self::$pdo->prepare("SELECT 
                                             a.id, a.name, a.user_id, income, expense
@@ -74,7 +60,7 @@ class AccountsDAO extends DAO
                                             FROM
                                                 transactions AS i
                                             WHERE
-                                                type_id = 1
+                                                type_id = ?
                                             GROUP BY account_id) AS t ON a.id = acc_id
                                                 LEFT JOIN
                                             (SELECT 
@@ -82,10 +68,10 @@ class AccountsDAO extends DAO
                                             FROM
                                                 transactions AS e
                                             WHERE
-                                                type_id = 2
+                                                type_id = ?
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
                                             HAVING a.user_id=?");
-        $statement->execute([$id]);
+        $statement->execute([$typeIncomeId,$typeExpenseId,$id]);
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
@@ -95,6 +81,7 @@ class AccountsDAO extends DAO
 
     static public function getMaxIncomeFromAllAccounts($id)
     {
+        $typeIncomeId=1;
         $statement = self::$pdo->prepare("SELECT 
                                                 MAX(income) as income, a.name,acc_id
                                                 FROM
@@ -103,7 +90,7 @@ class AccountsDAO extends DAO
                                                     FROM
                                                         transactions AS t
                                                     WHERE
-                                                        type_id = 1
+                                                        type_id = ?
                                                     GROUP BY account_id) AS e
                                                         RIGHT JOIN
                                                     accounts AS a ON (a.id = acc_id)
@@ -112,13 +99,14 @@ class AccountsDAO extends DAO
                                                 GROUP BY a.name
                                                 ORDER BY income DESC
                                                 LIMIT 1");
-        $statement->execute([$id]);
+        $statement->execute([$typeIncomeId,$id]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
     }
 
     static public function getMinIncomeFromAllAccounts($id)
     {
+        $typeExpenseId=2;
         $statement = self::$pdo->prepare("SELECT 
                                          MAX(expense) AS expense, a.name, acc_id
                                          FROM
@@ -127,7 +115,7 @@ class AccountsDAO extends DAO
                                           FROM
                                              transactions AS t
                                           WHERE
-                                            type_id = 2
+                                            type_id = ?
                                           GROUP BY account_id) AS e
                                            RIGHT JOIN
                                              accounts AS a ON (a.id = acc_id)
@@ -136,7 +124,7 @@ class AccountsDAO extends DAO
                                            GROUP BY a.name
                                            ORDER BY expense DESC
                                             LIMIT 1");
-        $statement->execute([$id]);
+        $statement->execute([$typeExpenseId,$id]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         return $row;
     }
@@ -171,9 +159,11 @@ class AccountsDAO extends DAO
                     $insert = self::$pdo->prepare("INSERT INTO accounts(user_id,name) VALUES (?,?)");
                     $insert->execute([$id, $name]);
                     //Using ---LAST_INSERT_ID()--- we get last inserted ID in DB!;
+                    $firstIncomeCategoryId=1;
+                    $firstTypeIdIncome=1;
                     $insertTrans = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
-                                                           VALUES (LAST_INSERT_ID(),?,1,now(),1)");
-                    $insertTrans->execute([$amount]);
+                                                           VALUES (LAST_INSERT_ID(),?,?,now(),?)");
+                    $insertTrans->execute([$amount,$firstIncomeCategoryId,$firstTypeIdIncome]);
                     $trans = self::$pdo->commit();
                     return true;
                 } catch (\PDOException $e) {
@@ -188,9 +178,11 @@ class AccountsDAO extends DAO
 
     static public function getTransactionType()
     {
+        $transactionsIncome=1;
+        $transactionsExpense=2;
         $result = [];
-        $statement = self::$pdo->prepare("SELECT id,name FROM type_transactions WHERE id=1 OR id=2");
-        $statement->execute();
+        $statement = self::$pdo->prepare("SELECT id,name FROM type_transactions WHERE id=? OR id=?");
+        $statement->execute([$transactionsIncome,$transactionsExpense]);
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
@@ -200,11 +192,12 @@ class AccountsDAO extends DAO
     static public function getCategoryList($id)
     {
         $result = [];
+        $defaultUser=0;
         $statement = self::$pdo->prepare("SELECT c.id,c.name,i.img_url FROM categories as c
                                                 JOIN icons as i
                                                 ON (i.id=c.image_id)
-                                                WHERE c.user_id=0 OR c.user_id=?");
-        $statement->execute([$id]);
+                                                WHERE c.user_id=? OR c.user_id=?");
+        $statement->execute([$defaultUser,$id]);
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
         }
@@ -249,37 +242,9 @@ class AccountsDAO extends DAO
     static public function chartAccountsAmounts($user_id)
     {
         $result = [];
+        $typeIncomeId=1;
+        $typeExpenseId=2;
         $statement = self::$pdo->prepare("SELECT 
-                                  a.user_id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
-                                        FROM
-                                            accounts AS a
-                                                LEFT JOIN
-                                                (SELECT 
-                                                account_id AS acc_id, SUM(amount) AS income
-                                            FROM
-                                                transactions AS i
-                                            WHERE
-                                                type_id = 1
-                                            GROUP BY account_id) AS t ON a.id = acc_id
-                                                LEFT JOIN
-                                                (SELECT 
-                                                account_id AS expense_acc_id, SUM(amount) AS expense
-                                            FROM
-                                                transactions AS e
-                                            WHERE
-                                                type_id = 2
-                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
-                                        HAVING a.user_id = ?");
-        $statement->execute([$user_id]);
-        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
-
-            $result[] = $row;
-        }
-        return $result;
-    }
-
-    static public function accNameForPositiveAcc($user_id){
-        $statement=self::$pdo->prepare("SELECT 
                                   a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
                                         FROM
                                             accounts AS a
@@ -289,7 +254,7 @@ class AccountsDAO extends DAO
                                             FROM
                                                 transactions AS i
                                             WHERE
-                                                type_id = 1
+                                                type_id = ?
                                             GROUP BY account_id) AS t ON a.id = acc_id
                                                 LEFT JOIN
                                                 (SELECT 
@@ -297,17 +262,49 @@ class AccountsDAO extends DAO
                                             FROM
                                                 transactions AS e
                                             WHERE
-                                                type_id = 2
+                                                type_id = ?
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
-                                        HAVING a.user_id =?");
-        $statement->execute([$user_id]);
-        $result=[];
-        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[]=$row;
+                                        HAVING a.user_id = ?");
+        $statement->execute([$typeIncomeId,$typeExpenseId,$user_id]);
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
+
+            $result[] = $row;
         }
         return $result;
-
     }
+
+//    static public function accNameForPositiveAcc($user_id){
+//        $typeIncomeId=1;
+//        $typeExpenseId=2;
+//        $statement=self::$pdo->prepare("SELECT
+//                                  a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
+//                                        FROM
+//                                            accounts AS a
+//                                                LEFT JOIN
+//                                                (SELECT
+//                                                account_id AS acc_id, SUM(amount) AS income
+//                                            FROM
+//                                                transactions AS i
+//                                            WHERE
+//                                                type_id = 1
+//                                            GROUP BY account_id) AS t ON a.id = acc_id
+//                                                LEFT JOIN
+//                                                (SELECT
+//                                                account_id AS expense_acc_id, SUM(amount) AS expense
+//                                            FROM
+//                                                transactions AS e
+//                                            WHERE
+//                                                type_id = 2
+//                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+//                                        HAVING a.user_id =?");
+//        $statement->execute([$user_id]);
+//        $result=[];
+//        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+//            $result[]=$row;
+//        }
+//        return $result;
+//
+//    }
 
 
 
