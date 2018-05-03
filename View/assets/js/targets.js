@@ -22,6 +22,9 @@ function targetTypes(){
                 option.setAttribute("value",response[i]["id"]);
                 select.appendChild(option);
             }
+        }else if(request.status===401){
+            window.location.href="login.html";
+            console.log(this.status);
         }
     }
     request.send();

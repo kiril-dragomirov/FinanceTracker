@@ -40,6 +40,10 @@
 
             <!-- end navbar-header -->
             <!-- navbar-top-links -->
+            <!--<div class="nav navbar-top-links navbar-right">-->
+                <!--<button class="btn btn-primary btn-lg">Exit</button>-->
+                <!--<button class=""></button>-->
+            <!--</div>-->
 
             <ul class="nav navbar-top-links navbar-right">
 
@@ -117,8 +121,20 @@
                     <li>
                         <a id="targets"><i class="fa fa-table fa-fw"></i>Targets</a>
                     </li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>Timelines<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id="">Account Timeline</a>
+                            </li>
+                            <li>
+                                <a id="categoryTimeline">Category Timeline</a>
+                            </li>
 
+                        </ul>
+                        <!-- second-level-items -->
                     </li>
+                    <!--</li>-->
                     <!--<li>-->
                         <!--<a href="forms.html"><i class="fa fa-edit fa-fw"></i>Forms</a>-->
                     <!--</li>-->
@@ -219,6 +235,10 @@
             $(document).ready(function(){
                 $('#main').load('main.html');
 
+            });
+            $("#categoryTimeline").click(function () {
+                $('#div1').load('categoryTimeline.html');
+                $("#main").hide();
             });
             $("#home2").click(function () {
                 $('#div1').load('main.html');

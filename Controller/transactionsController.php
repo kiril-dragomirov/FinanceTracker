@@ -192,4 +192,15 @@ class transactionsController
         $id=htmlentities(trim($_POST["id"]));
         echo TransactionsDAO::changeTransferToAcc($user_id,$accId,$id);
     }
+
+    public function getCategoryUser(){
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(TransactionsDAO::getCategoryUser($user_id));
+    }
+
+    public function getIncomesAndExpensesForCategory(){
+        $categoryId=htmlentities(trim($_GET["categoryId"]));
+        $user_id=$_SESSION["user"]["id"];
+        echo json_encode(TransactionsDAO::getIncomesAndExpensesForCategory($user_id,$categoryId));
+    }
 }

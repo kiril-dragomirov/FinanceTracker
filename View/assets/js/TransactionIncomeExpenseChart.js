@@ -7,6 +7,9 @@ function incomeExpenseChart(id) {
     request.open("get", "../index.php?target=transactions&action=chartIncomeExpenses&ia=" + id);
     request.onreadystatechange = function () {
         if (!(request.readyState === 4 && request.status === 200)) {
+
+                // window.location.href="login.html";
+
         }else{
             var response =JSON.parse(this.responseText);
             console.log(response);

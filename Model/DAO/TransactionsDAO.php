@@ -399,4 +399,45 @@ class TransactionsDAO extends DAO
         }
 
     }
+
+    static public function getCategoryUser($user_id){
+        $query="SELECT  DISTINCT(c.name),c.id FROM categories as c
+                JOIN transactions as t
+                ON(c.id=t.category_id)
+                JOIN accounts as a
+                ON (a.id=t.account_id)
+                WHERE a.user_id=? ";
+        $statement=self::$pdo->prepare($query);
+        $statement->execute([$user_id]);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+        return $result;
+    }
+
+    static public function getIncomesAndExpensesForCategory($user_id,$categoryId){
+        $query="SELECT t.amount,t.date,t.type_id,a.name as accName,c.name as cName
+                        FROM transactions as t
+                        JOIN accounts as a
+                        ON (a.id=t.account_id)
+                        JOIN categories as c
+                        ON(t.category_id=c.id)
+                        WHERE a.user_id=? ";
+        $params=[];
+        if($categoryId=="all"){
+            $params=[$user_id];
+        }else{
+            $params=[$user_id,$categoryId];
+            $query.=" AND c.id=?";
+        }
+        $statement=self::$pdo->prepare($query);
+        $statement->execute($params);
+        $result=[];
+        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[]=$row;
+        }
+
+        return $result;
+    }
 }
