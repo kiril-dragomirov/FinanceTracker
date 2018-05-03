@@ -108,6 +108,7 @@ class BudgetDAO extends DAO
                                                     JOIN categories as c
                                                     ON b.category_id = c.id
                                                     WHERE a.user_id = ? 
+                                                    AND now() BETWEEN b.date_from AND b.date_to OR t.date = b.date_from
                                                     AND b.category_id = t.category_id 
                                                     AND t.type_id = 2 
                                                     AND t.date BETWEEN b.date_from AND b.date_to OR t.date = b.date_from

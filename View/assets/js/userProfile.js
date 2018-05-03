@@ -15,7 +15,7 @@ xhr.onreadystatechange = function (ev) {
         str +=    response.name;
         str +=    "</div>";
         str +=    "              <div class=\"user-text-online\">";
-        str +=    "                <span class=\"user-circle-online btn btn-success btn-circle \"></span>&nbsp;Online";
+        str +=    "                <span class=\"user-circle-online btn btn-success btn-circle \"></span>Online";
         str +=    "               </div>";
         str +=    "            </div>";
         str +=    "      </div>";
