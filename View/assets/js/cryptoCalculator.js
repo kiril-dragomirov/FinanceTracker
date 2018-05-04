@@ -9,15 +9,10 @@ function cryptoCalculator() {
             console.log(example);
             var str = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"table table-striped table-bordered\">";
             str += "<tr><th>Name</th>";
-            str += "<th>Price</th>";
+            str += "<th>Your Price</th>";
             str += "<th>Count</th>";
-            str += "<th>CURRENCY</th>";
-            str += "<th>up/down</th></tr>";
-            // str += "<th><span class=\"glyphicon glyphicon-usd\"></span> USD</th>";
-            // str += "<th><span class=\"glyphicon glyphicon-usd\"></span> USD_STAT</th>";
-            // str += "<th><span class=\"glyphicon glyphicon-euro\"></span> EUR</th>";
-            // str += "<th><span class=\"glyphicon glyphicon-euro\"></span> EUR_STAT</th></tr>";
-
+            str += "<th>Market Price Per Unit</th>";
+            str += "<th>Profit/Loss</th></tr>";
 
             for (var j = 0; j < example.length; j++) {
 
@@ -79,6 +74,8 @@ function cryptoCalculator() {
             }
             str += "</table>";
             document.getElementById("calc").innerHTML = str;
+        }else if(request1.status===401){
+            window.location.href="login.html";
         }
     }
     request1.send();

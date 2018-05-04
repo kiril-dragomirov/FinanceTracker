@@ -70,6 +70,8 @@ req.onreadystatechange = function (ev) {
         document.getElementById("infoBudget").innerHTML = str;
 
         console.log(str);
+    }else if(req.status===401){
+        window.location.href="login.html";
     }
 }
 req.send();
