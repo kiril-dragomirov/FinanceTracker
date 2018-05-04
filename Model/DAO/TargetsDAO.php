@@ -26,13 +26,14 @@ class TargetsDAO extends DAO
 
     static public function insertTarget($user_id, $amount, $name)
     {
-        $statement = self::$pdo->prepare("SELECT COUNT(name) as count FROM targets WHERE name=?");
-        $statement->execute([$name]);
+        $statement = self::$pdo->prepare("SELECT COUNT(name) as count FROM targets WHERE name=? AND user_id=?");
+        $statement->execute([$name,$user_id]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         if ($row["count"] == 0) {
             $insert = self::$pdo->prepare("INSERT INTO targets(user_id,name,amount,type_target)
                                                     VALUES (?,?,?,?)");
-            $insert->execute([$user_id, $name, $amount, 1]);
+            $typeTargetId=1;
+            $insert->execute([$user_id, $name, $amount, $typeTargetId]);
             return true;
         } else {
             return false;
@@ -42,7 +43,8 @@ class TargetsDAO extends DAO
     static public function getAllActiveTargets($user_id)
     {
         $statement = self::$pdo->prepare("SELECT id,name,amount FROM targets WHERE user_id=? AND type_target=?");
-        $statement->execute([$user_id, 1]);
+        $typeTargetId=1;
+        $statement->execute([$user_id, $typeTargetId]);
         $result = [];
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
@@ -53,13 +55,15 @@ class TargetsDAO extends DAO
     static public function pauseTarget($target_id)
     {
         $statement = self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
-        $statement->execute([2, $target_id]);
+        $typeTargetId=2;
+        $statement->execute([$typeTargetId, $target_id]);
     }
 
     static public function getAllWaitingTargets($user_id)
     {
         $statement = self::$pdo->prepare("SELECT id,name,amount FROM targets WHERE user_id=? AND type_target=?");
-        $statement->execute([$user_id, 2]);
+        $typeTargetId=2;
+        $statement->execute([$user_id, $typeTargetId]);
         $result = [];
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
@@ -69,18 +73,21 @@ class TargetsDAO extends DAO
 
     static public function startTarget($target_id)
     {
+        $typeTargetId=1;
         $statement = self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
-        $statement->execute([1, $target_id]);
+        $statement->execute([$typeTargetId, $target_id]);
     }
 
     static public function setTargetToFinished($target_id)
     {
+        $typeTargetId=3;
         $statement = self::$pdo->prepare("UPDATE targets SET type_target=? WHERE id=?");
-        $statement->execute([3, $target_id]);
+        $statement->execute([$typeTargetId, $target_id]);
     }
 
     static public function getAllFinishedAndSaved($user_id)
     {
+        $typeTargetId=3;
         $statement = self::$pdo->prepare("SELECT tar.name,IF(SUM(t.amount) IS NULL,0,SUM(t.amount))
                                                   as spesteno,tar.amount FROM transactions as t
                                                     JOIN target_transaction_id as tt
@@ -89,7 +96,7 @@ class TargetsDAO extends DAO
                                                     ON(tar.id=tt.id_target)
                                                     WHERE tar.user_id=? AND tar.type_target=?
                                                     GROUP BY tar.id");
-        $statement->execute([$user_id, 3]);
+        $statement->execute([$user_id, $typeTargetId]);
         $result = [];
         while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             $result[] = $row;
@@ -100,6 +107,8 @@ class TargetsDAO extends DAO
     static public function insertAmountForTarget($user_id, $amount, $target_id, $acc_id)
     {
         try {
+            $typeIncomeId=1;
+            $typeExpenseId=2;
             $statement = self::$pdo->prepare("SELECT 
                                   a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
                                         FROM
@@ -110,7 +119,7 @@ class TargetsDAO extends DAO
                                             FROM
                                                 transactions AS i
                                             WHERE
-                                                type_id = 1
+                                                type_id = ?
                                             GROUP BY account_id) AS t ON a.id = acc_id
                                                 LEFT JOIN
                                                 (SELECT 
@@ -118,10 +127,10 @@ class TargetsDAO extends DAO
                                             FROM
                                                 transactions AS e
                                             WHERE
-                                                type_id = 2
+                                                type_id = ?
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
                                         HAVING a.user_id =? AND a.id=?");
-            $statement->execute([$user_id, $acc_id]);
+            $statement->execute([$typeIncomeId,$typeExpenseId,$user_id, $acc_id]);
             $row = $statement->fetch(\PDO::FETCH_ASSOC);
             if ($row["Total"] > $amount) {
                 $trans = self::$pdo->beginTransaction();

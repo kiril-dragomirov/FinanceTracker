@@ -34,11 +34,16 @@ class targetsController{
             if ($amount > 0) {
                 if (validateNameAcc($name)) {
                     if (validateAmount($amount)) {
-                        $result = $accounts =TargetsDAO::insertTarget($user_id,$amount,$name);
-                        if ($result) {
-                            echo "correct";
-                        } else {
-                            echo "incorrect";
+                        try {
+                            $result = $accounts = TargetsDAO::insertTarget($user_id, $amount, $name);
+                            if ($result) {
+                                echo "correct";
+                            } else {
+                                echo "incorrect";
+                            }
+                        }catch(\Exception $e) {
+                            header("HTTP/1.0 404 Not Found");
+                            die();
                         }
                     }
                 }
@@ -48,32 +53,62 @@ class targetsController{
 
     public function getAllActiveTargets(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TargetsDAO::getAllActiveTargets($user_id));
+        try {
+            echo json_encode(TargetsDAO::getAllActiveTargets($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function pauseTarget(){
         $target_id=htmlentities(trim($_POST["id"]));
-        echo json_encode(TargetsDAO::pauseTarget($target_id));
+        try {
+            echo json_encode(TargetsDAO::pauseTarget($target_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getAllWaitingTargets(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TargetsDAO::getAllWaitingTargets($user_id));
+        try {
+            echo json_encode(TargetsDAO::getAllWaitingTargets($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function startTarget(){
         $target_id=htmlentities($_POST["id"]);
-        echo json_encode(TargetsDAO::startTarget($target_id));
+        try {
+            echo json_encode(TargetsDAO::startTarget($target_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function setTargetToFinished(){
         $target_id=htmlentities(trim($_POST["id"]));
-        echo json_encode(TargetsDAO::setTargetToFinished($target_id));
+        try {
+            echo json_encode(TargetsDAO::setTargetToFinished($target_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getAllFinishedAndSaved(){
         $user_id=$_SESSION["user"]["id"];
-        echo json_encode(TargetsDAO::getAllFinishedAndSaved($user_id));
+        try {
+            echo json_encode(TargetsDAO::getAllFinishedAndSaved($user_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function insertAmountForTarget(){
@@ -92,23 +127,43 @@ class targetsController{
 
         if(validateAmount($amount)){
             if($amount>0){
-               echo TargetsDAO::insertAmountForTarget($user_id,$amount,$target_id,$acc_id);
+                try {
+                    echo TargetsDAO::insertAmountForTarget($user_id, $amount, $target_id, $acc_id);
+                }catch(\Exception $e) {
+                    header("HTTP/1.0 404 Not Found");
+                    die();
+                }
             }
         }
     }
 
     public function getTargetName(){
         $target_id=htmlentities(trim($_GET["targetId"]));
-        echo json_encode(TargetsDAO::getTargetName($target_id));
+        try {
+            echo json_encode(TargetsDAO::getTargetName($target_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getTargetAvailableAmountInfo(){
         $targetId=htmlentities(trim($_GET["targetId"]));
-        echo json_encode(TargetsDAO::getTargetAvailableAmountInfo($targetId));
+        try {
+            echo json_encode(TargetsDAO::getTargetAvailableAmountInfo($targetId));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 
     public function getSavingsForTarget(){
         $target_id=htmlentities(trim($_GET["targetId"]));
-        echo json_encode(TargetsDAO::getSavingsForTarget($target_id));
+        try {
+            echo json_encode(TargetsDAO::getSavingsForTarget($target_id));
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
     }
 }

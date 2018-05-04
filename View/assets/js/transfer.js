@@ -52,7 +52,7 @@ function showTransferSection(){
     var selectTransferAcc=document.createElement("select");
     selectTransferAcc.setAttribute("class","form-control");
     var requestChartAcc = new XMLHttpRequest();
-    requestChartAcc.open("get", "../index.php?target=accounts&action=accNameForPositiveAcc");
+    requestChartAcc.open("get", "../index.php?target=accounts&action=chartAccountsAmounts");
     requestChartAcc.onreadystatechange = function () {
         if (requestChartAcc.status === 200 && requestChartAcc.readyState === 4) {
             var response = JSON.parse(this.responseText);
