@@ -24,7 +24,7 @@ function addCrypto() {
             console.log(str);
             document.getElementById("addCrypto").innerHTML = str;
             document.getElementById("push").innerHTML = str1;
-        }else if(request.status===401){
+        }else if(x.status===401){
             window.location.href="login.html";
         }
     }
@@ -61,7 +61,7 @@ function addCrypto() {
 
                 }
 
-            }else if(request.status===401){
+            }else if(r.status===401){
                 window.location.href="login.html";
             }
         }

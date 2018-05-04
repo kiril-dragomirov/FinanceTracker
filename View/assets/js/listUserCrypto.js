@@ -37,7 +37,7 @@ function listUserCrypto() {
             document.getElementById("listCrypto").innerHTML = str;
             console.log(str);
 
-        }else if(request.status===401){
+        }else if(xhr.status===401){
             window.location.href="login.html";
         }
     }

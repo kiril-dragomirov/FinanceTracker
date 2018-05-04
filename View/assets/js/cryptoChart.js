@@ -40,7 +40,7 @@ x.onreadystatechange = function (ev) {
             }
 
         });
-    }else if(request.status===401){
+    }else if(x.status===401){
         window.location.href="login.html";
     }
 }

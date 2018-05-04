@@ -21,7 +21,7 @@ function makeAccountTimeline(){
             var str1 = "<button type=\"submit\" class=\"btn btn-primary\" >Check</button>";
             document.getElementById("pushAcc").innerHTML = str1;
 
-        }else if(request.status===401){
+        }else if(req.status===401){
             window.location.href="login.html";
         }
     }
@@ -106,7 +106,7 @@ function makeAccountTimeline(){
 
                 document.getElementById("accTimeline").innerHTML = str20;
 
-            }else if(request.status===401){
+            }else if(re.status===401){
                 window.location.href="login.html";
             }
         }
@@ -116,129 +116,3 @@ function makeAccountTimeline(){
 
 }
 
-
-            //
-            // str2 += "            <div class=\"row\">\n" +
-            //     "                <div class=\"col-lg-12\">\n" +
-            //     "                    <!--Timeline -->\n" +
-            //     "                    <div class=\"panel panel-primary\">\n" +
-            //     "                        <div class=\"panel-heading\">\n" +
-            //     "                            <i class=\"fa fa-clock-o fa-fw\"></i>Timeline\n" +
-            //     "                        </div>\n" +
-            //     "\n" +
-            //     "                        <div class=\"panel-body\">\n" +
-            //     "                            <ul class=\"timeline\">\n" +
-            //     "                                <li>\n" +
-            //     "                                    <div class=\"timeline-badge\">\n" +
-            //     "                                        <i class=\"fa fa-check\"></i>\n" +
-            //     "                                    </div>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                            <p>\n" +
-            //     "                                                <small class=\"text-muted\"><i class=\"fa fa-time\"></i>11 hours ago via Twitter</small>\n" +
-            //     "                                            </p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li class=\"timeline-inverted\">\n" +
-            //     "                                    <div class=\"timeline-badge warning\">\n" +
-            //     "                                        <i class=\"fa fa-credit-card\"></i>\n" +
-            //     "                                    </div>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li>\n" +
-            //     "                                    <div class=\"timeline-badge danger\">\n" +
-            //     "                                        <i class=\"fa fa-credit-card\"></i>\n" +
-            //     "                                    </div>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li class=\"timeline-inverted\">\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li>\n" +
-            //     "                                    <div class=\"timeline-badge info\">\n" +
-            //     "                                        <i class=\"fa fa-save\"></i>\n" +
-            //     "                                    </div>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                            <hr>\n" +
-            //     "                                            <div class=\"btn-group\">\n" +
-            //     "                                                <button type=\"button\" class=\"btn btn-primary btn-sm dropdown-toggle\" data-toggle=\"dropdown\">\n" +
-            //     "                                                    <i class=\"fa fa-cog\"></i>\n" +
-            //     "                                                    <span class=\"caret\"></span>\n" +
-            //     "                                                </button>\n" +
-            //     "                                                <ul class=\"dropdown-menu\" role=\"menu\">\n" +
-            //     "                                                    <li><a href=\"#\">Action</a>\n" +
-            //     "                                                    </li>\n" +
-            //     "                                                    <li><a href=\"#\">Another action</a>\n" +
-            //     "                                                    </li>\n" +
-            //     "                                                    <li><a href=\"#\">Something else here</a>\n" +
-            //     "                                                    </li>\n" +
-            //     "                                                    <li class=\"divider\"></li>\n" +
-            //     "                                                    <li><a href=\"#\">Separated link</a>\n" +
-            //     "                                                    </li>\n" +
-            //     "                                                </ul>\n" +
-            //     "                                            </div>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                                <li class=\"timeline-inverted\">\n" +
-            //     "                                    <div class=\"timeline-badge success\">\n" +
-            //     "                                        <i class=\"fa fa-thumbs-up\"></i>\n" +
-            //     "                                    </div>\n" +
-            //     "                                    <div class=\"timeline-panel\">\n" +
-            //     "                                        <div class=\"timeline-heading\">\n" +
-            //     "                                            <h4 class=\"timeline-title\">Timeline Event</h4>\n" +
-            //     "                                        </div>\n" +
-            //     "                                        <div class=\"timeline-body\">\n" +
-            //     "                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel justo eu mi scelerisque vulputate. Aliquam in metus eu lectus aliquet egestas.</p>\n" +
-            //     "                                        </div>\n" +
-            //     "                                    </div>\n" +
-            //     "                                </li>\n" +
-            //     "                            </ul>\n" +
-            //     "                        </div>\n" +
-            //     "\n" +
-            //     "                    </div>\n" +
-            //     "                    <!--End Timeline -->\n" +
-            //     "                </div>\n" +
-            //     "            </div>";

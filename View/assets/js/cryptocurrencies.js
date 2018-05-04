@@ -40,7 +40,7 @@ request1.onreadystatechange = function () {
         str += "</table>";
         document.getElementById("cryp").innerHTML = str;
         console.log(str);
-    }else if(request.status===401){
+    }else if(request1.status===401){
         window.location.href="login.html";
     }
 }

@@ -59,7 +59,7 @@ function existAcc() {
             console.log(document.getElementById("da").options[document.getElementById("da").selectedIndex].value)
 
 
-        }else if(request.status===401){
+        }else if(xhr.status===401){
             window.location.href="login.html";
         }
     }
@@ -108,7 +108,7 @@ document.getElementById("but").addEventListener("click",function(){
                 document.getElementById("succ").innerHTML = this.responseText;
                 document.getElementById("errAm").style.visibility = "hidden";
             }
-        }else if(request.status===401){
+        }else if(r.status===401){
             window.location.href="login.html";
         }
     }
@@ -128,7 +128,7 @@ x.onreadystatechange = function (ev) {
             existAcc();
         }
 
-    }else if(request.status===401){
+    }else if(x.status===401){
         window.location.href="login.html";
     }
 }

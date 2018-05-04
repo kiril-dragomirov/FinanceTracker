@@ -70,7 +70,7 @@ req.onreadystatechange = function (ev) {
         document.getElementById("infoBudget").innerHTML = str;
 
         console.log(str);
-    }else if(request.status===401){
+    }else if(req.status===401){
         window.location.href="login.html";
     }
 }

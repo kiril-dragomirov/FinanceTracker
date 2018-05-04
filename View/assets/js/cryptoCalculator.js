@@ -74,7 +74,7 @@ function cryptoCalculator() {
             }
             str += "</table>";
             document.getElementById("calc").innerHTML = str;
-        }else if(request.status===401){
+        }else if(request1.status===401){
             window.location.href="login.html";
         }
     }

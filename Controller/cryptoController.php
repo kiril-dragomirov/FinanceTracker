@@ -66,11 +66,13 @@ class cryptoController
         $crypto_price = trim(htmlentities($_POST["cryptoPrice"]));
         $crypto_count = trim(htmlentities($_POST["cryptoCount"]));
         $crypto_type_cur = trim(htmlentities($_POST["typeCur"]));
-
+        try{
         $infoMess = "Incorrect data!!!";
         $checkAbb = false;
         if(!empty($crypto_abb)) {
+
             $file = file_get_contents("https://www.cryptocompare.com/api/data/coinlist/");
+
             $info = json_decode($file, true);
 
             foreach ($info as $key => $val) {
@@ -92,25 +94,27 @@ class cryptoController
             $checkPriceAndCount = false;
 
             if(!empty($crypto_price) && $crypto_price > 0 && $crypto_count > 0 && !empty($crypto_count)){
-                $checkPrice = true;
+                $checkPriceAndCount = true;
             }
 
 
             if ($checkAbb && $checkPriceAndCount) {
                 if (strlen($crypto_price) < 20 || strlen($crypto_count) < 20) {
                     echo "Success!!";
-                    try{
+
                         CryptoDAO::addCryptocurrency($crypto_name, $crypto_abb, $crypto_price, $crypto_count, $user_id, $crypto_type_cur);
-                    }catch(\Exception $e) {
-                        header("HTTP/1.0 404 Not Found");
-                        die();
-                    }
+
                 } else {
                     echo $infoMess;
                 }
             } else {
                 echo $infoMess;
             }
+
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
 
 
     }

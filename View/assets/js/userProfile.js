@@ -20,7 +20,7 @@ xhr.onreadystatechange = function (ev) {
         str +=    "            </div>";
         str +=    "      </div>";
         document.getElementById("userProf").innerHTML = str;
-    }else if(request.status===401){
+    }else if(xhr.status===401){
         window.location.href="login.html";
     }
 }
