@@ -59,7 +59,7 @@ function Validation(form){
     }else if(!reMedium.test(form.password.value.trim())){
         passwordErr.style.visibility="visible";
         passwordErr.style.color="red";
-        passwordErr.innerHTML="password must contain one Big Letter and One small letter,except number AND BE LONGER THAN 8 CHARS!";
+        passwordErr.innerHTML="password must contain one Big Letter and One small letter,except number,can contain special char!";
         errors=false;
     }else{
         passwordErr.style.visibility="hidden";

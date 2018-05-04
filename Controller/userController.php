@@ -286,42 +286,42 @@ class userController
 
                                             } else {
                                                 echo "Age incorrect";
-                                                header("location:/View/register.html");
+                                                header("location:./View/register.html");
                                             }
                                         } else {
                                             echo "age incorrect";
-                                            header("location:/View/register.html");
+                                            header("location:./View/register.html");
                                         }
 
                                     } else {
                                         echo " email incorrect";
-                                        header("location:/View/register.html");
+                                        header("location:./View/register.html");
                                     }
                                 } else {
                                     echo "family incorrect";
-                                    header("location:/View/register.html");
+                                    header("location:./View/register.html");
                                 }
                             } else {
                                 echo "name incorrect";
-                                header("location:/View/register.html");
+                                header("location:./View/register.html");
                             }
                         } else {
                             echo "password incorrect";
-                            header("location:/View/register.html");
+                            header("location:./View/register.html");
                         }
                     } else {
                         echo "repassword incorrect";
-                        header("location:/View/register.html");
+                        header("location:./View/register.html");
                     }
 
 
                 } else {
                     echo "incorrect IMG!";
-                    header("location:/View/register.html");
+                    header("location:./View/register.html");
                 }
             } else {
                 echo "incorrect";
-                header("location:/View/register.html");
+                header("location:./View/register.html");
             }
 
 //        }
