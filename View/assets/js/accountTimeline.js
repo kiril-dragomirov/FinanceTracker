@@ -21,6 +21,8 @@ function makeAccountTimeline(){
             var str1 = "<button type=\"submit\" class=\"btn btn-primary\" >Check</button>";
             document.getElementById("pushAcc").innerHTML = str1;
 
+        }else if(request.status===401){
+            window.location.href="login.html";
         }
     }
 
@@ -104,6 +106,8 @@ function makeAccountTimeline(){
 
                 document.getElementById("accTimeline").innerHTML = str20;
 
+            }else if(request.status===401){
+                window.location.href="login.html";
             }
         }
         re.send("accId=" + accId);

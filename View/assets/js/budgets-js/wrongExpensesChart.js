@@ -3,7 +3,9 @@ function wrongExpensesStat() {
     xhr.open("get", "../index.php?target=budget&action=wrongBudgeting");
     xhr.onreadystatechange = function () {
         if (!(xhr.readyState === 4 && xhr.status === 200)) {
-
+            if(request.status===401){
+                window.location.href="login.html";
+            }
         } else {
             var chart;
             var legend;

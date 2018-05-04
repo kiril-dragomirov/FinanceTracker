@@ -24,6 +24,8 @@ function addCrypto() {
             console.log(str);
             document.getElementById("addCrypto").innerHTML = str;
             document.getElementById("push").innerHTML = str1;
+        }else if(request.status===401){
+            window.location.href="login.html";
         }
     }
     x.send();
@@ -59,6 +61,8 @@ function addCrypto() {
 
                 }
 
+            }else if(request.status===401){
+                window.location.href="login.html";
             }
         }
         r.send("cryptoAbb=" + cryptoAbb + "&cryptoPrice=" + price + "&cryptoCount=" + count + "&typeCur=" + typeCur);

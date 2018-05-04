@@ -59,11 +59,10 @@ function existAcc() {
             console.log(document.getElementById("da").options[document.getElementById("da").selectedIndex].value)
 
 
+        }else if(request.status===401){
+            window.location.href="login.html";
         }
     }
-
-
-
 
 xhr.send();
 //ADDING EVENT ON THE BUTTON
@@ -109,6 +108,8 @@ document.getElementById("but").addEventListener("click",function(){
                 document.getElementById("succ").innerHTML = this.responseText;
                 document.getElementById("errAm").style.visibility = "hidden";
             }
+        }else if(request.status===401){
+            window.location.href="login.html";
         }
     }
     r.send("account_id="+ str1 +"&budget_amount=" + e3 +"&category_id="+ str2 + "&date_from=" + e4 + "&date_to=" + e5);
@@ -127,6 +128,8 @@ x.onreadystatechange = function (ev) {
             existAcc();
         }
 
+    }else if(request.status===401){
+        window.location.href="login.html";
     }
 }
 x.send();
