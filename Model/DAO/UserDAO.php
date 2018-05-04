@@ -71,5 +71,17 @@ class UserDAO extends DAO
         return $row;
     }
 
+    public static function lastLogin($user_id){
+        $statement = self::$pdo->prepare("SELECT date FROM logs WHERE user_id=? ORDER BY date desc;");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result[1];
+
+    }
+
 
 }

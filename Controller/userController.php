@@ -355,4 +355,17 @@ class userController
             die();
         }
     }
+
+
+    public function lastLogin(){
+        $user_id = $_SESSION["user"]["id"];
+        try{
+            $lastLogin = UserDAO::lastLogin($user_id);
+
+            echo json_encode($lastLogin);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
+    }
 }
