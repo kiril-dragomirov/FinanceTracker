@@ -31,11 +31,15 @@ class budgetController
             $category_id = htmlentities($_POST["category_id"]);
             $date_from = htmlentities($_POST["date_from"]);
             $date_to = htmlentities($_POST["date_to"]);
-            if ($budget_amount > 0) {
-                echo "Success!";
-                BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
-            } else {
-                echo "not enough amount!";
+            if(!empty($date_from) && !empty($date_to)) {
+                if ($budget_amount > 0) {
+                    echo "Success!";
+                    BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                } else {
+                    echo "not enough amount!";
+                }
+            }else{
+                echo "Incorrect data!!!";
             }
         }catch(\Exception $e) {
                 header("HTTP/1.0 404 Not Found");

@@ -173,8 +173,14 @@ class accountsController
         }
     }
 
-//    public function accNameForPositiveAcc(){
-//        $user_id=$_SESSION["user"]["id"];
-//        echo json_encode(AccountsDAO::accNameForPositiveAcc($user_id));
-//    }
+    public function makeAccountTimeline(){
+        $acc_id=trim(htmlentities($_POST["accId"]));
+        try {
+            $info = AccountsDAO::makeTimeline($acc_id);
+            echo json_encode($info);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
+    }
 }

@@ -72,6 +72,7 @@ class BudgetDAO extends DAO
     }
 
     public static function wrongBudgeting($user_id){
+        $expenses = 2;
         $statement = self::$pdo->prepare("SELECT b.id as budgetId,
                                                     (b.amount - SUM(t.amount)) as minusAmount, 
                                                     b.date_from as startBudget,
@@ -85,10 +86,10 @@ class BudgetDAO extends DAO
                                                     ON b.account_id = a.id
                                                     WHERE a.user_id = ?
                                                     AND b.amount < t.amount
-                                                    AND t.type_id = 2
+                                                    AND t.type_id = ?
                                                     AND t.date BETWEEN b.date_from AND b.date_to
                                                     GROUP BY b.date_from ");
-        $statement->execute([$user_id]);
+        $statement->execute([$user_id,$expenses]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
             $result[] = $row;
@@ -98,6 +99,7 @@ class BudgetDAO extends DAO
     }
 
     public static function differentBudgetLoading($user_id){
+        $expenses = 2;
         $statement = self::$pdo->prepare("SELECT  b.amount as budgetAmount, SUM(t.amount) as transactAmount, 
                                                     CONCAT( c.name,\", \", a.name ,\" ( \",b.date_from ,\" / \", b.date_to , \" ) \",\", budget money: \", b.amount) as fromTo
                                                     FROM budgets as b
@@ -110,10 +112,10 @@ class BudgetDAO extends DAO
                                                     WHERE a.user_id = ? 
                                                     AND now() BETWEEN b.date_from AND b.date_to OR t.date = b.date_from
                                                     AND b.category_id = t.category_id 
-                                                    AND t.type_id = 2 
+                                                    AND t.type_id = ? 
                                                     AND t.date BETWEEN b.date_from AND b.date_to OR t.date = b.date_from
                                                     GROUP BY b.id");
-        $statement->execute([$user_id]);
+        $statement->execute([$user_id,$expenses]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
             $result[] = $row;

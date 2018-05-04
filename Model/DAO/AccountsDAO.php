@@ -273,40 +273,26 @@ class AccountsDAO extends DAO
         return $result;
     }
 
-//    static public function accNameForPositiveAcc($user_id){
-//        $typeIncomeId=1;
-//        $typeExpenseId=2;
-//        $statement=self::$pdo->prepare("SELECT
-//                                  a.user_id,a.id,a.name,(IF(income IS NULL,0,income)- IF(expense IS NULL,0,expense)) as Total
-//                                        FROM
-//                                            accounts AS a
-//                                                LEFT JOIN
-//                                                (SELECT
-//                                                account_id AS acc_id, SUM(amount) AS income
-//                                            FROM
-//                                                transactions AS i
-//                                            WHERE
-//                                                type_id = 1
-//                                            GROUP BY account_id) AS t ON a.id = acc_id
-//                                                LEFT JOIN
-//                                                (SELECT
-//                                                account_id AS expense_acc_id, SUM(amount) AS expense
-//                                            FROM
-//                                                transactions AS e
-//                                            WHERE
-//                                                type_id = 2
-//                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
-//                                        HAVING a.user_id =?");
-//        $statement->execute([$user_id]);
-//        $result=[];
-//        while($row=$statement->fetch(\PDO::FETCH_ASSOC)){
-//            $result[]=$row;
-//        }
-//        return $result;
-//
-//    }
+    public static function makeTimeline($acc_id){
+        $statement = self::$pdo->prepare("SELECT c.name as category, ty.name as type, t.amount as amount,  
+                                                    a.name as account 
+                                                    FROM transactions as t
+                                                    JOIN categories as c
+                                                    ON t.category_id = c.id
+                                                    JOIN type_transactions as ty
+                                                    ON t.type_id = ty.id
+                                                    JOIN accounts as a
+                                                    ON t.account_id = a.id
+                                                    WHERE a.id = ?
+                                                    ORDER BY t.date DESC");
+        $statement->execute([$acc_id]);
+        $result = [];
+        while ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
 
-
+            $result[] = $row;
+        }
+        return $result;
+    }
 
 
 }

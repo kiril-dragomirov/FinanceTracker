@@ -98,6 +98,11 @@ document.getElementById("but").addEventListener("click",function(){
                 document.getElementById("errAm").style.color = "red";
                 document.getElementById("errAm").innerHTML = this.responseText;
                 document.getElementById("succ").style.visibility = "hidden";
+            }else if(this.responseText == "Incorrect data!!!"){
+                document.getElementById("succ").style.visibility = "visible";
+                document.getElementById("succ").style.color = "red";
+                document.getElementById("succ").innerHTML = this.responseText;
+                document.getElementById("errAm").style.visibility = "hidden";
             }else{
                 document.getElementById("succ").style.visibility = "visible";
                 document.getElementById("succ").style.color = "green";
