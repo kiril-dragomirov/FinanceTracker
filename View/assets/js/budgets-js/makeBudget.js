@@ -26,7 +26,7 @@ function existAcc() {
 
             str6 += "</select></div>";
             document.getElementById("account").innerHTML = str6;
-            var str1 = "<div class=\"form-group\"><label>Type Amount</label><input type=\"number\" class=\"form-control\" id=\"am\"></div>";
+            var str1 = "<div class=\"form-group\"><label>Type Amount</label><input type=\"number\" min=\"0\"class=\"form-control\" id=\"am\"></div>";
             document.getElementById("amount").innerHTML = str1;
             var str2 = "<div class=\"form-group\"><label>Select category</label><select class=\"form-control\" id=\"cate\">";
 
@@ -41,11 +41,15 @@ function existAcc() {
             str2 += "</select></div>";
             document.getElementById("category").innerHTML = str2;
 
-            var str3 = "<div class=\"form-group\"><label>Date From </label><form><input class=\"form-control\" type=\"date\" id=\"datepicker\" ></form></div>";
+            var str3 = "<div class=\"form-group\"><label>Date From </label><form><input class=\"form-control\" type=\"date\" min=\"";
+            str3 +=  new Date().toJSON().slice(0,10);
+            str3 += "\"id=\"datepicker\" ></form></div>";
             document.getElementById("from").innerHTML = str3;
 
 
-            var str4 = "<div class=\"form-group\"><label>Date To</label><input class=\"form-control\" type=\"date\" id=\"dateto\" ></div>";
+            var str4 = "<div class=\"form-group\"><label>Date To</label><input class=\"form-control\" type=\"date\" min=\"";
+            str4 +=  new Date().toJSON().slice(0,10);
+            str4 += "\"id=\"dateto\" ></form></div>";
             document.getElementById("to").innerHTML = str4;
 
             var str = "<button type=\"submit\"  class=\"btn btn-primary\" >Make a plan</button>";
@@ -84,6 +88,10 @@ document.getElementById("but").addEventListener("click",function(){
             console.log(e3);
             console.log(e4);
             console.log(e5);
+            var currentDate=  new Date().toJSON().slice(0,10);
+            if(str1 < currentDate || str2 < currentDate){
+                document.getElementById("errAm").innerHTML = "Invalid data in from-to fields!";
+            }
             //console.log(this.responseText);
             if(this.responseText == "not enough amount!") {
                 document.getElementById("errAm").style.visibility = "visible";

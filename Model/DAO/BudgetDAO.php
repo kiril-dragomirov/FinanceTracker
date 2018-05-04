@@ -31,8 +31,8 @@ class BudgetDAO extends DAO
 
     public static function makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to){
         $statement = self::$pdo->prepare("INSERT INTO budgets (account_id, amount, date_from, date_to, category_id) 
-                                                    VALUES (?,?,now(),now(),?)");
-        $statement->execute([$account_id,$budget_amount,$category_id]);
+                                                    VALUES (?,?,?,?,?)");
+        $statement->execute([$account_id,$budget_amount,$date_from,$date_to,$category_id]);
     }
 
     public static function selectCategories($user_id){
