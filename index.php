@@ -42,5 +42,7 @@ $controllerClassName = '\\Controller\\' . $controllerName . 'Controller';
 
     if ($fileNotFound) {
         //return header 404
+
         echo 'target or action invalid: target = ' . $controllerName . ' and action = ' . $methodName;
+        header("location:./View/404.html");
     }
