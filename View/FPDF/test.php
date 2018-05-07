@@ -19,36 +19,33 @@ catch (PDOException $e){
 }
 $user_id = $_SESSION["user"]["id"];
 
-    $statement = $pdo->prepare("SELECT a.id, a.name, (SUM(t.amount)) as expense FROM accounts as a
-                                            JOIN transactions as t
-                                            ON t.account_id = a.id
-                                            JOIN users as u
-                                            ON a.user_id = u.id
-                                            WHERE type_id = 2
-                                            AND u.id = 9
-                                            GROUP BY t.account_id");
-    $expense = [];
+    $statement = $pdo->prepare("SELECT 
+                                            a.id, a.name, a.user_id, income, expense
+                                        FROM
+                                            accounts AS a
+                                                LEFT JOIN
+                                            (SELECT 
+                                                account_id AS acc_id, SUM(amount) AS income
+                                            FROM
+                                                transactions AS i
+                                            WHERE
+                                                type_id = 1
+                                            GROUP BY account_id) AS t ON a.id = acc_id
+                                                LEFT JOIN
+                                            (SELECT 
+                                                account_id AS expense_acc_id, SUM(amount) AS expense
+                                            FROM
+                                                transactions AS e
+                                            WHERE
+                                                type_id = 2
+                                            GROUP BY account_id) AS te ON a.id = expense_acc_id
+                                            HAVING a.user_id=?");
+    $info = [];
     $statement->execute([$user_id]);
     while($row = $statement->fetch(PDO::FETCH_ASSOC)) {
-        $expense[]=$row;
+        $info[]=$row;
     }
 
-
-$stat = $pdo->prepare("SELECT a.id, a.name, (SUM(t.amount)) as income FROM accounts as a
-                                            JOIN transactions as t
-                                            ON t.account_id = a.id
-                                            JOIN users as u
-                                            ON a.user_id = u.id
-                                            WHERE type_id = 1
-                                            AND u.id = 9
-                                            GROUP BY t.account_id");
-$income = [];
-$stat->execute([$user_id]);
-while($row = $stat->fetch(PDO::FETCH_ASSOC)) {
-    $income[]=$row;
-}
-
-$arr = array_merge($income,$expense);
 
 $firstname = $_SESSION["user"]["name"];
 $lastname = $_SESSION["user"]["family_name"];
@@ -61,12 +58,12 @@ $pdf->SetFont("Arial","B",12);
 $pdf->Cell( 50, 10, $pdf->Image("logoFinance.png", $pdf->GetX() + 40 , $pdf->GetY(), 133.78), 0, 0, 'R', false );
 $pdf->Cell(0,100," Name: {$lastname} , {$firstname}",0,0,"C");
 $pdf->Cell(0,60,"",0,1,"C");
-for($i = 0; $i < count($arr); $i++) {
+for($i = 0; $i < count($info); $i++) {
     $count = 1;
-    foreach ($arr as $key=>$value) {
+    foreach ($info as $key=>$value) {
         if($count == 1) {
 
-                $pdf->Cell(0, 15, "id: {$arr[$i]["id"]}      name: {$arr[$i]["name"]}      ", 1, 0, "L");
+                $pdf->Cell(0, 15, "id: {$info[$i]["id"]}                name: {$info[$i]["name"]}                  income:  {$info[$i]["income"]}                expense: {$info[$i]["expense"]}", 1, 0, "L");
                 $pdf->Cell(0, 5, "", 1, 1, "C");
                 break;
 

@@ -49,7 +49,7 @@ function addCrypto() {
                 }
                 console.log(price);
                 console.log(typeCur);
-                if (this.responseText == "Incorrect data!!!") {
+                if (this.responseText == "Incorrect data!!!" || this.responseText == "You can't buy BTC with BTC!!!") {
                     document.getElementById("errHolder").style.visibility = "visible";
                     document.getElementById("errHolder").style.color = "red";
                     document.getElementById("errHolder").innerHTML = this.responseText;

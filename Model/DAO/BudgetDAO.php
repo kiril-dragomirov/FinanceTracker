@@ -18,10 +18,12 @@ class BudgetDAO extends DAO
         $statement->execute([$budget->getAccountId(),
             $budget->getBudjetAmount(),
             $budget->getDateFrom(),
-            $budget->getDateTo()]);
+            $budget->getDateTo(),
+            $budget->getCategoryId()]);
     }
 
     public static function selectAccounts($user_id){
+        $otherCat = 12;
         $statement = self::$pdo->prepare("SELECT id, name FROM accounts WHERE user_id=?");
         $statement->execute([$user_id]);
         $arr = [];
@@ -30,8 +32,9 @@ class BudgetDAO extends DAO
         }
         $statement = self::$pdo->prepare("SELECT id as id_cat, name as cat 
                                                     FROM categories 
-                                                    WHERE user_id=? OR  user_id=0");
-        $statement->execute([$user_id]);
+                                                    WHERE (user_id=? OR  user_id=0)
+                                                    AND id != ? ");
+        $statement->execute([$user_id, $otherCat]);
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
             $arr[] = $row;
         }

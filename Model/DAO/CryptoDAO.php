@@ -8,6 +8,8 @@
 
 namespace Model\Dao;
 
+use Model\Crypto;
+
 
 class CryptoDAO extends DAO
 {
@@ -24,10 +26,15 @@ class CryptoDAO extends DAO
         return $result;
     }
 
-    public static function addCryptocurrency($crypto_name, $crypto_abb, $crypto_price, $crypto_count, $user_id,$crypto_type_cur){
+    public static function addCryptocurrency(Crypto $crypto){
         $statement = self::$pdo->prepare("INSERT INTO cryptocurrencies (name,abbreviation,user_id,price,count,currency_id) 
                                                     VALUES (?,?,?,?,?,?)");
-        $statement->execute([$crypto_name,$crypto_abb,$user_id,$crypto_price,$crypto_count,$crypto_type_cur]);
+        $statement->execute([$crypto->getCryptoName(),
+                            $crypto->getCryptoAbb(),
+                            $crypto->getId(),
+                            $crypto->getCryptoPrice(),
+                            $crypto->getCryptoCount(),
+                            $crypto->getCryptoTypeCur()]);
     }
 
     public static function checkCryptoAbb($crypto_abb, $user_id){

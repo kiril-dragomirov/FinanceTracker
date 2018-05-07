@@ -6,6 +6,7 @@
  * Time: 10:28 AM
  */
 namespace Controller;
+use Model\Crypto;
 use Model\DAO\CryptoDAO;
 
 class cryptoController
@@ -59,7 +60,7 @@ class cryptoController
         $crypto_price = trim(htmlentities($_POST["cryptoPrice"]));
         $crypto_count = trim(htmlentities($_POST["cryptoCount"]));
         $crypto_type_cur = trim(htmlentities($_POST["typeCur"]));
-        try{
+
         $infoMess = "Incorrect data!!!";
         $checkAbb = false;
         if(!empty($crypto_abb)) {
@@ -93,9 +94,19 @@ class cryptoController
 
             if ($checkAbb && $checkPriceAndCount) {
                 if (strlen($crypto_price) < 20 || strlen($crypto_count) < 20) {
-                    echo "Success!!";
-
-                        CryptoDAO::addCryptocurrency($crypto_name, $crypto_abb, $crypto_price, $crypto_count, $user_id, $crypto_type_cur);
+                    if($crypto_abb !== "BTC" && $crypto_type_cur !== "BTC") {
+                        echo "Success!!";
+                        $crypto = new Crypto();
+                        $crypto->cryptoConst($crypto_name, $crypto_abb, $crypto_price, $crypto_count, $user_id, $crypto_type_cur);
+                        try {
+                            CryptoDAO::addCryptocurrency($crypto);
+                        } catch (\Exception $e) {
+                            header("HTTP/1.0 404 Not Found");
+                            die();
+                        }
+                    }else{
+                        echo "You can't buy BTC with BTC!!!";
+                    }
 
                 } else {
                     echo $infoMess;
@@ -104,10 +115,7 @@ class cryptoController
                 echo $infoMess;
             }
 
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
+
 
 
     }
