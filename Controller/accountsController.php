@@ -184,4 +184,12 @@ class accountsController
             die();
         }
     }
+
+    public function takePDF(){
+
+
+            }
+
 }
+
+

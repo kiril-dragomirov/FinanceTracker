@@ -5,7 +5,7 @@ req.onreadystatechange = function (ev) {
     if(req.status === 200 && req.readyState === 4) {
         var response = 4;
         var str = "";
-
+        console.log(this.responseText);
         var res = JSON.parse(this.responseText);
         console.log(res);
 
@@ -69,7 +69,7 @@ req.onreadystatechange = function (ev) {
 
         document.getElementById("infoBudget").innerHTML = str;
 
-        console.log(str);
+       // console.log(str);
     }else if(req.status===401){
         window.location.href="login.html";
     }

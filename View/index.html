@@ -35,6 +35,11 @@
 
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" id="pdfDown" onclick="takePDF();" href=" ">
+                        <i class="fa fa-download fa-3x"></i>
+                    </a>
+                </li>
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" id="edit" href="edit.html">
                         <i class="fa fa-pencil-square-o fa-3x"></i>
                     </a>
@@ -64,21 +69,7 @@
                     <li >
                         <a id="home" ><i class="fa fa-dashboard fa-fw"></i>HOME</a>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a id="budgetChart" >Budget Charts</a>
-                            </li>
-                            <li>
-                                <a id="accountChart" >Account Charts</a>
-                            </li>
-                            <li>
-                                <a id="crChart" >Cryptocurrency Chart</a>
-                            </li>
-                        </ul>
-                        <!-- second-level-items -->
-                    </li>
+
                     <li >
                         <a id="budgetForm" ><i class="fa fa-money fa-fw"></i> Create Budget</a>
                     </li>
@@ -111,6 +102,21 @@
                                 <a id="categoryTimeline" >Category Timeline</a>
                             </li>
 
+                        </ul>
+                        <!-- second-level-items -->
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a id="budgetChart" >Budget Charts</a>
+                            </li>
+                            <li>
+                                <a id="accountChart" >Account Charts</a>
+                            </li>
+                            <li>
+                                <a id="crChart" >Cryptocurrency Chart</a>
+                            </li>
                         </ul>
                         <!-- second-level-items -->
                     </li>
@@ -154,6 +160,9 @@
                 $('#div1').load('categoryTimeline.html');
                 $("#main").hide();
             });
+
+
+
             $("#accountTimeline").click(function () {
                 $('#div1').load('accountTimeline.html');
                 $("#main").hide();
@@ -223,6 +232,7 @@
     <script src="assets/js/logout.js"></script>
     <script src="./assets/js/checkIfUserIsLogged.js"></script>
     <script src="./assets/js/userProfile.js"></script>
+    <script src="./assets/js/takePDF.js"></script>
     <!-- Core Scripts - Include with every page -->
     <!--<script src="assets/plugins/jquery-1.10.2.js"></script>-->
     <script src="assets/plugins/bootstrap/bootstrap.min.js"></script>

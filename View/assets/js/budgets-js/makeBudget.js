@@ -87,10 +87,7 @@ document.getElementById("but").addEventListener("click",function(){
             console.log(e3);
             console.log(e4);
             console.log(e5);
-            var currentDate=  new Date().toJSON().slice(0,10);
-            if(str1 < currentDate || str2 < currentDate){
-                document.getElementById("errAm").innerHTML = "Invalid data in from-to fields!";
-            }
+
             //console.log(this.responseText);
             if(this.responseText == "not enough amount!") {
                 document.getElementById("errAm").style.visibility = "visible";
