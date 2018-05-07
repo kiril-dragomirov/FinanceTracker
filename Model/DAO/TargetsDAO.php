@@ -24,16 +24,16 @@ class TargetsDAO extends DAO
         return $result;
     }
 
-    static public function insertTarget($user_id, $amount, $name)
+    static public function insertTarget(Targets $target)
     {
         $statement = self::$pdo->prepare("SELECT COUNT(name) as count FROM targets WHERE name=? AND user_id=?");
-        $statement->execute([$name,$user_id]);
+        $statement->execute([$target->getTargetName(),$target->getUserId()]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         if ($row["count"] == 0) {
             $insert = self::$pdo->prepare("INSERT INTO targets(user_id,name,amount,type_target)
                                                     VALUES (?,?,?,?)");
             $typeTargetId=1;
-            $insert->execute([$user_id, $name, $amount, $typeTargetId]);
+            $insert->execute([$target->getUserId(), $target->getTargetName(), $target->getTargetAmount(), $typeTargetId]);
             return true;
         } else {
             return false;

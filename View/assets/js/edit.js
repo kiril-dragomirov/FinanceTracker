@@ -13,6 +13,7 @@ function getUserEditInfo(){
             document.getElementById("email").value=response["email"];
             var img=document.createElement("IMG");
             img.setAttribute("src", response["image_url"]);
+            img.style.width="350px";
             document.getElementById("curAvatar").appendChild(img);
         }else if(request.status===401){
             window.location.href="login.html";
@@ -42,9 +43,9 @@ function Validation(form){
 
 
     //regex for password;
-    var reMedium = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])");
-
+    var reMedium = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
     //regex for Age;
+
     var reAge=/\s[0-1]{1}[0-9]{0,3}/;
 
     if(form.name.value.trim()!==""){
@@ -83,7 +84,7 @@ function Validation(form){
      if (!reMedium.test(form.password.value.trim())) {
             passwordErr.style.visibility = "visible";
             passwordErr.style.color = "red";
-            passwordErr.innerHTML = "password must contain one Big Letter and One small letter,except number,can contain special char";
+            passwordErr.innerHTML = "password must contain one Big Letter and One small letter,Numbers, and be 8 chars long,can contain special char";
             errors = false;
         } else {
             passwordErr.style.visibility = "hidden";

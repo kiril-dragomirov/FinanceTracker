@@ -151,7 +151,7 @@ function configChart(chartData) {
     console.log("am chart ready");
     // PIE CHART
     var chart = new AmCharts.AmPieChart();
-    chart.addTitle("Total amount", 16);
+    chart.addTitle("Total amount available in each account according all accounts", 16);
     chart.dataProvider = chartData;
     chart.titleField = "name";
     chart.valueField = "Total";

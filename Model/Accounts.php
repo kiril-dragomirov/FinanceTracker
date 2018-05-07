@@ -13,16 +13,33 @@ class Accounts extends User
 
 
     protected $acc_name;
-    protected $expenses;
+    protected $available_amount;
     protected $incomes;
 
-    public function Acc($name, $expense, $income)
+    public function Acc($name, $available_amount,$user_id)
     {
-        $this->expenses = $expense;
-        $this->incomes = $income;
+        $this->available_amount = $available_amount;
         $this->acc_name = $name;
+        $this->user_id=$user_id;
 
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAvailableAmount()
+    {
+        return $this->available_amount;
+    }
+
+    /**
+     * @param mixed $amount
+     */
+    public function setAvailableAmount($amount)
+    {
+        $this->available_amount = $amount;
+    }
+
 
 
     /**

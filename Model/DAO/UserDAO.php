@@ -58,9 +58,15 @@ class UserDAO extends DAO
         return $row;
     }
 
-   static public function editUser($name,$family,$password,$email,$image_url,$age,$id){
+   static public function editUser(User $user){
         $statement=self::$pdo->prepare("UPDATE users SET name=?,family_name=?,password=?,email=?,image_url=?,age=? WHERE id=? ");
-        $statement->execute([$name,$family,$password,$email,$image_url,$age,$id]);
+        $statement->execute([$user->getName(),
+            $user->getFamily(),
+            $user->getPassword(),
+            $user->getEmail(),
+            $user->getAvatar(),
+            $user->getAge(),
+            $user->getUserId()]);
     }
 
     public static function takeInfoUser($user_id){

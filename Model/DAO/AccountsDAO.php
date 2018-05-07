@@ -141,34 +141,41 @@ class AccountsDAO extends DAO
 
     }
 
-    static public function checkIfAccountExistsAndInsert($name, $amount, $id)
+    static public function checkIfAccountExistsAndInsert(Accounts $accounts)
     {
         //First Check if user has less than 4 ACCs, only 4 is possible for each user
         $numberAcc = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE user_id=?");
-        $numberAcc->execute([$id]);
+        $numberAcc->execute([$accounts->getUserId()]);
         $result = $numberAcc->fetch(\PDO::FETCH_ASSOC);
         $maxNumberOfAccounts=4;//which means that each user can have only 4 accounts.
         if ($result["count"] <= $maxNumberOfAccounts) {
             //Check if that Acc already exist for this user
             $statement = self::$pdo->prepare("SELECT count(*) as count FROM accounts WHERE name=? AND user_id=?");
-            $statement->execute([$name, $id]);
+            $statement->execute([$accounts->getAccName(),
+                                 $accounts->getUserId()]);
             $row = $statement->fetch(\PDO::FETCH_ASSOC);
             if ($row["count"] == 0) {
                 try {
                     $trans = self::$pdo->beginTransaction();
                     $insert = self::$pdo->prepare("INSERT INTO accounts(user_id,name) VALUES (?,?)");
-                    $insert->execute([$id, $name]);
+                    $insert->execute([$accounts->getUserId(),
+                                        $accounts->getAccName()]);
                     //Using ---LAST_INSERT_ID()--- we get last inserted ID in DB!;
                     $firstIncomeCategoryId=1;
                     $firstTypeIdIncome=1;
                     $insertTrans = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
                                                            VALUES (LAST_INSERT_ID(),?,?,now(),?)");
-                    $insertTrans->execute([$amount,$firstIncomeCategoryId,$firstTypeIdIncome]);
+                    $insertTrans->execute([$accounts->getAvailableAmount(),
+                        $firstIncomeCategoryId,
+                        $firstTypeIdIncome]);
                     $trans = self::$pdo->commit();
                     return true;
                 } catch (\PDOException $e) {
                     $trans = self::$pdo->rollBack();
-                    return false;
+                    throw new \Exception($e);
+//                    return false;
+
+
                 }
             }
             return false;
@@ -236,6 +243,7 @@ class AccountsDAO extends DAO
             $trans = self::$pdo->commit();
         } catch (\PDOException $e) {
             $trans = self::$pdo->rollBack();
+            throw new \Exception($e);
         }
     }
 

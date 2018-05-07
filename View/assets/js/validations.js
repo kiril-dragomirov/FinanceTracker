@@ -18,7 +18,7 @@ function Validation(form){
 
     //regex for password;
     //var reMedium = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
-    var reMedium = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
+    var reMedium = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/;
 
     //regex for Age;
     var reAge=/\s[0-1]{1}[0-9]{0,3}/;
@@ -59,7 +59,7 @@ function Validation(form){
     }else if(!reMedium.test(form.password.value.trim())){
         passwordErr.style.visibility="visible";
         passwordErr.style.color="red";
-        passwordErr.innerHTML="password must contain one Big Letter and One small letter,except number,can contain special char!";
+        passwordErr.innerHTML="password must contain one Big Letter and One small letter,Numbers, and be 8 chars long,can contain special char";
         errors=false;
     }else{
         passwordErr.style.visibility="hidden";

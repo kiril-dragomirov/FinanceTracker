@@ -21,7 +21,7 @@ class User implements \JsonSerializable
     protected $password;
     protected $email;
     protected $avatar;
-
+    protected $user_id;
     /**
      * User constructor.
      * @param $name
@@ -36,7 +36,7 @@ class User implements \JsonSerializable
 
     public function First($name, $family, $age, $password, $email, $avatar, $id=0)
     {
-        $this->id=$id;
+        $this->user_id=$id;
         $this->name = $name;
         $this->family = $family;
         $this->age = $age;
@@ -48,6 +48,24 @@ class User implements \JsonSerializable
     /**
      * @return mixed
      */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @param mixed $user_id
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
+
+    /**
+     * @return mixed
+     */
+
+
     public function getName()
     {
         return $this->name;

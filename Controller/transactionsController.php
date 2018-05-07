@@ -75,8 +75,9 @@ class transactionsController
                 if (validateNameAcc($categoryName)) {
                     if (validateAmount($amount)) {
                         try {
-                            if (TransactionsDAO::insertTransactionAndAddCategory($accountId, $amount, $categoryName, $typeId, $iconId,
-                                $_SESSION["user"]["id"])) {
+                            $transaction=new Transactions();
+                            $transaction->Transaction($amount,0,$accountId,$typeId,$_SESSION["user"]["id"]);
+                            if (TransactionsDAO::insertTransactionAndAddCategory($transaction,$categoryName, $iconId)) {
                                 echo "correct";
                             } else {
                                 echo "incorrect";
@@ -209,7 +210,9 @@ class transactionsController
         if(validateAmount($amount)){
             if(validateId($user_to)){
                 try {
-                    echo TransactionsDAO::transfer($user_from, $user_to, $amount, $accId);
+                    $transfer=new Transactions();
+                    $transfer->Transfer($user_to,$user_from,$amount,$accId);
+                    echo TransactionsDAO::transfer($transfer);
                 }catch(\Exception $e) {
                     header("HTTP/1.0 404 Not Found");
                     die();

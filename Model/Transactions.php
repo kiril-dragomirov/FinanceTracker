@@ -16,12 +16,56 @@ class Transactions extends Accounts
     protected $accId;
     protected $type_id;
 
-    public function Transaction($amount,$category_id,$accId,$type_id)
+    public function Transaction($amount,$category_id,$accId,$type_id,$user_id=0)
     {
         $this->amount=$amount;
         $this->category_id=$category_id;
         $this->accId=$accId;
         $this->type_id=$type_id;
+        $this->user_id=$user_id;
+    }
+
+    protected $user_to;
+    protected $user_from;
+
+    /**
+     * @return mixed
+     */
+    public function getUserTo()
+    {
+        return $this->user_to;
+    }
+
+    /**
+     * @param mixed $user_to
+     */
+    public function setUserTo($user_to)
+    {
+        $this->user_to = $user_to;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserFrom()
+    {
+        return $this->user_from;
+    }
+
+    /**
+     * @param mixed $user_from
+     */
+    public function setUserFrom($user_from)
+    {
+        $this->user_from = $user_from;
+    }
+
+
+    public function Transfer($user_to,$user_from,$amount,$accountId){
+        $this->user_to=$user_to;
+        $this->user_from=$user_from;
+        $this->amount=$amount;
+        $this->accId=$accountId;
     }
 
 

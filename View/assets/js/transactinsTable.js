@@ -34,6 +34,29 @@ function searchTable(acc_id,type_id,date_from,date_to) {
             if (request.readyState === 4 && request.status === 200) {
                 var response = JSON.parse(this.responseText);
                 console.log(this.responseText);
+                var tr=document.createElement("tr");
+                var th1=document.createElement("th");
+                th1.innerHTML="Account Name";
+                tr.appendChild(th1);
+                tbody.appendChild(tr);
+                var th2=document.createElement("th");
+                th2.innerHTML="Amount Income/Expense";
+                tr.appendChild(th2);
+                var th3=document.createElement("th");
+                th3.innerHTML="Category Name";
+                tr.appendChild(th3);
+                var th4=document.createElement("th");
+                th4.innerHTML="Remove";
+                tr.appendChild(th4);
+                var th5=document.createElement("th");
+                th5.innerHTML="Date and Icon";
+                tr.appendChild(th5);
+                // var th6=document.createElement("th");
+                // th6.innerHTML="Icon";
+                // tr.appendChild(th6);
+                tbody.appendChild(tr);
+
+
                 for (var i in response) {
                     var tr = document.createElement("tr");
                     tr.id = "tr" + response[i]["ID"];

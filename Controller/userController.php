@@ -52,7 +52,7 @@ class userController
                 $lowercase = preg_match('@[a-z]@', $password);
                 $number = preg_match('@[0-9]@', $password);
 
-                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0) {
+                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0 || strlen($password)<8) {
                     return false;
                 } else {
                     return true;
@@ -158,8 +158,9 @@ class userController
 
                         if($edit===true) {
                             try {
-                                UserDAO::editUser($_SESSION["user"]["name"], $_SESSION["user"]["family_name"], $_SESSION["user"]["password"],
-                                    $_SESSION["user"]["email"], $url, $_SESSION["user"]["age"], $_SESSION["user"]["id"]);
+                                $user = new User();
+                                $user->First($name, $family_name, $age, sha1($password), $email, $url,$_SESSION["user"]["id"]);
+                                UserDAO::editUser($user);
                                 header("location: View/edit.html");
                             }catch(\Exception $e){
                                 header("HTTP/1.0 404 Not Found");
@@ -218,7 +219,7 @@ class userController
                 $lowercase = preg_match('@[a-z]@', $password);
                 $number = preg_match('@[0-9]@', $password);
 
-                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0) {
+                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0 || strlen($password)<8) {
                     return false;
                 } else {
                     return true;

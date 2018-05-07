@@ -35,7 +35,9 @@ class targetsController{
                 if (validateNameAcc($name)) {
                     if (validateAmount($amount)) {
                         try {
-                            $result = $accounts = TargetsDAO::insertTarget($user_id, $amount, $name);
+                            $target=new Targets();
+                            $target->Target($name,$user_id,$amount);
+                            $result = $accounts = TargetsDAO::insertTarget($target);
                             if ($result) {
                                 echo "correct";
                             } else {

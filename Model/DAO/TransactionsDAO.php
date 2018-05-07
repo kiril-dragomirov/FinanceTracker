@@ -23,33 +23,34 @@ class TransactionsDAO extends DAO
 
     }
 
-    static public function insertTransactionAndAddCategory($accountId, $amount, $categoryName, $typeId, $iconId, $user_id)
+    static public function insertTransactionAndAddCategory(Transactions $transaction,$categoryName, $iconId)
     {
         $statement = self::$pdo->prepare("SELECT a.id FROM categories as a WHERE a.name=?
                                                                     AND a.user_id=? AND a.user_id>0");
-        $statement->execute([$categoryName, $user_id]);
+        $statement->execute([$categoryName, $transaction->getUserId()]);
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
         if ($row["id"] == null) {
             try {
                 $trans = self::$pdo->beginTransaction();
                 $insertCategory = self::$pdo->prepare("INSERT INTO categories(name,image_id,user_id) VALUES (?,?,?)");
-                $insertCategory->execute([$categoryName, $iconId, $user_id]);
+                $insertCategory->execute([$categoryName, $iconId, $transaction->getUserId()]);
 
                 $insertTransaction = self::$pdo->prepare("INSERT INTO transactions( category_id,account_id,amount,
                                                        date,type_id) VALUES ( LAST_INSERT_ID(),?,?,now(),?)");
-                $insertTransaction->execute([$accountId, $amount, $typeId]);
+                $insertTransaction->execute([$transaction->getAccId(), $transaction->getAmount(), $transaction->getTypeId()]);
 
 
                 $trans = self::$pdo->commit();
                 return true;
             } catch (\PDOException $e) {
                 $trans = self::$pdo->rollBack();
-                return false;
+                throw new \Exception($e);
+//                return false;
             }
         } else {
             $insertTransaction = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,
                                                         category_id,date,type_id) VALUES (?,?,?,now(),?)");
-            $insertTransaction->execute([$accountId, $amount, $row["id"], $typeId]);
+            $insertTransaction->execute([$transaction->getAccId(), $transaction->getAmount(), $row["id"], $transaction->getTypeId()]);
             return true;
         }
     }
@@ -256,7 +257,7 @@ class TransactionsDAO extends DAO
         return $result;
     }
 
-    static public function transfer($user_from,$user_to,$amount,$accId){
+    static public function transfer(Transactions $transfer){
         try{
             $typeIdIncome=1;
             $typeIdExpense=2;
@@ -281,25 +282,26 @@ class TransactionsDAO extends DAO
                                                 type_id = ?
                                             GROUP BY account_id) AS te ON a.id = expense_acc_id
                                         HAVING a.user_id =? AND a.id=?");
-            $statement->execute([$typeIdIncome,$typeIdExpense,$user_from,$accId]);
+            $statement->execute([$typeIdIncome,$typeIdExpense,$transfer->getUserFrom(),$transfer->getAccId()]);
             $row=$statement->fetch(\PDO::FETCH_ASSOC);
-            if($row["Total"]>$amount && $user_to!=$user_from) {
+            if($row["Total"]>$transfer->getAmount() && $transfer->getUserTo()!=$transfer->getUserFrom()) {
                 $trans=self::$pdo->beginTransaction();
+                $transferCategoryId=13;
                 $insertTransaction = self::$pdo->prepare("INSERT INTO transactions(account_id,amount,category_id,date,type_id)
-                                                                     VALUES (?,?,13,now(),?)");
+                                                                     VALUES (?,?,?,now(),?)");
                 $type_id_expense=2;
-                $insertTransaction->execute([$accId, $amount,$type_id_expense]);
+                $insertTransaction->execute([$transfer->getAccId(), $transfer->getAmount(),$transferCategoryId,$type_id_expense]);
                 $makeTransfer = self::$pdo->prepare("INSERT INTO transfers(from_user_id,to_user_id,date,amount,type_id)
                                                                 VALUES(?,?,now(),?,?)");
                 $type_id_transfer=3;
-                $makeTransfer->execute([$user_from, $user_to, $amount,$type_id_transfer]);
+                $makeTransfer->execute([$transfer->getUserFrom(), $transfer->getUserTo(),$transfer->getAmount(),$type_id_transfer]);
                 $trans=self::$pdo->commit();
             }else{
                 return "wrong";
             }
         }catch(\Exception $e){
                 $trans=self::$pdo->rollBack();
-                throw new \Exception("wrong");
+                throw new \Exception($e);
         }
     }
 
@@ -363,6 +365,8 @@ class TransactionsDAO extends DAO
             $trans = self::$pdo->commit();
         }catch(\Exception $e){
             $trans=self::$pdo->rollBack();
+            throw new \Exception($e);
+
         }
 
     }

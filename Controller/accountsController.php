@@ -95,9 +95,10 @@ class accountsController
                 if ($amount > 0) {
                     if (validateNameAcc($name)) {
                         if (validateAmount($amount)) {
-                            //  $accounts = new Accounts();
                             try {
-                                $result = $accounts = AccountsDAO::checkIfAccountExistsAndInsert($name, $amount, $_SESSION["user"]["id"]);
+                                $accounts = new Accounts();
+                                $accounts->Acc($name,$amount,$_SESSION["user"]["id"]);
+                                $result = AccountsDAO::checkIfAccountExistsAndInsert($accounts);
                                 if ($result) {
                                     echo "correct";
                                 } else {
