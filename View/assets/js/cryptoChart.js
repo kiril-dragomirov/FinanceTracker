@@ -1,6 +1,6 @@
 
 
-document.getElementById('chartCrypto').innerHTML = "<div style =\"margin-left: 500px;\"><img src=\"assets/img/loadingBar.gif\"></div>";
+document.getElementById('chartCrypto').innerHTML = "<div style =\"margin-left: 500px; margin-top: 200px;\"><img src=\"assets/img/loadingB.gif\" style=\"height: 200px; width: 200px;\"></div>";
 var x = new XMLHttpRequest();
 x.open("get","../index.php?target=crypto&action=makeCryptoChart");
 x.onreadystatechange = function (ev) {

@@ -11,7 +11,6 @@ use Model\DAO\CryptoDAO;
 class cryptoController
 {
     public function cryptoCounting(){
-        try{
             $crypto = CryptoDAO::takeCryptoData();
             $result = [];
             $temp = [];
@@ -29,14 +28,11 @@ class cryptoController
 
             }
             echo json_encode($result);
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
+
     }
 
     public function makeCryptoChart(){
-        try{
+
             $crypto = CryptoDAO::takeCryptoData();
             $result = [];
             $temp = [];
@@ -54,10 +50,7 @@ class cryptoController
 
             }
             echo json_encode($result);
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
+
     }
 
     public function addCryptocurrency(){

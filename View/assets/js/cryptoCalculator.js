@@ -1,10 +1,11 @@
 function cryptoCalculator() {
-
+    document.getElementById("loadingB").style.visibility = "visible";
     var request1 = new XMLHttpRequest();
     request1.open("get", "../index.php?target=crypto&action=cryptoCalculating");
     request1.onreadystatechange = function () {
         if (request1.status === 200 && request1.readyState === 4) {
-
+            if(request1.responseText) {
+                document.getElementById("loadingB").style.visibility = "hidden";
                 console.log(this.responseText);
                 var example = JSON.parse(this.responseText);
                 console.log(example);
@@ -75,7 +76,7 @@ function cryptoCalculator() {
                 }
                 str += "</table>";
                 document.getElementById("calc").innerHTML = str;
-            
+            }
         }else if(request1.status===401){
             window.location.href="login.html";
         }

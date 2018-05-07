@@ -25,26 +25,30 @@ class budgetController
     }
 
     public function makeBudget(){
-        try {
-            $account_id = htmlentities($_POST["account_id"]);
-            $budget_amount = htmlentities($_POST["budget_amount"]);
-            $category_id = htmlentities($_POST["category_id"]);
-            $date_from = htmlentities($_POST["date_from"]);
-            $date_to = htmlentities($_POST["date_to"]);
+
+            $account_id = trim(htmlentities($_POST["account_id"]));
+            $budget_amount = trim(htmlentities($_POST["budget_amount"]));
+            $category_id = trim(htmlentities($_POST["category_id"]));
+            $date_from = trim(htmlentities($_POST["date_from"]));
+            $date_to = trim(htmlentities($_POST["date_to"]));
             if(!empty($date_from) && !empty($date_to)) {
                 if ($budget_amount > 0) {
                     echo "Success!";
-                    BudgetDAO::makeBudget($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                    $budget = new Budget();
+                    $budget->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                    try{
+                            BudgetDAO::makeBudget($budget);
+                    }catch(\Exception $e) {
+                        header("HTTP/1.0 404 Not Found");
+                        die();
+                    }
                 } else {
                     echo "not enough amount!";
                 }
             }else{
                 echo "Incorrect data!!!";
             }
-        }catch(\Exception $e) {
-                header("HTTP/1.0 404 Not Found");
-                die();
-            }
+
 
     }
 
@@ -105,7 +109,7 @@ class budgetController
          $user_id = $_SESSION["user"]["id"];
         $budgetStatsResult = BudgetDAO::differentBudgetLoading($user_id);
         $result = [];
-        for ($i = 0; $i < count($budgetStatsResult); $i++){
+        for ($i = 0; $i < count($budgetStatsResult); $i+=2){
 
             $temp = [];
             foreach($budgetStatsResult[$i] as $key => $value){
@@ -117,7 +121,7 @@ class budgetController
                 }elseif($budgetStatsResult[$i]["budgetAmount"] < $budgetStatsResult[$i]["transactAmount"]){
                     $temp["percent"]=$budgetStatsResult[$i]["budgetAmount"] - $budgetStatsResult[$i]["transactAmount"];
                 }
-                if($key == "fromTo") {
+                if($key == "fromTo"){
                     $temp[$key] = $value;
                 }
             }
@@ -140,5 +144,6 @@ class budgetController
             die();
         }
     }
+
 
 }
