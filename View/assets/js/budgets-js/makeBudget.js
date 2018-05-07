@@ -99,6 +99,11 @@ document.getElementById("but").addEventListener("click",function(){
                 document.getElementById("succ").style.color = "red";
                 document.getElementById("succ").innerHTML = this.responseText;
                 document.getElementById("errAm").style.visibility = "hidden";
+            }else if(this.responseText == "Pls, insert appropriate (from-to) !"){
+                document.getElementById("succ").style.visibility = "visible";
+                document.getElementById("succ").style.color = "red";
+                document.getElementById("succ").innerHTML = this.responseText;
+                document.getElementById("errAm").style.visibility = "hidden";
             }else{
                 document.getElementById("succ").style.visibility = "visible";
                 document.getElementById("succ").style.color = "green";

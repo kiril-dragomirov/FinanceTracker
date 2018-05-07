@@ -164,4 +164,20 @@ class BudgetDAO extends DAO
 
     }
 
+    public static function checkBudget(Budget $check){
+        $state = self::$pdo->prepare("SELECT COUNT(*) as count FROM budgets 
+                                                WHERE account_id = ? 
+                                                AND category_id = ? 
+                                                AND date_from = ?
+												OR date_to = ?");
+        $state->execute([$check->getAccountId(),
+            $check->getCategoryId(),
+            $check->getDateFrom(),
+            $check->getDateTo()]);
+        $row = $state->fetch(\PDO::FETCH_ASSOC);
+
+        return $row["count"];
+
+    }
+
 }

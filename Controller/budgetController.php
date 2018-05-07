@@ -31,16 +31,55 @@ class budgetController
             $category_id = trim(htmlentities($_POST["category_id"]));
             $date_from = trim(htmlentities($_POST["date_from"]));
             $date_to = trim(htmlentities($_POST["date_to"]));
+
+            $error = "Pls, insert appropriate (from-to) !";
+
             if(!empty($date_from) && !empty($date_to)) {
                 if ($budget_amount > 0) {
-                    echo "Success!";
-                    $budget = new Budget();
-                    $budget->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
-                    try{
-                            BudgetDAO::makeBudget($budget);
-                    }catch(\Exception $e) {
-                        header("HTTP/1.0 404 Not Found");
-                        die();
+                    if(intval(substr($date_from, 0, 4)) <= intval(substr($date_to, 0, 4)) ) {
+                       if(intval(substr($date_from, 5, 2)) < intval(substr($date_to, 5, 2)) ) {
+                           $check = new Budget();
+                           $check->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                           $checkBudget = BudgetDAO::checkBudget($check);
+                           if($checkBudget == 0) {
+                               echo "Success!!";
+                               $budget = new Budget();
+                               $budget->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                               try {
+                                   BudgetDAO::makeBudget($budget);
+                               } catch (\Exception $e) {
+                                   header("HTTP/1.0 404 Not Found");
+                                   die();
+                               }
+                           }else{
+                               echo $checkBudget;
+                           }
+                       }elseif(intval(substr($date_from, 5, 2)) == intval(substr($date_to, 5, 2)) ) {
+                           if(intval(substr($date_from, 8, 2)) <= intval(substr($date_to, 8, 2)) ){
+                               $check = new Budget();
+                               $check->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                               $checkBudget = BudgetDAO::checkBudget($check);
+                               if($checkBudget == 0) {
+                                   echo "Success!!";
+                                   $budget = new Budget();
+                                   $budget->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
+                                   try {
+                                       BudgetDAO::makeBudget($budget);
+                                   } catch (\Exception $e) {
+                                       header("HTTP/1.0 404 Not Found");
+                                       die();
+                                   }
+                               }else{
+                                   echo $checkBudget;
+                               }
+                           }else{
+                               echo $error;
+                           }
+                       }else{
+                           echo $error;
+                       }
+                    }else{
+                        echo $error;
                     }
                 } else {
                     echo "not enough amount!";
