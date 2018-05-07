@@ -275,7 +275,7 @@ class AccountsDAO extends DAO
 
     public static function makeTimeline($acc_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, ty.name as type, t.amount as amount,  
-                                                    a.name as account 
+                                                    t.date as date, a.name as account 
                                                     FROM transactions as t
                                                     JOIN categories as c
                                                     ON t.category_id = c.id

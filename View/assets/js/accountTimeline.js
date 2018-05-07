@@ -69,6 +69,9 @@ function makeAccountTimeline(){
                             "                                            <p>Amount money: "+ response[i].amount +"</p>\n" +
                             "                                        </div>\n" +
                             "                                        <div class=\"timeline-body\">\n" +
+                            "                                            <p>Date: "+ response[i].date +"</p>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div class=\"timeline-body\">\n" +
                             "                                            <p>Account name: "+response[i].account+"</p>\n" +
                             "                                        </div>\n" +
                             "                                    </div>\n" +
@@ -87,6 +90,9 @@ function makeAccountTimeline(){
                             "                                        </div>\n" +
                             "                                        <div class=\"timeline-body\">\n" +
                             "                                            <p>Amount money: "+ response[i].amount +"</p>\n" +
+                            "                                        </div>\n" +
+                            "                                        <div class=\"timeline-body\">\n" +
+                            "                                            <p>Date: "+ response[i].date +"</p>\n" +
                             "                                        </div>\n" +
                             "                                        <div class=\"timeline-body\">\n" +
                             "                                            <p>Account name: "+response[i].account+"</p>\n" +
