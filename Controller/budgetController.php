@@ -98,34 +98,34 @@ class budgetController
 
     }
 
-    public function selectCategoryAmount(){
-        try {
-            $user_id = $_SESSION["user"]["id"];
-            $statResult = BudgetDAO::selectCategoryAmount($user_id);
-
-            function random_color()
-            {
-                return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
-            }
-
-            $result = [];
-            for ($i = 0; $i < count($statResult); $i++) {
-
-                $temp = [];
-                foreach ($statResult[$i] as $key => $value) {
-                    $temp[$key] = $value;
-                }
-                $temp["color"] = "#" . random_color() . random_color() . random_color();
-                $result[] = $temp;
-
-            }
-            echo json_encode($result);
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
-
-    }
+//    public function selectCategoryAmount(){
+//        try {
+//            $user_id = $_SESSION["user"]["id"];
+//            $statResult = BudgetDAO::selectCategoryAmount($user_id);
+//
+//            function random_color()
+//            {
+//                return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+//            }
+//
+//            $result = [];
+//            for ($i = 0; $i < count($statResult); $i++) {
+//
+//                $temp = [];
+//                foreach ($statResult[$i] as $key => $value) {
+//                    $temp[$key] = $value;
+//                }
+//                $temp["color"] = "#" . random_color() . random_color() . random_color();
+//                $result[] = $temp;
+//
+//            }
+//            echo json_encode($result);
+//        }catch(\Exception $e) {
+//            header("HTTP/1.0 404 Not Found");
+//            die();
+//        }
+//
+//    }
 
     public function selectAccount(){
         try{
@@ -173,6 +173,35 @@ class budgetController
             if($checkAcc == 0){
                 echo "no info about existing accounts";
             }
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
+    }
+
+    public function makeBCharts(){
+        $acc_id = trim(htmlentities($_POST["accId"]));
+        try {
+
+            $statResult = BudgetDAO::selectCategoryAmount($acc_id);
+
+            function random_color()
+            {
+                return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+            }
+
+            $result = [];
+            for ($i = 0; $i < count($statResult); $i++) {
+
+                $temp = [];
+                foreach ($statResult[$i] as $key => $value) {
+                    $temp[$key] = $value;
+                }
+                $temp["color"] = "#" . random_color() . random_color() . random_color();
+                $result[] = $temp;
+
+            }
+            echo json_encode($result);
         }catch(\Exception $e) {
             header("HTTP/1.0 404 Not Found");
             die();

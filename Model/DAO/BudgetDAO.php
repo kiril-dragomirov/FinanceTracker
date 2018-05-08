@@ -86,16 +86,16 @@ class BudgetDAO extends DAO
         $statement->execute([$budget_id]);
     }
 
-    public static function selectCategoryAmount($user_id){
-        $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amount) as amount
+    public static function selectCategoryAmount($acc_id){
+        $statement = self::$pdo->prepare("SELECT c.name as category, b.amount as amount
                                                     FROM budgets as b 
                                                     JOIN categories as c 
                                                     ON b.category_id = c.id 
                                                     JOIN accounts as a
                                                     ON a.id = b.account_id
-                                                    WHERE a.user_id = ?
+                                                    WHERE a.id = ?
                                                     GROUP BY b.category_id");
-        $statement->execute([$user_id]);
+        $statement->execute([$acc_id]);
         $result = [];
         while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
             $result[] = $row;
@@ -174,6 +174,10 @@ class BudgetDAO extends DAO
         $row = $state->fetch(\PDO::FETCH_ASSOC);
 
         return $row["count"];
+
+    }
+
+    public static function makeBCharts(){
 
     }
 
