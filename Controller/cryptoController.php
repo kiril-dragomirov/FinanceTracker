@@ -95,7 +95,9 @@ class cryptoController
             if ($checkAbb && $checkPriceAndCount) {
                 if (strlen($crypto_price) < 20 || strlen($crypto_count) < 20) {
                     if(!($crypto_abb == "BTC" && $crypto_type_cur == 1)) {
+
                         echo "Success!!";
+
                         $crypto = new Crypto();
                         $crypto->cryptoConst($crypto_name, $crypto_abb, $crypto_price, $crypto_count, $user_id, $crypto_type_cur);
                         try {

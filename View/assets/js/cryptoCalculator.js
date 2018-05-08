@@ -27,7 +27,7 @@ function cryptoCalculator() {
                                 str += example[j][item];
                                 str += "</td>";
                             } else if (item == "change" && example[j]["change"] < 0) {
-                                str += "<td style=\"background-color: red;\"> <span class=\"glyphicon glyphicon-usd\"></span> ";
+                                str += "<td style=\"background-color: #ff8080;\"> <span class=\"glyphicon glyphicon-usd\"></span> ";
                                 str += example[j][item];
                                 str += "</td>";
                             } else {
@@ -42,7 +42,7 @@ function cryptoCalculator() {
                                 str += example[j][item];
                                 str += "</td>";
                             } else if (item == "change" && example[j]["change"] < 0) {
-                                str += "<td style=\"background-color: red;\"> <span class=\"glyphicon glyphicon-euro\"></span> ";
+                                str += "<td style=\"background-color: #ff8080;\"> <span class=\"glyphicon glyphicon-euro\"></span> ";
                                 str += example[j][item];
                                 str += "</td>";
                             } else {
@@ -57,7 +57,7 @@ function cryptoCalculator() {
                                 str += example[j][item];
                                 str += "</td>";
                             } else if (item == "change" && example[j]["change"] < 0) {
-                                str += "<td style=\"background-color: red;\"> <span class=\"glyphicon glyphicon-bitcoin\"></span> ";
+                                str += "<td style=\"background-color: #ff8080;\"> <span class=\"glyphicon glyphicon-bitcoin\"></span> ";
                                 str += example[j][item];
                                 str += "</td>";
                             } else {
