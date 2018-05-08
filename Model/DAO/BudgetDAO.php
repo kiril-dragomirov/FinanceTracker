@@ -103,7 +103,7 @@ class BudgetDAO extends DAO
 
         return $result;
     }
-    
+
 
     public static function checkExistAcc($user_id){
         $statement = self::$pdo->prepare("SELECT COUNT(*) as count FROM accounts WHERE user_id=?");
