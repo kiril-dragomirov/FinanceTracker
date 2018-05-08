@@ -11,18 +11,18 @@ use \Model\Budget;
 
 class budgetController
 {
-
-    public function selectAccount(){
-       try{
-            $user_id = $_SESSION["user"]["id"];
-            $selectAccounts = BudgetDAO::selectAccounts($user_id);
-            echo json_encode($selectAccounts);
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
+    public function selectAllBudgets(){
+        $user_id = $_SESSION["user"]["id"];
+        $selectBudgets = BudgetDAO::selectAllBudgets($user_id);
+        echo json_encode($selectBudgets);
 
     }
+
+    public function deleteBudget(){
+        $budget_id = trim(htmlentities($_POST["budgetId"]));
+        $delBudget = BudgetDAO::deleteBudget($budget_id);
+    }
+
 
     public function makeBudget(){
 
@@ -32,7 +32,7 @@ class budgetController
             $date_from = trim(htmlentities($_POST["date_from"]));
             $date_to = trim(htmlentities($_POST["date_to"]));
 
-            $error = "Pls, insert appropriate (from-to) !";
+            $error = "Incorrect (from-to) data!";
 
             if(!empty($date_from) && !empty($date_to)) {
                 if ($budget_amount > 0) {
@@ -52,7 +52,7 @@ class budgetController
                                    die();
                                }
                            }else{
-                               echo $checkBudget;
+                               echo "Already exist!!!";
                            }
                        }elseif(intval(substr($date_from, 5, 2)) == intval(substr($date_to, 5, 2)) ) {
                            if(intval(substr($date_from, 8, 2)) <= intval(substr($date_to, 8, 2)) ){
@@ -70,7 +70,7 @@ class budgetController
                                        die();
                                    }
                                }else{
-                                   echo $checkBudget;
+                                   echo "Already exist!!!";
                                }
                            }else{
                                echo $error;
@@ -126,6 +126,18 @@ class budgetController
 
             }
             echo json_encode($result);
+        }catch(\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
+
+    }
+
+    public function selectAccount(){
+        try{
+            $user_id = $_SESSION["user"]["id"];
+            $selectAccounts = BudgetDAO::selectAccounts($user_id);
+            echo json_encode($selectAccounts);
         }catch(\Exception $e) {
             header("HTTP/1.0 404 Not Found");
             die();

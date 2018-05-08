@@ -60,6 +60,32 @@ class BudgetDAO extends DAO
         return $result;
     }
 
+    public static function selectAllBudgets($user_id){
+        $statement = self::$pdo->prepare("SELECT b.id, a.name as accName, b.amount , 
+                                                    CONCAT(date_from,\" - \",date_to) as date, 
+                                                    c.name as category 
+                                                    FROM budgets as b
+                                                    JOIN accounts as a
+                                                    ON a.id = b.account_id
+                                                    JOIN categories as c
+                                                    ON c.id = b.category_id
+                                                    JOIN users as u
+                                                    ON u.id = a.user_id
+                                                    WHERE u.id = ?");
+        $statement->execute([$user_id]);
+        $result = [];
+        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
+            $result[] = $row;
+        }
+
+        return $result;
+    }
+
+    public static function deleteBudget($budget_id){
+        $statement = self::$pdo->prepare("DELETE FROM budgets WHERE id = ?");
+        $statement->execute([$budget_id]);
+    }
+
     public static function selectCategoryAmount($user_id){
         $statement = self::$pdo->prepare("SELECT c.name as category, SUM(b.amount) as amount
                                                     FROM budgets as b 
@@ -165,15 +191,12 @@ class BudgetDAO extends DAO
     }
 
     public static function checkBudget(Budget $check){
-        $state = self::$pdo->prepare("SELECT COUNT(*) as count FROM budgets 
+        $state = self::$pdo->prepare("SELECT COUNT(*) as count 
+                                                FROM budgets 
                                                 WHERE account_id = ? 
-                                                AND category_id = ? 
-                                                AND date_from = ?
-												OR date_to = ?");
+                                                AND category_id = ?");
         $state->execute([$check->getAccountId(),
-            $check->getCategoryId(),
-            $check->getDateFrom(),
-            $check->getDateTo()]);
+                        $check->getCategoryId()]);
         $row = $state->fetch(\PDO::FETCH_ASSOC);
 
         return $row["count"];

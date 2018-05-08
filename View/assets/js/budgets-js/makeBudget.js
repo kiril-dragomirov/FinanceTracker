@@ -1,3 +1,66 @@
+function myDeleteFunction(j) {
+
+    var row = document.getElementById(j);
+    row.parentNode.removeChild(row);
+}
+
+function deleteRow(v) {
+    var r = new XMLHttpRequest();
+    var id = v;
+    r.open("post", "../index.php?target=budget&action=deleteBudget");
+    r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    r.onreadystatechange = function (ev) {
+        if (!(r.status === 200 && r.readyState === 4)) {
+        } else {
+            console.log(id);
+
+        }
+    }
+
+    r.send("budgetId=" + id);
+
+}
+loadBudgets();
+function loadBudgets(){
+    var xr = new XMLHttpRequest();
+    xr.open("get", "../index.php?target=budget&action=selectAllBudgets");
+    xr.onreadystatechange = function (ev) {
+        if(xr.readyState === 4 && xr.status === 200){
+            var response = JSON.parse(this.responseText);
+            console.log(response);
+            var v = "";
+            var str = "<table  cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"table table-striped table-bordered\"  id=\"da\">";
+            str += "<tr><th>id</th>";
+            str += "<th>account</th>";
+            str += "<th>amount</th>";
+            str += "<th>date (from-to)</th>";
+            str += "<th>category</th>";
+            str += "<th>del</th></tr>";
+
+            for (var j = 0; j < response.length; j++) {
+
+                str += "<tr id=\"" + j + "\">";
+                for (var item in response[j]) {
+
+                        str += "<td>";
+                        str += response[j][item];
+                        str += "</td>";
+
+                    if (item == "id") {
+                         v = response[j][item];
+                    }
+                }
+                str += "<td><button class=\"btn btn-danger btn-sm\" onclick=\"deleteRow(" + v + "); myDeleteFunction(" + j + ");\">Delete</button></td>";
+                str += "</tr>";
+
+            }
+            str += "</table>";
+            document.getElementById("tableBudget").innerHTML = str;
+            console.log(str);
+        }
+    }
+    xr.send();
+}
 
 function existAcc() {
     var xhr = new XMLHttpRequest();
@@ -87,19 +150,19 @@ document.getElementById("but").addEventListener("click",function(){
             console.log(e3);
             console.log(e4);
             console.log(e5);
-
+            loadBudgets();
             //console.log(this.responseText);
             if(this.responseText == "not enough amount!") {
                 document.getElementById("errAm").style.visibility = "visible";
                 document.getElementById("errAm").style.color = "red";
                 document.getElementById("errAm").innerHTML = this.responseText;
                 document.getElementById("succ").style.visibility = "hidden";
-            }else if(this.responseText == "Incorrect data!!!"){
+            }else if(this.responseText == "Incorrect data!!!" || this.responseText == "Already exist!!!"){
                 document.getElementById("succ").style.visibility = "visible";
                 document.getElementById("succ").style.color = "red";
                 document.getElementById("succ").innerHTML = this.responseText;
                 document.getElementById("errAm").style.visibility = "hidden";
-            }else if(this.responseText == "Pls, insert appropriate (from-to) !"){
+            }else if(this.responseText == "Incorrect (from-to) data!"){
                 document.getElementById("succ").style.visibility = "visible";
                 document.getElementById("succ").style.color = "red";
                 document.getElementById("succ").innerHTML = this.responseText;
@@ -117,6 +180,8 @@ document.getElementById("but").addEventListener("click",function(){
     r.send("account_id="+ str1 +"&budget_amount=" + e3 +"&category_id="+ str2 + "&date_from=" + e4 + "&date_to=" + e5);
 });
 }
+
+
 
 var x = new XMLHttpRequest();
 x.open("get", "../index.php?target=budget&action=checkExistAcc");
