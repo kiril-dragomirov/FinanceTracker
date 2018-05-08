@@ -46,6 +46,22 @@ $user_id = $_SESSION["user"]["id"];
         $info[]=$row;
     }
 
+    $infoTransactions=[];
+    $state=$pdo->prepare("SELECT a.name as AccountName,t.amount,c.name as CategoryName,t.date,tt.name as Type,t.id as ID FROM transactions as t
+                                                    JOIN categories as c 
+                                                    ON(t.category_id=c.id)
+                                                    JOIN accounts as a
+                                                    ON(a.id=t.account_id)
+                                                     JOIN icons as i
+                                                    ON c.image_id=i.id
+                                                    JOIN type_transactions as tt
+                                                    ON tt.id=t.type_id
+                                                    WHERE a.user_id=?");
+    $state->execute([$user_id]);
+    while($transactionsRow=$state->fetch(PDO::FETCH_ASSOC)){
+        $infoTransactions[]=$transactionsRow;
+    }
+
 
 $firstname = $_SESSION["user"]["name"];
 $lastname = $_SESSION["user"]["family_name"];
@@ -70,6 +86,18 @@ for($i = 0; $i < count($info); $i++) {
         }
     }
 }
+$pdf->Cell(0,60,"",0,1,"C");
+for($t=0;$t<count($infoTransactions);$t++){
+    $count=0;
+    foreach($infoTransactions as $key=>$value){
+        if($count==0){
+            $pdf->Cell(0, 15, "id: {$infoTransactions[$t]["ID"]},   Accaount Name: {$infoTransactions[$t]["AccountName"]},   Amount: {$infoTransactions[$t]["amount"]},     Category:{$infoTransactions[$t]["CategoryName"]},    Type:{$infoTransactions[$t]["Type"]} ", 1, 0, "L");
+            $pdf->Cell(0, 5, "", 1, 1, "C");
+            break;
+        }
+    }
+}
+
 
 
 

@@ -14,6 +14,7 @@ function getUserEditInfo(){
             var img=document.createElement("IMG");
             img.setAttribute("src", response["image_url"]);
             img.style.width="350px";
+            img.style.height="350px";
             document.getElementById("curAvatar").appendChild(img);
         }else if(request.status===401){
             window.location.href="login.html";

@@ -52,10 +52,10 @@ class userController
                 $lowercase = preg_match('@[a-z]@', $password);
                 $number = preg_match('@[0-9]@', $password);
 
-                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0 || strlen($password)<8) {
-                    return false;
-                } else {
+                if ($uppercase && $lowercase && $number &&  strlen($password)>=8) {
                     return true;
+                } else {
+                    return false;
                 }
             }
 
@@ -159,7 +159,7 @@ class userController
                         if($edit===true) {
                             try {
                                 $user = new User();
-                                $user->First($name, $family_name, $age, sha1($password), $email, $url,$_SESSION["user"]["id"]);
+                                $user->First($_SESSION["user"]["name"], $_SESSION["user"]["family_name"], $_SESSION["user"]["age"], $_SESSION["user"]["password"], $_SESSION["user"]["email"], $url,$_SESSION["user"]["id"]);
                                 UserDAO::editUser($user);
                                 header("location: View/edit.html");
                             }catch(\Exception $e){
@@ -219,10 +219,10 @@ class userController
                 $lowercase = preg_match('@[a-z]@', $password);
                 $number = preg_match('@[0-9]@', $password);
 
-                if (!$uppercase || !$lowercase || !$number || strlen($password) < 0 || strlen($password)<8) {
-                    return false;
-                } else {
+                if ($uppercase && $lowercase && $number &&  strlen($password)>=8) {
                     return true;
+                } else {
+                    return false;
                 }
             }
 
@@ -237,7 +237,7 @@ class userController
 
             if (!empty($name) && !empty($family_name) && !empty($password) && !empty($repeatPassword) && !empty($email) && !empty($age)) {
 //            $img=$_FILES["avatar"]["tmp_name"];
-                if (isset($_FILES["avatar"]["tmp_name"])) { //ZASHTO ISSET, A NE IS_UPLOADED FILE?
+                if (isset($_FILES["avatar"]["tmp_name"])) {
                     if ($_FILES["avatar"]["size"] > 2097152) {
 
                             $file_data = false;
