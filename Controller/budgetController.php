@@ -13,15 +13,26 @@ class budgetController
 {
     public function selectAllBudgets(){
         $user_id = $_SESSION["user"]["id"];
-        $selectBudgets = BudgetDAO::selectAllBudgets($user_id);
-        echo json_encode($selectBudgets);
+        try {
+            $selectBudgets = BudgetDAO::selectAllBudgets($user_id);
+            echo json_encode($selectBudgets);
+        }catch (\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
 
     }
 
     public function deleteBudget(){
         $budget_id = trim(htmlentities($_POST["budgetId"]));
-        $delBudget = BudgetDAO::deleteBudget($budget_id);
-    }
+        try {
+            $delBudget = BudgetDAO::deleteBudget($budget_id);
+        }catch (\Exception $e) {
+            header("HTTP/1.0 404 Not Found");
+            die();
+        }
+
+}
 
 
     public function makeBudget(){
@@ -32,15 +43,22 @@ class budgetController
             $date_from = trim(htmlentities($_POST["date_from"]));
             $date_to = trim(htmlentities($_POST["date_to"]));
 
-            $error = "Incorrect (from-to) data!";
 
             if(!empty($date_from) && !empty($date_to)) {
                 if ($budget_amount > 0) {
-                    if(intval(substr($date_from, 0, 4)) <= intval(substr($date_to, 0, 4)) ) {
-                       if(intval(substr($date_from, 5, 2)) < intval(substr($date_to, 5, 2)) ) {
+                    $from = explode("-", $date_from);
+                    $fromImp = implode("", $from);
+                    $to = explode("-", $date_to);
+                    $toImp = implode("", $to);
+                    if($fromImp < $toImp){
                            $check = new Budget();
                            $check->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
-                           $checkBudget = BudgetDAO::checkBudget($check);
+                               try {
+                                   $checkBudget = BudgetDAO::checkBudget($check);
+                               }catch (\Exception $e) {
+                                   header("HTTP/1.0 404 Not Found");
+                                   die();
+                               }
                            if($checkBudget == 0) {
                                echo "Success!!";
                                $budget = new Budget();
@@ -54,32 +72,8 @@ class budgetController
                            }else{
                                echo "Already exist!!!";
                            }
-                       }elseif(intval(substr($date_from, 5, 2)) == intval(substr($date_to, 5, 2)) ) {
-                           if(intval(substr($date_from, 8, 2)) <= intval(substr($date_to, 8, 2)) ){
-                               $check = new Budget();
-                               $check->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
-                               $checkBudget = BudgetDAO::checkBudget($check);
-                               if($checkBudget == 0) {
-                                   echo "Success!!";
-                                   $budget = new Budget();
-                                   $budget->budgetConst($account_id, $budget_amount, $category_id, $date_from, $date_to);
-                                   try {
-                                       BudgetDAO::makeBudget($budget);
-                                   } catch (\Exception $e) {
-                                       header("HTTP/1.0 404 Not Found");
-                                       die();
-                                   }
-                               }else{
-                                   echo "Already exist!!!";
-                               }
-                           }else{
-                               echo $error;
-                           }
-                       }else{
-                           echo $error;
-                       }
                     }else{
-                        echo $error;
+                        echo "Incorrect (from-to) data!";
                     }
                 } else {
                     echo "not enough amount!";
@@ -145,17 +139,6 @@ class budgetController
 
     }
 
-    public function wrongBudgeting(){
-        try{
-            $user_id = $_SESSION["user"]["id"];
-            $minusBudget = BudgetDAO::wrongBudgeting($user_id);
-            echo json_encode($minusBudget);
-        }catch(\Exception $e) {
-            header("HTTP/1.0 404 Not Found");
-            die();
-        }
-
-    }
     public function differentBudgetLoading(){
          $user_id = $_SESSION["user"]["id"];
         $budgetStatsResult = BudgetDAO::differentBudgetLoading($user_id);

@@ -10,11 +10,13 @@ function deleteRow(v) {
     r.open("post", "../index.php?target=budget&action=deleteBudget");
     r.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     r.onreadystatechange = function (ev) {
-        if (!(r.status === 200 && r.readyState === 4)) {
-        } else {
-            console.log(id);
-
+        if ((r.status === 200 && r.readyState === 4)) {
+        }else if(r.status===401){
+            window.location.href="login.html";
         }
+
+
+
     }
 
     r.send("budgetId=" + id);
@@ -57,6 +59,8 @@ function loadBudgets(){
             str += "</table>";
             document.getElementById("tableBudget").innerHTML = str;
             console.log(str);
+        }else if(xr.status===401){
+            window.location.href="login.html";
         }
     }
     xr.send();
@@ -157,12 +161,8 @@ document.getElementById("but").addEventListener("click",function(){
                 document.getElementById("errAm").style.color = "red";
                 document.getElementById("errAm").innerHTML = this.responseText;
                 document.getElementById("succ").style.visibility = "hidden";
-            }else if(this.responseText == "Incorrect data!!!" || this.responseText == "Already exist!!!"){
-                document.getElementById("succ").style.visibility = "visible";
-                document.getElementById("succ").style.color = "red";
-                document.getElementById("succ").innerHTML = this.responseText;
-                document.getElementById("errAm").style.visibility = "hidden";
-            }else if(this.responseText == "Incorrect (from-to) data!"){
+            }else if(this.responseText == "Incorrect data!!!" || this.responseText == "Already exist!!!"
+                || this.responseText == "Incorrect (from-to) data!"){
                 document.getElementById("succ").style.visibility = "visible";
                 document.getElementById("succ").style.color = "red";
                 document.getElementById("succ").innerHTML = this.responseText;

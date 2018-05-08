@@ -67,6 +67,7 @@ padding: 20px 15px;
             color:#fff;
            border-bottom: 1px solid #84B899 !important;
            height: 55px;
+           cursor: pointer;
         }
         .selected {
             background-color:rgb(83, 163, 163);

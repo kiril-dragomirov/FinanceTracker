@@ -103,33 +103,7 @@ class BudgetDAO extends DAO
 
         return $result;
     }
-
-    public static function wrongBudgeting($user_id){
-        $expenses = 2;
-        $statement = self::$pdo->prepare("SELECT b.id as budgetId,
-                                                    (b.amount - SUM(t.amount)) as minusAmount, 
-                                                    b.date_from as startBudget,
-                                                    b.date_to as endBudget,
-                                                    c.name as category FROM budgets as b
-                                                    JOIN transactions as t 
-                                                    ON b.category_id = t.category_id
-                                                    JOIN categories as c
-                                                    ON t.category_id = c.id
-                                                    JOIN accounts as a
-                                                    ON b.account_id = a.id
-                                                    WHERE a.user_id = ?
-                                                    AND b.amount < t.amount
-                                                    AND t.type_id = ?
-                                                    AND t.date BETWEEN b.date_from AND b.date_to
-                                                    GROUP BY b.date_from ");
-        $statement->execute([$user_id,$expenses]);
-        $result = [];
-        while($row = $statement->fetch(\PDO::FETCH_ASSOC)){
-            $result[] = $row;
-        }
-
-        return $result;
-    }
+    
 
     public static function checkExistAcc($user_id){
         $statement = self::$pdo->prepare("SELECT COUNT(*) as count FROM accounts WHERE user_id=?");
