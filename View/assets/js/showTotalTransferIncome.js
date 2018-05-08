@@ -12,7 +12,9 @@ function showTotalTransferIncome(){
         if(request.readyState===4 && request.status===200){
             var response=JSON.parse(this.responseText);
             console.log(response);
-            h1.innerHTML="You have "+ response[0]["sum"] +" available from transfers";
+            var transferTotalAmountIncome=response[0]["sum"];
+            transferTotalAmountIncome=+transferTotalAmountIncome;
+            h1.innerHTML="You have "+ transferTotalAmountIncome.toFixed(2) +" available from transfers";
             if(response[0]["sum"]>0){
                 h1.onclick=function () {
                     setTransferToAccount();

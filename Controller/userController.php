@@ -15,6 +15,9 @@ class userController
             $password = trim(htmlentities(sha1($_POST["password"])));
             $loginCheck = UserDAO::checkUser($email, $password);
             if ($loginCheck["id"] !== null) {
+                if(isset($_SESSION["user"])) {
+                    unset($_SESSION["user"]);
+                }
                 $_SESSION['user'] = $loginCheck;
             } else {
                 echo "incorrect data";
@@ -239,21 +242,24 @@ class userController
                 if (isset($_FILES["avatar"]["tmp_name"])) {
                     if ($_FILES["avatar"]["size"] > 2097152) {
 
-                            $file_data = false;
-                        $url = "./assets/user-image/defaultwrong.png";
-                    } else {
+//                            $file_data = false;
+                        $url = "./assets/user-image/default.jpg";
+                    }
                         $img=$_FILES["avatar"]["tmp_name"];
                         $avatar = getimagesize($img);
 
                         if (($avatar[2] == IMAGETYPE_JPEG)) {
 
-                            $file_data = true;
+//                            $file_data = true;
+                        }else if(($avatar[2] != IMAGETYPE_JPEG)){
+//                            $file_data = false;
+                            $url = "./assets/user-image/default.jpg";
                         }else{
-                            $file_data = false;
-                            $url = "./assets/user-image/defaultwrong.png";
+//                            $file_data = true;
+                            $url = "./assets/user-image/default.jpg";
                         }
 
-                    }
+
                 }
 
 //                if ($file_data) {
@@ -270,7 +276,7 @@ class userController
                                                     }
 
                                                 } else {
-                                                    $url = "./assets/user-image/defaultwrong.png";
+                                                    $url = "./assets/user-image/default.jpg";
                                                 }
                                                 $user = new User();
                                                 $user->First($name, $family_name, $age, sha1($password), $email, $url);
@@ -324,8 +330,8 @@ class userController
                 header("location:./View/register.html");
             }
 
-//        }
-    }
+        }
+//    }
 
     public function getUserId(){
         echo $_SESSION["user"]["id"];
